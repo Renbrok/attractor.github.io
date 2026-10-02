@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Документальный атлас РЭН v153 — фокус внешних связей для всех узлов</title>
+<title>Документальный атлас РЭН v154 — Санкт-Петербургский горный университет · Аттрактор</title>
 <style>
 :root{--bg:#f4f6f8;--panel:#fff;--line:#d7dde4;--text:#1d2733;--muted:#687585;--accent:#245fa8}
 *{box-sizing:border-box} html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);background:var(--bg)} body{overflow:hidden}
@@ -390,6 +390,34 @@ body.atlas-wide.atlas-external-focus .wide-map-hint{max-width:340px}
 body.atlas-wide.atlas-external-focus #graph .node.external-focus-selected{filter:drop-shadow(0 8px 14px rgba(25,35,42,.22))}
 body.atlas-wide.atlas-external-focus #graph .node.external-focus-selected circle{stroke:#183449!important;stroke-width:4px!important;filter:drop-shadow(0 0 7px rgba(24,52,73,.25))}
 body.atlas-wide.atlas-external-focus #graph .node.external-focus-selected text{font-weight:750;font-size:11px}
+
+/* v154 — institutional and team branding. */
+.brand-block{display:flex;align-items:center;gap:15px;min-width:0}
+.brand-row{flex:none;align-items:center}
+.brand-identity{display:grid;min-width:0;gap:2px}
+.institution-name{font:500 11.5px/1.18 Georgia,"Times New Roman",serif;letter-spacing:.012em;color:#293844;white-space:nowrap}
+.brand-identity .subtitle{margin:0;font-size:9.5px;line-height:1.2;letter-spacing:.055em;text-transform:uppercase;color:#7b7267;white-space:nowrap}
+.atlas-credit{position:fixed;right:28px;bottom:4px;z-index:4;font-size:8px;line-height:1;color:#8e867b;letter-spacing:.035em;opacity:.72;pointer-events:none;user-select:none}
+@media(max-width:1180px){
+  .brand-block{gap:11px}.institution-name{font-size:10.5px}.brand-identity .subtitle{display:none}
+  .atlas-topnav{margin-left:16px}
+}
+@media(max-width:960px) and (min-width:821px){
+  .institution-name{max-width:360px;overflow:hidden;text-overflow:ellipsis}
+  .atlas-topnav{margin-left:10px}.atlas-topnav button{padding-inline:7px;font-size:11px}
+}
+@media(max-width:820px){
+  .brand-block{gap:8px;max-width:calc(100vw - 100px)}
+  .brand-row{gap:5px}.brand-identity{max-width:210px}
+  .institution-name{font-family:"Segoe UI",Arial,sans-serif;font-size:8.3px;font-weight:650;line-height:1.08;white-space:normal;letter-spacing:0}
+  .brand-identity .subtitle{display:none}
+  .atlas-credit{right:10px;bottom:max(66px,calc(60px + env(safe-area-inset-bottom)));font-size:7px;opacity:.68}
+}
+@media(max-width:430px){
+  .brand-block{gap:6px;max-width:calc(100vw - 94px)}
+  .atlas-logo{font-size:24px}
+  .brand-identity{max-width:190px}.institution-name{font-size:7.8px}
+}
 </style>
 
 </head>
@@ -397,8 +425,11 @@ body.atlas-wide.atlas-external-focus #graph .node.external-focus-selected text{f
 <div class="app">
 <div class="topbar">
   <div class="brand-block">
-    <div class="brand-row"><div class="title atlas-logo">РЭН</div><span class="version-pill">v153</span></div>
-    <div class="subtitle">v153 · фокус внешних связей для любого узла · Документальный атлас межведомственных связей</div>
+    <div class="brand-row"><div class="title atlas-logo">РЭН</div><span class="version-pill">v154</span></div>
+    <div class="brand-identity">
+      <div class="institution-name">Санкт-Петербургский горный университет императрицы Екатерины II</div>
+      <div class="subtitle">Команда «Аттрактор» · Документальный атлас межведомственных связей</div>
+    </div>
   </div>
 
   <nav class="atlas-topnav" aria-label="Основные разделы">
@@ -412,6 +443,7 @@ body.atlas-wide.atlas-external-focus #graph .node.external-focus-selected text{f
     <button class="top-action" id="detailToggle" type="button" aria-controls="rightPanel" aria-expanded="false">▤ <span>Карточка</span><span class="selection-dot" id="selectionDot" hidden></span></button>
   </div>
 </div>
+<div class="atlas-credit" aria-label="Автор">Автор: Бобу А.К.</div>
 
 <section class="atlas-intro" aria-labelledby="atlasTitle">
   <div class="atlas-intro-title">
