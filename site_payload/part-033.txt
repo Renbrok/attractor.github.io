@@ -565,7 +565,7 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
     };
     requestAnimationFrame(() => { reveal(); requestAnimationFrame(reveal); });
   }
-  function collapseInternalOnZoom() { /* v161: масштабирование больше не закрывает внутренний контур */ }
+  function collapseInternalOnZoom() { /* v162: масштабирование больше не закрывает внутренний контур */ }
   // v153: any organisational node on the overview map can become the external-relations focus.
   function focusExternalNode(id) {
     if (!id || !nodeById[id]) return;
