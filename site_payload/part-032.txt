@@ -1,0 +1,1170 @@
+С «Одно окно»',/Одно окно/i],
+  ['Проектные ИС',/Проектн[а-яё]*\s+ИС/i],
+  ['Бюджетные ИС',/бюджетн[а-яё]*\s+ИС/i],
+  ['ЕПТ',/ЕПТ|Един[а-яё]*\s+портал[а-яё]*\s+тестирован/i],
+  ['ЕЦП «Работа в России»',/ЕЦП\s*[«"]?Работа\s+(?:в|России)|портал[а-яё]*\s*[«"]?Работа\s+в\s+России/i],
+  ['ГИС ЕЦП',/ГИС\s+ЕЦП|Един[а-яё]*\s+централизованн[а-яё]*\s+цифров[а-яё]*\s+платформ[а-яё]*\s+в\s+социальн[а-яё]*\s+сфер/i],
+  ['ЕГАСМРО',/ЕГАСМРО|един[а-яё]*\s+государственн[а-яё]*\s+автоматизированн[а-яё]*\s+систем[а-яё]*\s+мониторинг[а-яё]*\s+радиационн/i]
+];
+function channelNorm(text){const found=[];const seen=new Set();const s=String(text||'');if(s.includes('СМЭВ (тестовый контур)'))return ['СМЭВ (тестовый контур)'];for(const [name,rex] of CHANNEL_RULES){if(rex.test(s)&&!seen.has(name)){seen.add(name);found.push(name);}}return found;}
+function isChannelActorNode(id){return !!nodeById[id]&&CHANNEL_ACTOR_TYPES.has(nodeById[id].type)}
+function channelOrgName(id){return nodeById[id]?.name||id}
+function isChannelBaseEdge(e){return e.source_coverage!=='EXCLUDED_NO_DOCUMENT'&&isChannelActorNode(e.a)&&isChannelActorNode(e.b)}
+function channelColor(name){
+  if(['СМЭВ','ЕПГУ','ЕСНСИ','ГосТех','ЕАИС ФТС'].includes(name)) return '#2f6db1';
+  if(/ФГИС|ГИСП|ГИС ТЭК|ГИС ЭПД|ГИС ЕЦП|ЕГИСЗ|ЕГИС ОТБ|ЕГАСМРО|ЕЦП «Работа в России»|ГВР|ГосЛог|АСУ ТК|ПТК/.test(name)) return '#6f7f2f';
+  if(['API / выгрузки','Корпоративные интерфейсы','Проектные ИС','Ведомственные ИС','Отраслевые ИС','Отраслевые ФГИС','Региональные ИС','Ведомственные каналы','ЕПТ'].includes(name)) return '#7b5aa6';
+  if(['Электронный документооборот','Личный кабинет','Защищённая сеть передачи данных','Специализированная интеграция','ГИИС «Электронный бюджет»'].includes(name)) return '#8a5a44';
+  return '#5d6d7e';
+}
+function channelId(name){return 'CHANNEL3-'+hashString(name).toString(16)}
+function uniquePush(arr,vals){for(const v of vals||[]){if(v&&!arr.includes(v))arr.push(v)}}
+function buildChannelGraph(){
+  const meta=new Map(),linkMap=new Map(),orgIds=new Set();
+  for(const e of DATA.edges){
+    if(!isChannelBaseEdge(e))continue;
+    const chs=channelNorm(e.channels);
+    if(!chs.length)continue;
+    const info={
+      source_ids:e.source_ids||[],
+      matrices:String(e.matrices||'').split(';').map(x=>x.trim()).filter(Boolean),
+      processes:String(e.processes||'').split('|').map(x=>x.trim()).filter(Boolean),
+      relation_types:String(e.relation_types||'').split(';').map(x=>x.trim()).filter(Boolean),
+      data_texts:Array.isArray(e.data_texts)?e.data_texts:[],
+      subject:e.b_name===nodeById[e.b]?e.b_name:e.a_name
+    };
+    for(const ch of chs){
+      const cid=channelId(ch);
+      if(!meta.has(cid))meta.set(cid,{id:cid,name:ch,baseEdges:new Set(),orgs:new Set(),core:new Set(),source_ids:new Set(),matrices:new Set(),processes:new Set(),relations:new Set(),connections:new Map(),useCount:0});
+      const m=meta.get(cid);m.baseEdges.add(e.id);m.orgs.add(e.a);m.orgs.add(e.b);m.useCount++;
+      for(const id of [e.a,e.b]){orgIds.add(id);if(coreIds.has(id))m.core.add(id);}
+      info.source_ids.forEach(x=>m.source_ids.add(x));info.matrices.forEach(x=>m.matrices.add(x));info.processes.forEach(x=>m.processes.add(x));info.relation_types.forEach(x=>m.relations.add(x));
+      for(const org of [e.a,e.b]){
+        if(!m.connections.has(org))m.connections.set(org,{baseEdges:new Set(),source_ids:new Set(),processes:new Set(),relations:new Set(),data_texts:new Set(),matrices:new Set(),counterpart:new Set(),subjects:new Set()});
+        const c=m.connections.get(org);c.baseEdges.add(e.id);c.counterpart.add(org===e.a?e.b:e.a);info.source_ids.forEach(x=>c.source_ids.add(x));info.processes.forEach(x=>c.processes.add(x));info.relation_types.forEach(x=>c.relations.add(x));info.matrices.forEach(x=>c.matrices.add(x));(e.data_texts||[]).forEach(x=>c.data_texts.add(x));
+        const key=cid+'|'+org;
+        if(!linkMap.has(key))linkMap.set(key,{id:'CH3EDGE-'+hashString(key).toString(16),a:org,b:cid,a_name:nodeById[org]?.name||org,b_name:ch,type:'CHANNEL_LINK',channel_id:cid,channel_name:ch,base_edge_ids:[],source_ids:[],processes:[],relation_types:[],matrices:[]});
+        const l=linkMap.get(key);l.base_edge_ids.push(e.id);uniquePush(l.source_ids,e.source_ids||[]);uniquePush(l.processes,info.processes);uniquePush(l.relation_types,info.relation_types);uniquePush(l.matrices,info.matrices);
+      }
+    }
+  }
+  const channels=[...meta.values()].filter(m=>m.core.size>0).sort((a,b)=>b.core.size-a.core.size||b.orgs.size-a.orgs.size||a.name.localeCompare(b.name,'ru'));
+  const channelIds=new Set(channels.map(x=>x.id));
+  let links=[...linkMap.values()].filter(l=>channelIds.has(l.channel_id));
+  if(focusSet.size){
+    const focusChannelIds=new Set(links.filter(l=>focusSet.has(l.a)).map(l=>l.channel_id));
+    links=links.filter(l=>focusChannelIds.has(l.channel_id));
+  }
+  if(channelFocusId)links=links.filter(l=>l.channel_id===channelFocusId);
+  const visibleOrgIds=new Set(links.map(l=>l.a));
+  const channelNodes=channels.filter(m=>!channelFocusId||m.id===channelFocusId).map(m=>({id:m.id,name:m.name,type:'CHANNEL',synthetic:true,coreCount:m.core.size,participantCount:m.orgs.size,channelColor:channelColor(m.name),useCount:m.useCount}));
+  const orgNodes=[...visibleOrgIds].map(id=>nodeById[id]).filter(Boolean).map(n=>({...n,channelCount:links.filter(l=>l.a===n.id).length}));
+  channelState={nodes:[...channelNodes,...orgNodes],links,meta,nodeMap:new Map([...channelNodes,...orgNodes].map(n=>[n.id,n]))};
+  channelNodeById=Object.fromEntries(channelNodes.map(n=>[n.id,n]));channelMeta=meta;
+  return channelState;
+}
+function updateChannelFocusOptions(){
+  const section=document.getElementById('channelFocusSection'),select=document.getElementById('channelFocusSelect');
+  if(!section||!select)return;
+  section.style.display=graphMode==='CHANNELS'?'block':'none';
+  const prev=channelFocusId||'ALL';
+  const metaValues=channelMeta instanceof Map?[...channelMeta.values()]:Object.values(channelMeta||{});
+  const metas=metaValues.filter(m=>m&&m.core&&m.core.size>0).sort((a,b)=>b.core.size-a.core.size||b.orgs.size-a.orgs.size||a.name.localeCompare(b.name,'ru'));
+  select.innerHTML='<option value="ALL">Все каналы</option>'+metas.map(m=>`<option value="${esc(m.id)}">${esc(m.name)} · ${m.core.size}/${CORE.length} основных · ${m.orgs.size} участников</option>`).join('');
+  select.value=metas.some(m=>m.id===prev)?prev:'ALL';
+}
+function channelInfoForLink(l){
+  const srcs=[...new Set(l.source_ids||[])].map(id=>sourceById[id]).filter(Boolean);
+  return {srcs,info:[...(l.processes||[]),...(l.relation_types||[])].filter(Boolean)};
+}
+function channelTooltip(l,ev){
+  const m=channelState.meta.get(l.channel_id);const {srcs,info}=channelInfoForLink(l);
+  tooltip.innerHTML=`<div><strong>${esc(l.a_name)}</strong> <span class="muted">→</span> <strong>${esc(l.channel_name)}</strong></div><div class="muted"><strong>Участников канала:</strong> ${m?m.orgs.size:'—'} · <strong>основных органов:</strong> ${m?m.core.size+'/'+CORE.length:'—'}</div>${info.length?`<div class="muted"><strong>Контекст:</strong><br>${esc([...new Set(info)].slice(0,5).join(' • '))}</div>`:''}${srcs.length?srcs.slice(0,3).map(s=>`<div class="src"><strong>${esc(s.title||s.source_id)}</strong>${s.url?`<div><a href="${esc(s.url)}" target="_blank" rel="noopener">открыть источник</a></div>`:''}</div>`).join(''):'<div class="src">Источник не привязан.</div>'}`;
+  tooltip.style.display='block';moveTooltip(ev);highlightChannelLink(l.id);
+}
+function highlightChannelLink(id){for(const p of edgesLayer.children)p.classList.toggle('hovered',p.dataset.id===id)}
+function channelLinkDetail(l){
+  const m=channelState.meta.get(l.channel_id);const srcs=[...new Set(l.source_ids||[])].map(id=>sourceById[id]).filter(Boolean);
+  const rows=[...new Set(l.base_edge_ids||[])].map(id=>DATA.edges.find(e=>e.id===id)).filter(Boolean).slice(0,30).map(e=>{const s=(e.source_ids||[]).map(id=>sourceById[id]).filter(Boolean);const ctx=[e.processes||'',...(s.map(x=>x.what_confirms||''))].filter(Boolean);return `<tr><td>${esc(e.a_name)} ↔ ${esc(e.b_name)}</td><td>${esc(ctx.slice(0,3).join(' • ')||'В матрице не детализировано')}</td><td>${esc((e.matrices||'').split(';').map(matrixLabel).join(' · '))}</td></tr>`}).join('');
+  return `<h2>${esc(l.a_name)} → ${esc(l.channel_name)}</h2><div class="meta">Канал · ${esc(l.id)}</div><div class="card"><h4>Роль канала</h4><p><strong>${esc(l.channel_name)}</strong> объединяет ${m?.orgs.size||0} участников, из них ${m?.core.size||0} основных органов.</p><p><strong>Зафиксировано взаимодействий:</strong> ${(l.base_edge_ids||[]).length}</p></div><div class="card"><h4>Основания в матрицах</h4><div style="overflow:auto"><table style="width:100%;font-size:10px;border-collapse:collapse"><thead><tr><th style="text-align:left;padding:5px">Участники</th><th style="text-align:left;padding:5px">Предмет / подтверждение</th><th style="text-align:left;padding:5px">Матрица</th></tr></thead><tbody>${rows||'<tr><td colspan="3">Нет записей</td></tr>'}</tbody></table></div></div><div><h4 style="font-size:11px;text-transform:uppercase;color:#566474">Источники (${srcs.length})</h4>${srcs.map(s=>`<div class="card"><strong>${esc(s.title||s.source_id)}</strong><div class="small">${esc(s.source_id)} · ${esc(matrixLabel(s.matrix||''))}</div>${s.what_confirms?`<p>${esc(s.what_confirms)}</p>`:''}${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">открыть документ</a>`:''}</div>`).join('')||'<div class="notice">Источники не привязаны.</div>'}</div>`;
+}
+function channelNodeDetail(id){
+  const n=channelState.nodeMap.get(id);if(!n)return '<div class="empty">Узел не найден.</div>';
+  if(n.type==='CHANNEL'){
+    const m=channelState.meta.get(id), srcs=[...new Set([...m.source_ids])].map(x=>sourceById[x]).filter(Boolean);
+    const rows=[...m.connections.entries()].sort((a,b)=>channelOrgName(a[0]).localeCompare(channelOrgName(b[0]),'ru')).map(([org,c])=>`<tr><td><strong>${esc(channelOrgName(org))}</strong></td><td>${esc([...c.processes,...c.relations].filter(Boolean).slice(0,4).join(' • ')||'Не детализировано')}</td><td>${c.baseEdges.size}</td></tr>`).join('');
+    const focusBtn=`<button class="btn primary" onclick="focusChannel('${id}')">Сделать канал фокусом</button>`;
+    return `<h2>${esc(n.name)}</h2><div class="meta">Канал связи · ${esc(n.id)}</div><div class="card"><h4>Канал как общий узел</h4><p><strong>Участников:</strong> ${m.orgs.size} · <strong>основных органов:</strong> ${m.core.size}/${CORE.length} · <strong>исходных взаимодействий:</strong> ${m.baseEdges.size}</p><p><strong>Матрицы:</strong> ${esc([...m.matrices].map(matrixLabel).join(' · ')||'—')}</p><div class="btnrow" style="margin-top:8px">${focusBtn}</div></div><div class="card"><h4>Участники</h4><div style="overflow:auto;max-height:360px"><table style="width:100%;font-size:10px;border-collapse:collapse"><thead><tr><th style="text-align:left;padding:5px">Организация</th><th style="text-align:left;padding:5px">Контекст</th><th style="text-align:left;padding:5px">Связей</th></tr></thead><tbody>${rows||'<tr><td colspan="3">Нет участников</td></tr>'}</tbody></table></div></div><div><h4 style="font-size:11px;text-transform:uppercase;color:#566474">Источники (${srcs.length})</h4>${srcs.slice(0,20).map(s=>`<div class="card"><strong>${esc(s.title||s.source_id)}</strong><div class="small">${esc(s.source_id)} · ${esc(matrixLabel(s.matrix||''))}</div>${s.what_confirms?`<p>${esc(s.what_confirms)}</p>`:''}${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">открыть документ</a>`:''}</div>`).join('')||'<div class="notice">Источники не привязаны.</div>'}</div>`;
+  }
+  const links=channelState.links.filter(l=>l.a===id),cs=[...new Set(links.map(l=>l.channel_name))].sort((a,b)=>a.localeCompare(b,'ru'));
+  return `<h2>${esc(n.name)}</h2><div class="meta">${esc(labelType(n.type))}</div><div class="card"><h4>Каналы участника</h4><p><strong>Каналов:</strong> ${cs.length}</p>${cs.map(c=>`<p>• ${esc(c)}</p>`).join('')}</div>`;
+}
+function channelNodeRadius(n){if(n.type==='CHANNEL'){return Math.min(34,20+Math.sqrt(n.participantCount||1)*2.5)}return coreIds.has(n.id)?15:(n.channelCentral?11.5:sharedNodeRadius(n));}
+function meanAngleForNode(n,linkByOrg,channelMap,cx,cy){
+  const links=linkByOrg.get(n.id)||[];if(!links.length)return -Math.PI/2;
+  let sx=0,sy=0;for(const cid of links){const ch=channelMap.get(cid);if(ch&&Number.isFinite(ch.angle)){sx+=Math.cos(ch.angle);sy+=Math.sin(ch.angle);}}
+  return sx||sy?Math.atan2(sy,sx):-Math.PI/2;
+}
+function distributeAngles(items,baseAngles,step=0.12){
+  const out=new Map();const sorted=[...items].sort((a,b)=>(baseAngles.get(a.id)||0)-(baseAngles.get(b.id)||0)||a.name.localeCompare(b.name,'ru'));
+  sorted.forEach((n,i)=>{let a=baseAngles.get(n.id);if(a==null)a=-Math.PI/2;const k=Math.floor(i/3);const off=(i%3-1)*step+k*0.01;out.set(n.id,a+off);});return out;
+}
+function arrangeChannelLayout(nodes,links){
+  const cx=W/2,cy=H/2,minDim=Math.min(W,H);const nm=new Map(nodes.map(n=>[n.id,n]));const channels=nodes.filter(n=>n.type==='CHANNEL');const orgs=nodes.filter(n=>n.type!=='CHANNEL');
+  if(focusSet.size===1 && !channelFocusId){
+    const fid=[...focusSet][0],focus=nm.get(fid);
+    if(focus){
+      focus.x=cx;focus.y=cy;focus.channelCentral=true;
+      const otherCore=orgs.filter(n=>coreIds.has(n.id)&&n.id!==fid);
+      const secondary=orgs.filter(n=>!coreIds.has(n.id));
+      const chR=Math.min(255,minDim*.31);const chSorted=[...channels].sort((a,b)=>(b.coreCount||0)-(a.coreCount||0)||(b.participantCount||0)-(a.participantCount||0)||a.name.localeCompare(b.name,'ru'));
+      const chAngles=new Map();chSorted.forEach((ch,i)=>{const a=-Math.PI/2+i*(Math.PI*2/chSorted.length);const p=polar(cx,cy,chR,a);ch.x=p.x;ch.y=p.y;ch.channelRing=chR;chAngles.set(ch.id,a)});
+      const coreR=Math.min(355,minDim*.44);otherCore.forEach((n,i)=>{let sx=0,sy=0;for(const l of links.filter(l=>l.a===n.id)){const a=chAngles.get(l.b);if(a!=null){sx+=Math.cos(a);sy+=Math.sin(a)}}const a=sx||sy?Math.atan2(sy,sx):-Math.PI/2+i*(Math.PI*2/Math.max(1,otherCore.length));const p=polar(cx,cy,coreR,a);n.x=p.x;n.y=p.y});
+      secondary.forEach((n,i)=>{const as=links.filter(l=>l.a===n.id).map(l=>chAngles.get(l.b)).filter(a=>a!=null);const a=as.length?Math.atan2(as.reduce((s,v)=>s+Math.sin(v),0),as.reduce((s,v)=>s+Math.cos(v),0)):-Math.PI/2+i*(Math.PI*2/Math.max(1,secondary.length));const r=Math.min(420+Math.floor(i/18)*48,minDim*.55);const p=polar(cx,cy,r,a+((i%5)-2)*0.035);n.x=p.x;n.y=p.y;n.channelOuter=true});
+      resolveNodeOverlaps(nodes,new Set([fid]),36,18);return;
+    }
+  }
+  if(channelFocusId&&channels.length===1){
+    const ch=channels[0];ch.x=cx;ch.y=cy;ch.channelCentral=true;
+    const corePart=orgs.filter(n=>coreIds.has(n.id));const gov=orgs.filter(n=>!coreIds.has(n.id)&&['MINISTRY','FEDERAL_SERVICE','FEDERAL_AGENCY','CORPORATION','INSTITUTION','ORGANIZATION'].includes(n.type));const rest=orgs.filter(n=>!corePart.includes(n)&&!gov.includes(n));
+    const placeRing=(list,r,offset)=>{list.sort((a,b)=>a.name.localeCompare(b.name,'ru'));const count=list.length||1;list.forEach((n,i)=>{const a=-Math.PI/2+offset+i*(Math.PI*2/count);const p=polar(cx,cy,r,a);n.x=p.x;n.y=p.y;n.channelRing=r;});};
+    placeRing(corePart,Math.min(150,minDim*.23),0);placeRing(gov,Math.min(255,minDim*.39),Math.PI/countSafe(corePart.length));placeRing(rest,Math.min(355,minDim*.54),0.13);
+    resolveNodeOverlaps(nodes,new Set([ch.id,...corePart.map(n=>n.id)]),34,18);return;
+  }
+  // Default: core organisations in the inner ring, channels in one/two middle rings, participants outside.
+  const ministries=orgs.filter(n=>coreIds.has(n.id));
+  const degree=new Map(orgs.map(n=>[n.id,0]));links.forEach(l=>degree.set(l.a,(degree.get(l.a)||0)+1));orgs.forEach(n=>n.channelCount=degree.get(n.id)||0);
+  const hubs=orgs.filter(n=>!coreIds.has(n.id)&&['MINISTRY','FEDERAL_SERVICE','FEDERAL_AGENCY','CORPORATION','INSTITUTION','ORGANIZATION'].includes(n.type)).sort((a,b)=>b.channelCount-a.channelCount||a.name.localeCompare(b.name,'ru')).slice(0,4);
+  const central=[...ministries,...hubs];const centralR=Math.min(125,minDim*.16);central.forEach((n,i)=>{const a=-Math.PI/2+i*(Math.PI*2/Math.max(1,central.length));const p=polar(cx,cy,centralR,a);n.x=p.x;n.y=p.y;n.channelCentral=true;n.centralAngle=a});
+  const centralSet=new Set(central.map(n=>n.id));
+  const chSorted=[...channels].sort((a,b)=>(b.coreCount||0)-(a.coreCount||0)||(b.participantCount||0)-(a.participantCount||0)||a.name.localeCompare(b.name,'ru'));
+  const inner=chSorted.slice(0,12),outer=chSorted.slice(12);const chAngles=new Map();
+  inner.forEach((ch,i)=>{const a=-Math.PI/2+i*(Math.PI*2/Math.max(1,inner.length));const p=polar(cx,cy,220,a);ch.x=p.x;ch.y=p.y;ch.channelRing=220;chAngles.set(ch.id,a)});
+  outer.forEach((ch,i)=>{const a=-Math.PI/2+i*(Math.PI*2/Math.max(1,outer.length))+Math.PI/24;const p=polar(cx,cy,300,a);ch.x=p.x;ch.y=p.y;ch.channelRing=300;chAngles.set(ch.id,a)});
+  const secondary=orgs.filter(n=>!centralSet.has(n.id));
+  const centralAngles=new Map(central.map(n=>[n.id,n.centralAngle]));
+  const baseByOrg=new Map();
+  for(const n of secondary){
+    const as=links.filter(l=>l.a===n.id).map(l=>chAngles.get(l.b)).filter(a=>a!=null);baseByOrg.set(n.id,as.length?Math.atan2(as.reduce((s,v)=>s+Math.sin(v),0),as.reduce((s,v)=>s+Math.cos(v),0)):-Math.PI/2);
+  }
+  secondary.sort((a,b)=>(b.channelCount||0)-(a.channelCount||0)||a.name.localeCompare(b.name,'ru'));
+  secondary.forEach((n,i)=>{const a=baseByOrg.get(n.id)??(-Math.PI/2+i*(Math.PI*2/Math.max(1,secondary.length)));const ring=Math.min(365+Math.floor(i/22)*48,minDim*.55);const p=polar(cx,cy,ring,a+((i%7)-3)*0.045);n.x=p.x;n.y=p.y;n.channelOuter=true});
+  resolveNodeOverlaps(nodes,new Set(ministries.map(n=>n.id)),30,12);
+}
+function countSafe(v){return Math.max(1,v)}
+function makeChannelPath(a,b){const cx=W/2,cy=H/2;const ax=a.x-cx,ay=a.y-cy,bx=b.x-cx,by=b.y-cy;const ar=Math.hypot(ax,ay),br=Math.hypot(bx,by);let bow=(ar<br?0.14:-0.10);const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;const dx=bx-ax,dy=by-ay;const len=Math.max(1,Math.hypot(dx,dy));const nx=-dy/len,ny=dx/len;const cpx=mx+nx*len*bow,cpy=my+ny*len*bow;return `M ${a.x} ${a.y} Q ${cpx} ${cpy} ${b.x} ${b.y}`;}
+function channelEdgeTooltip(l,ev){channelTooltip(l,ev)}
+function renderChannelGraph(){
+  const st=buildChannelGraph();simulationNodes=st.nodes;simulationEdges=st.links;arrangeChannelLayout(st.nodes,st.links);updateChannelFocusOptions();
+  edgesLayer.innerHTML='';nodesLayer.innerHTML='';
+  const nm=new Map(st.nodes.map(n=>[n.id,n]));
+  for(const l of st.links){
+    const hit=document.createElementNS('http://www.w3.org/2000/svg','path');hit.classList.add('edge-hit');hit.dataset.id=l.id;hit.addEventListener('mouseenter',ev=>channelEdgeTooltip(l,ev));hit.addEventListener('mousemove',moveTooltip);hit.addEventListener('mouseleave',hideTooltip);hit.addEventListener('click',ev=>{ev.stopPropagation();selectedEdge=l;selectedNode=null;detail.innerHTML=channelLinkDetail(l)});edgesLayer.appendChild(hit);
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.classList.add('edge','channel-edge');p.dataset.id=l.id;edgesLayer.appendChild(p);
+  }
+  for(const n of st.nodes){
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.classList.add('node');g.dataset.id=n.id;if(coreIds.has(n.id))g.classList.add('ministry','core-ministry','channel-core-hub');if(n.id==='ORG-6FE300D804')g.classList.add('minstroy-core');if(n.channelCentral&&!coreIds.has(n.id))g.classList.add('channel-central-hub');if(n.channelOuter)g.classList.add('channel-participant');if(focusSet.has(n.id))g.classList.add('core-selected');if(n.type==='CHANNEL')g.classList.add('channel-hub');
+    const r=channelNodeRadius(n);
+    if(n.type==='CHANNEL'){
+      const w=channelFocusId?Math.max(70,Math.min(170,60+n.name.length*5)):Math.max(74,Math.min(112,58+n.name.length*3.3));const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');rect.setAttribute('x',-w/2);rect.setAttribute('y',-18);rect.setAttribute('width',w);rect.setAttribute('height',36);rect.setAttribute('rx',9);rect.setAttribute('fill',n.channelColor||'#5d6d7e');rect.setAttribute('stroke',channelFocusId===n.id?'#1f2937':'#506070');rect.setAttribute('stroke-width',channelFocusId===n.id?'3':'1.5');g.appendChild(rect);
+      const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.textContent=n.name;t.setAttribute('text-anchor','middle');t.setAttribute('y','4');t.setAttribute('fill','#fff');t.setAttribute('font-size','11');t.setAttribute('font-weight','700');g.appendChild(t);
+      const sub=document.createElementNS('http://www.w3.org/2000/svg','text');sub.textContent=`${n.coreCount}/${CORE.length} основных · ${n.participantCount} участников`;sub.setAttribute('text-anchor','middle');sub.setAttribute('y','31');sub.setAttribute('font-size','8.5');sub.setAttribute('fill','#596675');g.appendChild(sub);
+      g.addEventListener('click',ev=>{ev.stopPropagation();focusChannel(n.id)});
+    }else{
+      const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r',r);c.setAttribute('fill',coreIds.has(n.id)?coreColor(n.id):colorForType(n.type));if(coreIds.has(n.id))c.setAttribute('stroke',coreColor(n.id));g.appendChild(c);
+      const t=document.createElementNS('http://www.w3.org/2000/svg','text');const raw=String(n.name||'');const showLabel=!!channelFocusId || coreIds.has(n.id) || n.channelCount>=3 || n.channelCentral;t.textContent=showLabel?(raw.length<=28?raw:raw.slice(0,27).trimEnd()+'…'):'';const left=n.x<(W/2);t.setAttribute('text-anchor',left?'end':'start');t.setAttribute('x',left?-(r+6):(r+6));t.setAttribute('y','4');t.setAttribute('font-size',channelFocusId?'10':'8.5');if(n.channelCount>=4)t.setAttribute('font-weight','650');g.appendChild(t);g.addEventListener('click',ev=>{ev.stopPropagation();selectedNode=n.id;selectedEdge=null;detail.innerHTML=injectOfficialSiteButtons(channelNodeDetail(n.id),n.id);});
+    }
+    g.addEventListener('mousedown',ev=>startNodeDrag(ev,n));nodesLayer.appendChild(g);
+  }
+  drawChannelPositions();updateStats();
+}
+function drawChannelPositions(){const nm=new Map(simulationNodes.map(n=>[n.id,n]));for(const p of [...edgesLayer.children]){const l=simulationEdges.find(e=>e.id===p.dataset.id);const a=nm.get(l?.a),b=nm.get(l?.b);if(!l||!a||!b)continue;p.setAttribute('d',makeChannelPath(a,b));}for(const g of nodesLayer.children){const n=nm.get(g.dataset.id);if(n)g.setAttribute('transform',`translate(${n.x},${n.y})`)}}
+function matchesEdge(e){return baseMatchesEdge(e)}
+function filteredEdges(){if(graphMode==='CHANNELS'){return channelState.links||[]}if(graphMode==='STRUCTURE'){return simulationEdges||[]}return DATA.edges.filter(e=>e.source_coverage!=='EXCLUDED_NO_DOCUMENT').filter(baseMatchesEdge)}
+
+function hashString(str){let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function polar(cx,cy,r,a){return {x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)}}
+function arrangeClusterLayout(nodes,edges){
+  const cx=W/2,cy=H/2,minDim=Math.min(W,H);
+  const nodeMap=new Map(nodes.map(n=>[n.id,n]));
+  const adj=new Map(nodes.map(n=>[n.id,new Set()]));
+  const coreLinks=new Map(nodes.map(n=>[n.id,new Set()]));
+  for(const e of edges){
+    if(!adj.has(e.a)||!adj.has(e.b))continue;
+    adj.get(e.a).add(e.b);adj.get(e.b).add(e.a);
+    if(coreIds.has(e.a)&&!coreIds.has(e.b))coreLinks.get(e.b).add(e.a);
+    if(coreIds.has(e.b)&&!coreIds.has(e.a))coreLinks.get(e.a).add(e.b);
+  }
+  const corePos={};
+  if(focusSet.size===1){
+    const fid=[...focusSet][0];corePos[fid]={x:cx,y:cy};const others=CORE.filter(([id])=>id!==fid);const r=Math.min(205,minDim*.27);const ang0=-Math.PI/2;others.forEach(([id],i)=>{const a=ang0+i*(Math.PI*2/others.length);corePos[id]=polar(cx,cy,r,a)})
+  }else if(focusSet.size>1){
+    const selected=CORE.filter(([id])=>focusSet.has(id)),unselected=CORE.filter(([id])=>!focusSet.has(id));const r=Math.min(150,minDim*.20);selected.forEach(([id],i)=>{const a=-Math.PI/2+i*(Math.PI*2/selected.length);corePos[id]=polar(cx,cy,r,a)});const r2=Math.min(255,minDim*.34);unselected.forEach(([id],i)=>{const a=-Math.PI/2+i*(Math.PI*2/Math.max(1,unselected.length));corePos[id]=polar(cx,cy,r2,a)})
+  }else{
+    const r=Math.min(255,minDim*.34);const ang0=-Math.PI/2;CORE.forEach(([id],i)=>{const a=ang0+i*(Math.PI*2/CORE.length);corePos[id]=polar(cx,cy,r,a)})
+  }
+  for(const [id,p] of Object.entries(corePos)){const n=nodeMap.get(id);if(n){n.x=p.x;n.y=p.y;n.fx=null;n.fy=null}}
+
+  // Shared nodes (connected directly to 2+ of the five core bodies) form a compact inner ring.
+  const shared=nodes.filter(n=>!coreIds.has(n.id)&&coreLinks.get(n.id)?.size>=2);
+  shared.sort((a,b)=>{
+    const d=(coreLinks.get(b.id)?.size||0)-(coreLinks.get(a.id)?.size||0);
+    return d||a.name.localeCompare(b.name,'ru');
+  });
+  const ringR=Math.min(145,minDim*.20);
+  shared.forEach((n,i)=>{
+    const d=coreLinks.get(n.id).size;
+    const ring=1+Math.floor(i/14);
+    const rr=ringR+(ring-1)*55;
+    const a=-Math.PI/2+(i%14)*(Math.PI*2/14);
+    const jitter=((hashString(n.id)%1000)/1000-.5)*0.10;
+    const p=polar(cx,cy,rr,a+jitter); n.x=p.x;n.y=p.y;n.fx=null;n.fy=null;
+  });
+
+  // Nodes connected to one core are placed in that core's sector.
+  const byCore=new Map(CORE.map(([id])=>[id,[]]));
+  const unanchored=[];
+  for(const n of nodes){
+    if(coreIds.has(n.id)||shared.includes(n))continue;
+    const links=[...(coreLinks.get(n.id)||[])];
+    if(links.length===1)byCore.get(links[0]).push(n);else unanchored.push(n);
+  }
+  for(const [coreId,list] of byCore){
+    const cp=corePos[coreId]||{x:cx,y:cy};
+    const base=Math.atan2(cp.y-cy,cp.x-cx);
+    // Spread nodes on a broad fan away from the center.
+    list.sort((a,b)=>hashString(a.id)-hashString(b.id));
+    const maxPerRing=Math.max(8,Math.ceil(Math.sqrt(list.length+1)*2.2));
+    list.forEach((n,i)=>{
+      const ring=Math.floor(i/maxPerRing);
+      const pos=i%maxPerRing;
+      const count=Math.min(maxPerRing,list.length-ring*maxPerRing);
+      const spread=Math.min(Math.PI*0.82, 1.15 + ring*0.10);
+      const a=base-spread/2 + (count<=1?.5:(pos/(count-1)))*spread;
+      const rr=Math.min(140+ring*78,minDim*.46);
+      const p=polar(cp.x,cp.y,rr,a);
+      n.x=p.x;n.y=p.y;n.fx=null;n.fy=null;
+    })
+  }
+
+  // Remaining nodes form a stable outer ring, grouped deterministically.
+  unanchored.sort((a,b)=>hashString(a.id)-hashString(b.id));
+  const outerR=Math.min(335,minDim*.48);
+  const nOuter=Math.max(1,unanchored.length);
+  unanchored.forEach((n,i)=>{
+    const a=-Math.PI/2+i*(Math.PI*2/nOuter);
+    const rr=outerR+(i%3)*45;
+    const p=polar(cx,cy,rr,a);
+    n.x=p.x;n.y=p.y;n.fx=null;n.fy=null;
+  });
+
+  // В режиме фокуса одного узла выбранный объект остаётся в центре.
+  // Основные органы, общие хабы и прочие внешние участники разводятся по компактным концентрическим уровням.
+  if(focusSet.size===1){
+    const fid=[...focusSet][0];
+    const fp=nodeMap.get(fid);
+    if(fp){
+      fp.x=cx; fp.y=cy;
+      const ringCore=[],ringShared=[],ringOuter=[];
+      for(const n of nodes){
+        if(n.id===fid) continue;
+        if(coreIds.has(n.id)) ringCore.push(n);
+        else if(sharedCoreDegree(n.id)>=2) ringShared.push(n);
+        else ringOuter.push(n);
+      }
+      ringCore.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru'));
+      ringShared.sort((a,b)=>sharedCoreDegree(b.id)-sharedCoreDegree(a.id)||(a.name||'').localeCompare(b.name||'','ru'));
+      ringOuter.sort((a,b)=>String(a.type||'').localeCompare(String(b.type||''))||(a.name||'').localeCompare(b.name||'','ru'));
+      const placeCompactRings=(list,r0,step,maxPerRing,maxR,startPhase=0)=>{
+        if(!list.length)return;
+        let offset=0,ring=0;
+        while(offset<list.length){
+          const count=Math.min(maxPerRing,list.length-offset);
+          const rr=Math.min(r0+ring*step,maxR);
+          const phase=startPhase+(ring%2?Math.PI/Math.max(8,count):0);
+          for(let pos=0;pos<count;pos++){
+            const n=list[offset+pos];
+            const a=phase+(count===1?0:(pos/count)*Math.PI*2);
+            const p=polar(fp.x,fp.y,rr,a);
+            n.x=p.x; n.y=p.y; n.fx=null; n.fy=null;
+          }
+          offset+=count; ring++;
+        }
+      };
+      const maxCore=Math.min(172,minDim*.31);
+      const maxShared=Math.min(245,minDim*.44);
+      const maxOuter=Math.min(330,minDim*.59);
+      placeCompactRings(ringCore,148,54,10,maxCore,-Math.PI/2);
+      placeCompactRings(ringShared,218,56,10,maxShared,-Math.PI/2+Math.PI/12);
+      placeCompactRings(ringOuter,292,58,12,maxOuter,-Math.PI/2+Math.PI/24);
+      resolveNodeOverlaps(nodes,new Set([fid]),42,26);
+      return;
+    }
+  }
+  if(focusSet.size>1){
+    // Multi-focus: selected ministries form a compact, human-readable group near the center.
+    // Each selected ministry gets its own full 360° halo; shared nodes sit in a separate overlap ring.
+    const selectedIds=[...focusSet];
+    const selectedSet=new Set(selectedIds);
+    const selectedNodes=selectedIds.map(id=>nodeMap.get(id)).filter(Boolean);
+
+    // Place selected ministries in a compact pattern rather than on a vertical line.
+    const spreadBase=Math.min(230,minDim*.28);
+    if(selectedNodes.length===2){
+      selectedNodes[0].x=cx-spreadBase/2; selectedNodes[0].y=cy;
+      selectedNodes[1].x=cx+spreadBase/2; selectedNodes[1].y=cy;
+    }else if(selectedNodes.length===3){
+      const rr=Math.min(160,minDim*.20);
+      selectedNodes.forEach((n,i)=>{const a=-Math.PI/2+i*(Math.PI*2/3); const p=polar(cx,cy,rr,a); n.x=p.x; n.y=p.y;});
+    }else{
+      const rr=Math.min(175,minDim*.22);
+      selectedNodes.forEach((n,i)=>{const a=-Math.PI/2+i*(Math.PI*2/selectedNodes.length); const p=polar(cx,cy,rr,a); n.x=p.x; n.y=p.y;});
+    }
+
+    const directByCore=new Map(selectedIds.map(id=>[id,[]]));
+    const sharedSelected=[];
+    const unselectedCoreNodes=[];
+    for(const n of nodes){
+      if(selectedSet.has(n.id)) continue;
+      if(coreIds.has(n.id)){ unselectedCoreNodes.push(n); continue; }
+      const links=selectedIds.filter(fid=>adj.get(fid)?.has(n.id));
+      if(links.length>=2) sharedSelected.push(n);
+      else if(links.length===1) directByCore.get(links[0]).push(n);
+    }
+
+    // Each selected ministry gets a circular local halo. Nodes shared by several selected ministries
+    // are kept between the ministries so the shared context is immediately legible.
+    for(const [fid,list] of directByCore){
+      const cp=nodeMap.get(fid); if(!cp) continue;
+      list.sort((a,b)=>hashString(a.id)-hashString(b.id));
+      const perRing=Math.max(6,Math.min(10,Math.ceil(Math.sqrt(list.length+1)*2.2)));
+      list.forEach((n,i)=>{
+        const ring=Math.floor(i/perRing);
+        const pos=i%perRing;
+        const count=Math.min(perRing,list.length-ring*perRing);
+        const rr=Math.min(145+ring*82,minDim*.40);
+        const phase=(hashString(fid)%360)*Math.PI/180;
+        const a=phase + (count===1?0:(pos/count)*Math.PI*2);
+        const p=polar(cp.x,cp.y,rr,a);
+        n.x=p.x; n.y=p.y;
+      });
+    }
+
+    if(sharedSelected.length){
+      let sx=0,sy=0; selectedNodes.forEach(n=>{sx+=n.x;sy+=n.y}); sx/=selectedNodes.length; sy/=selectedNodes.length;
+      sharedSelected.sort((a,b)=>{const da=(a.name||'').localeCompare(b.name||'','ru'); return da||hashString(a.id)-hashString(b.id);});
+      const perRing=Math.max(6,Math.min(10,Math.ceil(Math.sqrt(sharedSelected.length+1)*2.0)));
+      sharedSelected.forEach((n,i)=>{
+        const ring=Math.floor(i/perRing),pos=i%perRing,count=Math.min(perRing,sharedSelected.length-ring*perRing);
+        const rr=Math.min(180+ring*78,minDim*.39);
+        const a=-Math.PI/2+(pos/count)*Math.PI*2;
+        const p=polar(sx,sy,rr,a); n.x=p.x;n.y=p.y;
+      });
+    }
+
+    // Unselected core ministries are placed farther away, so they do not steal the visual center.
+    const outerR=Math.min(315,minDim*.43);
+    unselectedCoreNodes.forEach((n,i)=>{
+      const a=-Math.PI/2+i*(Math.PI*2/Math.max(1,unselectedCoreNodes.length));
+      const p=polar(cx,cy,outerR,a); n.x=p.x;n.y=p.y;
+    });
+
+    resolveNodeOverlaps(nodes,new Set(selectedIds),42,26);
+  }
+  resolveNodeOverlaps(nodes,new Set(CORE.map(([id])=>id)),34,18);
+}
+
+function nodeVisualRadius(n){
+  if(n.type==='CHANNEL'){
+    const w=Math.max(70,Math.min(170,60+String(n.name||'').length*5));
+    return Math.max(22,w/2);
+  }
+  if(coreIds.has(n.id)) return 39;
+  return 14;
+}
+function resolveNodeOverlaps(nodes,fixedIds=new Set(),minGap=34,iterations=18){
+  if(nodes.length<2)return;
+  for(let it=0;it<iterations;it++){
+    let moved=false;
+    for(let i=0;i<nodes.length;i++){
+      const a=nodes[i];
+      for(let j=i+1;j<nodes.length;j++){
+        const b=nodes[j];
+        let dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy);
+        if(dist<0.01){const h=hashString(a.id+'|'+b.id);dx=Math.cos((h%6283)/1000);dy=Math.sin((h%6283)/1000);dist=Math.hypot(dx,dy);}
+        const target=Math.max(minGap,nodeVisualRadius(a)+nodeVisualRadius(b)+10);
+        if(dist>=target)continue;
+        const push=(target-dist)*0.56;const nx=dx/dist,ny=dy/dist;
+        const af=!fixedIds.has(a.id),bf=!fixedIds.has(b.id);
+        if(af&&bf){a.x-=nx*push/2;a.y-=ny*push/2;b.x+=nx*push/2;b.y+=ny*push/2;}
+        else if(af){a.x-=nx*push;a.y-=ny*push;}
+        else if(bf){b.x+=nx*push;b.y+=ny*push;}
+        moved=true;
+      }
+    }
+    if(!moved)break;
+  }
+}
+
+function startSimulation(){
+  W=svg.clientWidth||W;H=svg.clientHeight||H;
+  if(graphMode==='CHANNELS'){renderChannelGraph();return;}
+  if(graphMode==='STRUCTURE'){renderStructureGraph();return;}
+  const rawBase=DATA.edges.filter(e=>e.source_coverage!=='EXCLUDED_NO_DOCUMENT');
+  const base=rawBase.filter(baseMatchesEdge);let edges=base,extraNodes=[];
+  const ids=new Set();edges.forEach(e=>{ids.add(e.a);ids.add(e.b)});focusSet.forEach(id=>ids.add(id));
+  CORE.forEach(([id])=>{if(focusSet.size===0||ids.has(id))ids.add(id);});
+  simulationNodes=DATA.nodes.filter(n=>ids.has(n.id)).map(n=>({...n})).concat(extraNodes.filter(n=>ids.has(n.id)).map(n=>({...n})));
+  const idSet=new Set(simulationNodes.map(n=>n.id));simulationEdges=edges.filter(e=>idSet.has(e.a)&&idSet.has(e.b)).map(e=>({...e}));
+  arrangeClusterLayout(simulationNodes,simulationEdges);renderGraph();
+}
+function coreColor(id){return ({'ORG-MINPRIRODY':'#2f6db1','ORG-MINPROMTORG':'#4c7a3c','ORG-MINENERGO':'#8a5a44','ORG-MINTRANS':'#7b5aa6','ORG-ROSTEHNADZOR':'#a56b22','ORG-6FE300D804':'#2b8a78','ORG-220DD3C42B':'#3b7c8f','ORG-EF362DC98F':'#965a8a','ORG-DD97210FEA':'#9a6b2f'})[id]||'#245fa8'}
+function colorForType(t){return ({MINISTRY:'#245fa8',FEDERAL_SERVICE:'#7b4aa1',ORGANIZATION:'#4b6b82',DEPARTMENT:'#6f879a',DATA_CLASS:'#a06b2b',PROCESS:'#6a7e3d',FUNCTION:'#8e6b8d',SYSTEM:'#2f7d6d',CHANNEL:'#6d6d6d',REGISTER:'#856c4f'})[t]||'#7f8b97'}
+function nodeRadius(n){if(n.type==='CHANNEL'){const d=channelMeta[n.id]?.orgs?.size||1;return 12+Math.min(12,Math.sqrt(d)*2.6)}return sharedNodeRadius(n)}
+function renderGraph(){edgesLayer.innerHTML='';nodesLayer.innerHTML='';for(const e of simulationEdges){const hit=document.createElementNS('http://www.w3.org/2000/svg','line');hit.classList.add('edge-hit');hit.dataset.id=e.id;hit.addEventListener('mouseenter',ev=>showEdgeTooltip(e,ev));hit.addEventListener('mousemove',moveTooltip);hit.addEventListener('mouseleave',hideTooltip);hit.addEventListener('click',ev=>{ev.stopPropagation();selectEdge(e)});edgesLayer.appendChild(hit);const l=document.createElementNS('http://www.w3.org/2000/svg','line');l.classList.add('edge');l.dataset.id=e.id;if(e.direction==='UNDIRECTED_UNSPECIFIED')l.classList.add('undirected');if(['CANDIDATE_CONTEXT','DOCUMENTED_ANALYTICAL_CONTEXT','UNCONFIRMED_CONTEXT','HISTORICAL_DOCUMENTED_GENERAL'].includes(e.status))l.classList.add('external-context-candidate');if(e.direction.startsWith('MIXED'))l.classList.add('mixed');if(e.direction==='DIRECTED_EXPLICIT'||e.direction==='MIXED_DIRECTED_AND_UNSPECIFIED')l.setAttribute('marker-end','url(#arrow)');if(e.direction==='BIDIRECTIONAL_EXPLICIT'||e.direction==='MIXED_BIDIRECTIONAL_AND_UNSPECIFIED'){l.setAttribute('marker-start','url(#arrowStart)');l.setAttribute('marker-end','url(#arrow)')}edgesLayer.appendChild(l)}for(const n of simulationNodes){const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.classList.add('node');if(coreIds.has(n.id))g.classList.add('ministry','core-ministry');if(n.id==='ORG-6FE300D804')g.classList.add('minstroy-core');if(n.type==='CHANNEL')g.classList.add('channel-node');if(coreIds.has(n.id)&&focusSet.has(n.id))g.classList.add('core-selected');if(!coreIds.has(n.id)&&focusSet.has(n.id))g.classList.add('external-focus-selected');const sharedCls=sharedDegreeClass(n);if(sharedCls)sharedCls.trim().split(/\s+/).forEach(c=>g.classList.add(c));g.dataset.id=n.id;const c=document.createElementNS('http://www.w3.org/2000/svg','circle');const r=nodeRadius(n);c.setAttribute('r',r);c.setAttribute('fill',n.type==='CHANNEL'?'#5f6874':(coreIds.has(n.id)?coreColor(n.id):colorForType(n.type)));
+if(n.type==='CHANNEL') c.setAttribute('stroke','#26313f');if(coreIds.has(n.id))c.setAttribute('stroke',coreColor(n.id));const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.textContent=n.name;t.setAttribute('x',r+5);t.setAttribute('y',4);g.appendChild(c);g.appendChild(t);if(sharedCoreDegree(n.id)>=2){t.setAttribute('font-weight','650');t.setAttribute('title',`Связан с ${sharedCoreDegree(n.id)} из ${CORE.length} основных органов`)}g.addEventListener('click',ev=>{ev.stopPropagation();selectNode(n.id)});g.addEventListener('mousedown',ev=>startNodeDrag(ev,n));nodesLayer.appendChild(g)}drawPositions();updateStats()}
+function drawPositions(){const nm=new Map(simulationNodes.map(n=>[n.id,n])),em=new Map(simulationEdges.map(e=>[e.id,e]));for(const l of edgesLayer.children){const e=em.get(l.dataset.id),a=e&&nm.get(e.a),b=e&&nm.get(e.b);if(!a||!b)continue;l.setAttribute('x1',a.x);l.setAttribute('y1',a.y);l.setAttribute('x2',b.x);l.setAttribute('y2',b.y)}for(const g of nodesLayer.children){const n=nm.get(g.dataset.id);g.setAttribute('transform',`translate(${n.x},${n.y})`)}}
+
+function fitChannelView(){
+  if(graphMode!=='CHANNELS'){scale=0.86;tx=(W/2)-scale*(W/2);ty=(H/2)-scale*(H/2);applyTransform();return;}
+  const fit=channelFocusId?Math.min(0.92,Math.max(0.58,Math.min(W,H)/800)):Math.min(0.72,Math.max(0.48,Math.min(W,H)/1080));
+  scale=fit;tx=(W/2)-scale*(W/2);ty=(H/2)-scale*(H/2);applyTransform();
+}
+function fitViewForMode(){if(graphMode==='STRUCTURE'){fitStructureView();return;}fitChannelView();}
+function updateStats(){const es=filteredEdges();document.getElementById('kNodes').textContent=simulationNodes.length;document.getElementById('kEdges').textContent=es.length;const sourced=graphMode==='STRUCTURE'?es.filter(e=>e.source||e.evidence).length:es.filter(e=>e.source_ids&&e.source_ids.length).length;const directed=graphMode==='STRUCTURE'?es.filter(e=>e.direction==='DIRECTED_EXPLICIT'||e.kind==='OWNERSHIP'||e.kind==='FUNCTION'||e.kind==='PROCESS').length:es.filter(hasKnownDirection).length;document.getElementById('kSourced').textContent=sourced;document.getElementById('kDirected').textContent=directed;document.getElementById('countBadge').textContent=`${simulationNodes.length} узлов · ${es.length} связей`;const prefix={OVERVIEW:'Обзор',CHANNELS:'Каналы связи',STRUCTURE:'Структура органов'}[graphMode]||graphMode;document.getElementById('modeBadge').textContent=graphMode==='CHANNELS'?(channelFocusId?`${prefix} · фокус: ${channelNodeById[channelFocusId]?.name||'канал'}`:prefix):graphMode==='STRUCTURE'?prefix:(focusSet.size===1?`${prefix} · фокус: ${nodeById[[...focusSet][0]]?.name||[...focusSet][0]}`:(focusSet.size?`${prefix} · ${focusSet.size} узла`:prefix))}
+function setGraphMode(mode){
+  const allowed=new Set(['OVERVIEW','STRUCTURE']);
+  const next=allowed.has(mode)?mode:'OVERVIEW';
+  const prev=graphMode;
+  graphMode=next;
+  if(prev!==next){
+    channelFocusId=null;
+    structureMinistryFocusId=null;
+    structureDeptDetailId=null;
+    focusSet.clear();
+    selectedNode=null;
+    selectedEdge=null;
+    const csel=document.getElementById('channelFocusSelect'); if(csel) csel.value='ALL';
+    const msel=document.getElementById('structureMinistrySelect'); if(msel) msel.value='ALL';
+    setFocusButtons();
+    detail.innerHTML='<h2>Выбор объекта</h2><div class="meta">Кликните по узлу или связи.</div><div class="empty">Здесь появится подробная карточка выбранного объекта.</div>';
+  }
+  document.getElementById('modeOverview').classList.toggle('primary',graphMode==='OVERVIEW');
+  (document.getElementById('modeChannels')||document.createElement('button')).classList.toggle('primary',graphMode==='CHANNELS');
+  document.getElementById('modeStructure').classList.toggle('primary',graphMode==='STRUCTURE');
+  document.getElementById('ministryFocusSection').style.display=graphMode==='OVERVIEW'?'block':'none';
+  document.getElementById('channelFocusSection').style.display=graphMode==='CHANNELS'?'block':'none';
+  document.getElementById('structureFocusSection').style.display=graphMode==='STRUCTURE'?'block':'none';
+  document.getElementById('filtersSection').style.display=(graphMode==='CHANNELS'||graphMode==='STRUCTURE')?'none':'block';
+  document.getElementById('modeHelp').textContent=
+    graphMode==='OVERVIEW'
+      ?'Обзор: связи основных ведомств со всеми министерствами, присутствующими в атласе. Выберите основное ведомство, чтобы оставить только его связи с другими министерствами; службы, агентства, Росстат, Росреестр, ФНС, системы, реестры и другие сущности раскрываются в карточке ведомства. В этом режиме доступен фокус министерств.'
+      :graphMode==='CHANNELS'
+        ?'Каналы связи: показываются только цифровые и технические маршруты передачи — например СМЭВ, ЕПГУ, ЕСИА, электронный документооборот и API. Поручения, рабочие группы, совещания и отчётность каналами не считаются.'
+        :'Структура органов: в режиме «Все министерства» одновременно показаны подразделения всех органов, их внутренние связи и связи между основными министерствами. Фокус увеличивает выбранное министерство и раскрывает подписи подразделений.';
+  document.getElementById('viewHint').textContent='Режим: '+(graphMode==='CHANNELS'?'каналы связи':graphMode==='STRUCTURE'?'структура органов':'обзор')+'.';
+  updateFocusModeClass();
+  if(graphMode==='STRUCTURE') populateStructureFocusOptions();
+  startSimulation();
+  fitViewForMode();
+}
+
+function focusChannel(id){channelFocusId=id||null;if(graphMode!=='CHANNELS')graphMode='CHANNELS';selectedNode=null;selectedEdge=null;setGraphMode('CHANNELS');const sel=document.getElementById('channelFocusSelect');if(sel)sel.value=channelFocusId||'ALL';startSimulation();fitChannelView();const n=channelState.nodeMap.get(channelFocusId);if(n)detail.innerHTML=injectOfficialSiteButtons(channelNodeDetail(channelFocusId),channelFocusId)}
+let structureMinistryFocusId=null;
+let structureDeptDetailId=null;
+const structureDeptById=new Map();
+const structureFunctionsByDept=new Map();
+const structureProcessesByDept=new Map();
+const structureRolesByDept=new Map();
+const structureDomainsByDept=new Map();
+const structureDomainEnrichmentByDept=new Map();
+const structureGapsByDept=new Map();
+const structureNodeById=new Map();
+function pushMapArray(map,key,val){if(!map.has(key))map.set(key,[]);map.get(key).push(val)}
+for(const r of STRUCTURE_RAW.ownership_audit){structureDeptById.set(r.Dept_Global_ID,r);}
+for(const r of STRUCTURE_RAW.function_links)pushMapArray(structureFunctionsByDept,r.Dept_Global_ID,r);
+for(const r of STRUCTURE_RAW.process_links)pushMapArray(structureProcessesByDept,r.Dept_Global_ID,r);
+for(const r of STRUCTURE_RAW.process_roles)pushMapArray(structureRolesByDept,r.Dept_Global_ID,r);
+for(const r of STRUCTURE_RAW.functional_domains)pushMapArray(structureDomainsByDept,r.Dept_Global_ID,r);
+for(const r of STRUCTURE_RAW.domain_enrichment)pushMapArray(structureDomainEnrichmentByDept,r.Dept_Global_ID,r);
+for(const r of STRUCTURE_RAW.gaps)pushMapArray(structureGapsByDept,r.Dept_Global_ID,r);
+function structureOrgId(name){const x=CORE.find(c=>c[1]===name);return x?x[0]:null}
+function normalizeOrganizationName(name){
+  return String(name||'').toLowerCase().replace(/ё/g,'е').replace(/\s+/g,' ').trim();
+}
+function ownOfficialSiteForNode(id){
+  if(coreIds.has(id)&&MINISTRY_SITES[id])return MINISTRY_SITES[id];
+  const n=nodeById[id] || (typeof channelState!=='undefined'?channelState.nodeMap?.get(id):null) || (typeof structureNodeById!=='undefined'?structureNodeById.get(id):null);
+  if(!n)return null;
+  const key=normalizeOrganizationName(n.name||'');
+  for(const rule of ORGANIZATION_SITE_RULES){
+    if(rule.aliases.some(alias=>key===normalizeOrganizationName(alias)))return rule;
+  }
+  // Дубли основных ведомств могут иметь другой ID, поэтому сверяем и по названию.
+  for(const [coreId,coreName] of CORE){
+    if(key===normalizeOrganizationName(coreName)&&MINISTRY_SITES[coreId])return MINISTRY_SITES[coreId];
+  }
+  return null;
+}
+function ministryIdsForContextNode(id){
+  const ids=new Set();
+  const add=x=>{if(x&&coreIds.has(x)&&MINISTRY_SITES[x])ids.add(x)};
+  if(typeof structureNodeById!=='undefined'){
+    const sn=structureNodeById.get(id);
+    add(sn?.parentOrg);
+    if(sn?.sourceRecords){
+      for(const r of sn.sourceRecords){
+        add(structureOrgId(r?.Org||''));
+        const dep=r?.Dept_Global_ID&&structureDeptById.get(r.Dept_Global_ID);
+        if(dep)add(structureOrgId(dep.Org||''));
+      }
+    }
+    const dep=structureDeptById.get(id);
+    if(dep)add(structureOrgId(dep.Org||''));
+    if(graphMode==='STRUCTURE'&&structureMinistryFocusId&&!ids.size)add(structureMinistryFocusId);
+  }
+  if(typeof DATA!=='undefined'){
+    for(const e of DATA.edges){if(e.a===id)add(e.b);if(e.b===id)add(e.a)}
+  }
+  if(typeof channelState!=='undefined'){
+    const cn=channelState.nodeMap?.get(id);
+    if(cn?.type==='CHANNEL'){
+      const meta=channelState.meta?.get(id);for(const x of (meta?.core||[]))add(x);
+    }else if(cn){
+      for(const l of (channelState.links||[])){if(l.a!==id)continue;const meta=channelState.meta?.get(l.b);for(const x of (meta?.core||[]))add(x)}
+    }
+  }
+  if(typeof channelMeta!=='undefined'){const meta=channelMeta[id];for(const x of (meta?.orgs||[]))add(x)}
+  if(!ids.size&&typeof focusSet!=='undefined'&&focusSet.size===1)add([...focusSet][0]);
+  return CORE.map(([coreId])=>coreId).filter(coreId=>ids.has(coreId));
+}
+function isNamedOrganizationNode(id){
+  const n=nodeById[id] || (typeof channelState!=='undefined'?channelState.nodeMap?.get(id):null);
+  return !!(n&&ORGANIZATION_TYPES.has(n.type));
+}
+function officialSitesForNode(id){
+  const own=ownOfficialSiteForNode(id);
+  if(own)return [own];
+  // Для выбранной второстепенной организации никогда не подменяем её сайт сайтом связанного core-органа.
+  if(isNamedOrganizationNode(id))return [];
+  // Для внутренних подразделений собственного сайта обычно нет — используем родительское ведомство.
+  const ids=ministryIdsForContextNode(id);
+  return ids.map(coreId=>MINISTRY_SITES[coreId]).filter(Boolean);
+}
+function officialSiteButtonsForNode(id){
+  const sites=officialSitesForNode(id);
+  if(!sites.length)return '';
+  const unique=[...new Map(sites.map(site=>[site.url,site])).values()];
+  const multiple=unique.length>1;
+  const own=!!ownOfficialSiteForNode(id);
+  const links=unique.map(site=>{
+    const label=multiple?site.name:'Официальный сайт';
+    return `<a class="btn primary ministry-site-btn" href="${esc(site.url)}" target="_blank" rel="noopener noreferrer" title="Открыть официальный сайт: ${esc(site.name)}">↗ ${esc(label)}</a>`;
+  }).join('');
+  const heading=own?'Официальный сайт организации':(multiple?'Официальные сайты связанных органов':'Официальный сайт ведомства');
+  return `<div class="card ministry-site-card"><h4>${heading}</h4><div class="btnrow">${links}</div></div>`;
+}
+function injectOfficialSiteButtons(html,id){
+  const card=officialSiteButtonsForNode(id);if(!card)return html;
+  const markers=[
+    '<div class="card ministry-context-summary"><h4>Полный контур данных</h4>',
+    '<div class="card"><h4>Связи узла</h4>',
+    '<div class="card"><h4>Связи с другими департаментами</h4>',
+    '<div class="card"><h4>Каналы участника</h4>',
+    '<div class="card"><h4>Участники</h4>',
+    '<div class="card"><h4>Подразделения</h4>'
+  ];
+  for(const marker of markers){const i=html.indexOf(marker);if(i>=0)return html.slice(0,i)+card+html.slice(i)}
+  const metaEnd=html.indexOf('</div>',html.indexOf('<div class="meta"'));
+  if(metaEnd>=0)return html.slice(0,metaEnd+6)+card+html.slice(metaEnd+6);
+  return card+html;
+}
+function structureDepartmentName(id){return structureDeptById.get(id)?.Registry_Name || id}
+function structureEdgeTooltip(e,ev){
+  const arrow=e.kind==='DEPARTMENT_SHARED_PROCESS'?'↔':'→';tooltip.innerHTML=`<div><strong>${esc(e.a_name)}</strong> ${arrow} <strong>${esc(e.b_name)}</strong></div><div class="muted">${esc(e.kind_label||e.kind||'Внутренняя связь')} · ${esc(e.evidence||'')}</div>${e.process?`<div class="muted">${e.kind==='DEPARTMENT_SHARED_PROCESS'?'Общий процесс':'Процесс'}: ${esc(e.process)}</div>`:''}${e.kind==='DEPARTMENT_SHARED_PROCESS'?'<div class="muted">Контекстная функциональная связь, не прямой hand-off.</div>':''}${structureSourceHtml(e)}`;
+  tooltip.style.display='block';moveTooltip(ev);for(const l of edgesLayer.children)l.classList.toggle('hovered',l.dataset.id===e.id)
+}
+function structureNodeRadius(n){if(n.type==='MINISTRY')return 18;if(n.type==='DEPARTMENT')return 10;if(n.type==='FUNCTION')return 8;if(n.type==='PROCESS')return 8;return 7}
+function structureMinistryOptionsHtml(){return CORE.map(([id,name])=>`<option value="${esc(id)}">${esc(name)}</option>`).join('')}
+function populateStructureFocusOptions(){const sel=document.getElementById('structureMinistrySelect');if(!sel)return;const prev=structureMinistryFocusId||'ALL';sel.innerHTML='<option value="ALL">Все министерства</option>'+structureMinistryOptionsHtml();sel.value=coreIds.has(prev)?prev:'ALL';}
+function structureResetDetail(){detail.innerHTML='<h2>Выбор объекта</h2><div class="meta">Фокус выбирается на уровне министерства. Кликните по министерству, затем по внутреннему подразделению, функции или процессу.</div><div class="empty">После выбора министерства здесь появится его внутренняя структура.</div>'}
+function structureEvidenceHtml(record){const urls=String(record?.Registry_Source||record?.Source||'').split('|').map(x=>x.trim()).filter(Boolean);return urls.length?urls.slice(0,12).map(u=>/^https?:\/\//i.test(u)?`<div><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></div>`:`<div>${esc(u)}</div>`).join(''):'<div class="notice">Источник в исходной записи не указан.</div>'}
+function structureNodeDetail(id){
+  const n=structureNodeById.get(id);
+  if(!n)return '<div class="empty">Узел структуры не найден.</div>';
+  if(n.type==='MINISTRY'){
+    const depts=[...structureDeptById.values()].filter(r=>structureOrgId(r.Org)===id);
+    const handoffs=structureDepartmentHandoffLinks(id);
+    const derivedHandoffs=handoffs.filter(e=>e.kind==='DEPARTMENT_HANDOFF');
+    const documentedLinks=handoffs.filter(e=>e.kind==='DEPARTMENT_DOCUMENTED');
+    const sharedProcessLinks=handoffs.filter(e=>e.kind==='DEPARTMENT_SHARED_PROCESS');
+    const srcCount=depts.reduce((a,r)=>a+String(r.Registry_Source||'').split('|').filter(Boolean).length,0);
+    const handoffCard=(handoffs.length)?`<div class="card"><h4>Междепартаментные связи</h4><p><strong>Всего отображается:</strong> ${handoffs.length}</p>${documentedLinks.length?`<p><strong>Документировано официальными документами:</strong> ${documentedLinks.length}</p>`:''}${derivedHandoffs.length?`<p><strong>Производных process/handoff:</strong> ${derivedHandoffs.length}</p>`:''}${sharedProcessLinks.length?`<p><strong>Функциональных связей по общему процессу:</strong> ${sharedProcessLinks.length}</p><p class="small">Тонкий пунктир означает совместное участие департаментов в одном каноническом процессе. Это не утверждение о прямой передаче данных или документов.</p>`:''}${derivedHandoffs.length?`<p class="small">Более выраженный пунктир — производные hand-off из явных FROM_DEPT/TO_DEPT записей.</p>`:''}${documentedLinks.length?`<p class="small">Документированные связи показываются сплошной линией и снабжаются датой и источником.</p>`:''}</div>`:`<div class="card"><h4>Междепартаментные связи</h4><p>В текущей структурной модели не найдено ни прямой документированной связи, ни общего канонического процесса между парами департаментов.</p></div>`;
+    return `<h2>${esc(n.name)}</h2><div class="meta">Министерство · ${esc(id)}</div><div class="card"><h4>Внутренняя структура</h4><p><strong>Подразделений в реестре:</strong> ${depts.length}</p><p><strong>Связей с функциями:</strong> ${depts.reduce((a,r)=>a+(structureFunctionsByDept.get(r.Dept_Global_ID)||[]).length,0)}</p><p><strong>Связей с процессами:</strong> ${depts.reduce((a,r)=>a+(structureProcessesByDept.get(r.Dept_Global_ID)||[]).length,0)}</p><p><strong>Источников принадлежности:</strong> ${srcCount} URL-записей</p></div>${handoffCard}<div class="card"><h4>Подразделения</h4>${depts.sort((a,b)=>a.Registry_Name.localeCompare(b.Registry_Name,'ru')).slice(0,80).map(r=>`<p><button class="btn" style="padding:5px 7px;font-size:10px" onclick="focusDepartment('${r.Dept_Global_ID}')">${esc(r.Registry_Name)}</button></p>`).join('')}${depts.length>80?`<div class="small">Показаны первые 80 из ${depts.length}.</div>`:''}</div>`;
+  }
+  if(n.type==='DEPARTMENT'){
+    const r=structureDeptById.get(id),fs=structureFunctionsByDept.get(id)||[],ps=structureProcessesByDept.get(id)||[],rs=structureRolesByDept.get(id)||[],domains=structureDomainsByDept.get(id)||[],enrich=structureDomainEnrichmentByDept.get(id)||[],gaps=structureGapsByDept.get(id)||[];
+    const domainRows=[...domains.map(x=>x.Function_or_Domain||x.Function||x.Function_ID),...enrich.map(x=>x.Functional_Domain)].filter(Boolean);
+    const handoffs=structureDepartmentHandoffLinks(structureOrgId(r?.Org||'')).filter(e=>e.a===id||e.b===id);
+    return `<h2>${esc(r?.Registry_Name||n.name)}</h2><div class="meta">Департамент · ${esc(id)} · ${esc(r?.Org||'')}</div><div class="card"><h4>Роль в структуре</h4><p><strong>Министерство:</strong> ${esc(r?.Org||'—')}</p><p><strong>Явно связанных функций:</strong> ${fs.length} · <strong>процессов:</strong> ${ps.length} · <strong>процессных ролей:</strong> ${rs.length}</p>${handoffs.length?`<p><strong>Междепартаментных hand-off:</strong> ${handoffs.length}</p>`:''}${gaps.length?`<p><strong>Пробелов в явном сопоставлении:</strong> ${gaps.length}</p>`:''}</div>${handoffs.length?`<div class="card"><h4>Связи с другими департаментами</h4>${handoffs.map(e=>`<p><button class="btn" style="padding:5px 7px;font-size:10px" onclick="selectStructureEdgeById('${e.id}')">${esc(e.a_name)} → ${esc(e.b_name)}</button><br><span class="small">${esc(e.process||e.process_id||'')}</span></p>`).join('')}</div>`:''}${fs.length?`<div class="card"><h4>Функции</h4>${fs.map(x=>`<p><strong>${esc(x.Function||x.Function_or_Domain||x.Function_ID||'')}</strong><br><span class="small">${esc(x.Basis||'')} · доказательность ${esc(x.Evidence||x.Confidence||'')}</span></p>`).join('')}</div>`:''}${domainRows.length?`<div class="card"><h4>Функциональная область — дополнительная характеристика</h4>${domainRows.map(x=>`<p>${esc(x)}</p>`).join('')}<div class="small">Эта характеристика не создаёт отдельную подтверждённую связь «департамент → функция» и не используется как узел графа.</div></div>`:''}${ps.length||rs.length?`<div class="card"><h4>Процессы и роли</h4>${[...ps.map(x=>({name:x.Process||x.Process_ID,role:'процесс',evidence:x.Evidence})),...rs.map(x=>({name:x.Process||x.Process_ID,role:'роль '+(x.Role||''),evidence:''}))].map(x=>`<p><strong>${esc(x.name)}</strong><br><span class="small">${esc(x.role)}${x.evidence?' · '+esc(x.evidence):''}</span></p>`).join('')}</div>`:''}<div class="card"><h4>Доказательства принадлежности</h4>${structureEvidenceHtml(r)}</div>`;
+  }
+  if(n.type==='FUNCTION'){const fs=n.sourceRecords||[];return `<h2>${esc(n.name)}</h2><div class="meta">Функция</div><div class="card"><h4>Подразделения</h4>${fs.map(r=>`<p>${esc(r.Department||'')}</p>`).join('')||'<p>—</p>'}</div><div class="card"><h4>Основание</h4>${fs.map(r=>`<p>${esc(r.Basis||'')} · ${esc(r.Evidence||r.Confidence||'')}</p>`).join('')}</div>`}
+  if(n.type==='PROCESS'){const ps=n.sourceRecords||[];const deps=[...new Set(ps.map(r=>r.Department||structureDepartmentName(r.Dept_Global_ID)||'').filter(Boolean))];return `<h2>${esc(n.name)}</h2><div class="meta">Процесс · это не подразделение</div><div class="card"><h4>Подразделение, которому сопоставлен процесс</h4>${deps.map(d=>`<p><strong>${esc(d)}</strong></p>`).join('')||'<p>—</p>'}</div><div class="card"><h4>Исходные записи</h4>${ps.map(r=>`<p class="small">${esc(r.Process_ID||'')} · ${esc(r.Role||r.Link_Type||'')}</p>`).join('')||'<p>—</p>'}</div>`}
+  return `<h2>${esc(n.name)}</h2><div class="meta">${esc(n.type)}</div>`;
+}
+function selectStructureEdgeById(id){const e=simulationEdges.find(x=>x.id===id);if(!e)return;selectedEdge=e;selectedNode=null;detail.innerHTML=structureEdgeDetail(e)}
+function structureEdgeDetail(e){
+  const arrow=e.kind==='DEPARTMENT_SHARED_PROCESS'?'↔':'→';
+  const shared=e.kind==='DEPARTMENT_SHARED_PROCESS'?`<p><strong>Характер связи:</strong> оба департамента сопоставлены одному и тому же каноническому процессу${(e.process_ids||[]).length>1?' / процессам':''}.</p><p><strong>Общие процессы:</strong> ${esc((e.process_names||[]).join(' · ')||e.process||'—')}</p><p class="small">Это контекстная функциональная связь. Она показывает совместное участие в одном процессе, но сама по себе не доказывает прямую передачу документов или данных между департаментами.</p>`:'';
+  return `<h2>${esc(e.a_name)} ${arrow} ${esc(e.b_name)}</h2><div class="meta">${esc(e.kind_label||e.kind||'Внутренняя связь')}</div><div class="card"><p><strong>Доказательность:</strong> ${esc(e.evidence||'—')}</p>${e.kind==='DEPARTMENT_HANDOFF'?`<p><strong>Статус:</strong> производная связь из явного канонического process/handoff по общему Process_ID.</p><p><strong>Процесс:</strong> ${esc(e.process||e.process_id||'—')}</p>`:''}${e.kind==='DEPARTMENT_DOCUMENTED'?`<p><strong>Статус:</strong> подтверждено официальным документом; тип связи — совместная работа двух конкретных подразделений.</p><p><strong>Дата документа:</strong> ${esc(e.document_year||'—')}</p>`:''}${shared}${e.source?`<p><strong>Основание:</strong> ${esc(e.source)}</p>`:''}</div>${structureSourceHtml(e)}`;
+}
+
+function structureOrgMatrixCode(org){
+  const map={'Минприроды России':'MNPR','Минпромторг России':'MPTR','Минэнерго России':'MNER','Минтранс России':'MTRANS','Ростехнадзор':'RTN','Минстрой России':'MSTR','Минцифры России':'Минцифры','Минфин России':'Минфин','Минэкономразвития России':'MINECON'};
+  return map[org]||'';
+}
+function structureSourceRecordsForCodes(org,codes){
+  const matrix=structureOrgMatrixCode(org); const set=[...new Set((codes||[]).map(x=>String(x||'').trim()).filter(Boolean))];
+  return DATA.sources.filter(src=>set.includes(String(src.original_code||'').trim()) && (!matrix || src.matrix===matrix || String(src.source_id||'').startsWith(matrix+':')));
+}
+function structureSourceHtml(edge){
+  const org=edge.org||((edge.source_records||[])[0]?.Org)||'';
+  const codes=[];
+  for(const r of (edge.source_records||[])){ for(const x of String(r.Source||'').split(';')) if(x.trim()) codes.push(x.trim()); }
+  let records=codes.length?structureSourceRecordsForCodes(org,codes):[];
+  if(records.length){
+    const uniq=[...new Map(records.map(r=>[r.source_id,r])).values()].slice(0,8);
+    return `<div class="source-block"><strong>Документы / источники:</strong>${uniq.map(r=>`<div class="src"><strong>${esc(r.title||r.source_id)}</strong><div class="muted">${esc(r.source_id)} · ${esc(r.matrix||'')}</div>${r.what_confirms?`<div class="small">${esc(r.what_confirms)}</div>`:''}${r.url?`<div><a href="${esc(r.url)}" target="_blank" rel="noopener">открыть источник</a></div>`:''}</div>`).join('')}</div>`;
+  }
+  const urls=String(edge.source_urls||'').split('|').map(x=>x.trim()).filter(Boolean);
+  const urlMatches=urls.map(u=>DATA.sources.find(r=>r.url===u)).filter(Boolean);
+  if(urlMatches.length){
+    const uniq=[...new Map(urlMatches.map(r=>[r.source_id,r])).values()].slice(0,8);
+    return `<div class="source-block"><strong>Документы / источники:</strong>${uniq.map(r=>`<div class="src"><strong>${esc(r.title||r.source_id)}</strong><div class="muted">${esc(r.source_id)} · ${esc(r.matrix||'')}</div>${r.url?`<div><a href="${esc(r.url)}" target="_blank" rel="noopener">открыть источник</a></div>`:''}</div>`).join('')}</div>`;
+  }
+  if(urls.length){ return `<div class="source-block"><strong>Источник из структурной записи:</strong>${urls.slice(0,8).map(u=>`<div class="src"><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></div>`).join('')}</div>`; }
+  if(edge.kind==='DEPARTMENT_DOCUMENTED') return `<div class="source-block"><strong>Дополнительное документальное подтверждение:</strong><div class="src"><strong>${esc(edge.source_title||'Официальный документ')}</strong><div class="muted">${esc(edge.document_year||'')} · ${esc(edge.evidence||'')}</div>${edge.basis?`<div class="small">${esc(edge.basis)}</div>`:''}${edge.source_url?`<div><a href="${esc(edge.source_url)}" target="_blank" rel="noopener">открыть официальный документ</a></div>`:''}${edge.current_structure_source?`<div class="small">Текущая структура подразделений: <a href="${esc(edge.current_structure_source)}" target="_blank" rel="noopener">страница структуры Минтранса</a></div>`:''}</div></div>`;
+  if(edge.kind==='DEPARTMENT_HANDOFF') return `<div class="source-block"><strong>Документный источник:</strong> в текущем структурном наборе не привязан. <div class="small">Основание — явные записи FROM_DEPT и OWNER_DEPT + TO_DEPT для одного Process_ID.</div></div>`;
+  if(edge.kind==='DEPARTMENT_SHARED_PROCESS') return `<div class="source-block"><strong>Основание отображения:</strong> общий канонический Process_ID в структурной модели. <div class="small">Это функциональный контекст, а не утверждение о прямом обмене между подразделениями.</div></div>`;
+  return '<div class="source-block"><strong>Источник:</strong> не указан в исходной записи.</div>';
+}
+function structureDepartmentHandoffLinks(ministryId){
+  const ministryName=nodeById[ministryId]?.name||'';
+  const deptRows=[...structureDeptById.values()].filter(r=>structureOrgId(r.Org)===ministryId);
+  const deptIds=new Set(deptRows.map(r=>r.Dept_Global_ID));
+  const rows=[];
+  for(const arr of structureRolesByDept.values()) for(const r of arr) if(deptIds.has(r.Dept_Global_ID)) rows.push(r);
+  const byProcess=new Map();
+  for(const r of rows){const p=r.Process_ID||r.Process;if(!p)continue;if(!byProcess.has(p))byProcess.set(p,[]);byProcess.get(p).push(r);}
+  const links=[];
+  for(const [processId,recs] of byProcess){
+    const owners=recs.filter(r=>String(r.Role||'').includes('A/R')||String(r.Basis||'').includes('TO_DEPT'));
+    if(owners.length!==1)continue;
+    const owner=owners[0];
+    for(const sender of recs.filter(r=>String(r.Basis||'').includes('FROM_DEPT')&&r.Dept_Global_ID!==owner.Dept_Global_ID)){
+      links.push({id:`STR:DEPTLINK:${sender.Dept_Global_ID}:${owner.Dept_Global_ID}:${processId}`,a:sender.Dept_Global_ID,b:owner.Dept_Global_ID,a_name:sender.Department,b_name:owner.Department,kind:'DEPARTMENT_HANDOFF',kind_label:'Междепартаментная процессная передача',direction:'DIRECTED_DERIVED',evidence:'EXPLICIT_CANONICAL_HANDOFF',org:ministryName,process_id:processId,process:sender.Process||processId,source:`FROM_DEPT · ${sender.Basis} | TO_DEPT · ${owner.Basis}`,source_records:[sender,owner],derived:true});
+    }
+  }
+  for(const d of (SUPPLEMENTAL_DEPT_LINKS.links||[])){
+    const a=d.from_dept_global_id,b=d.to_dept_global_id;
+    if(d.org===ministryName && deptIds.has(a) && deptIds.has(b)){
+      links.push({id:d.id,a,b,a_name:d.from_department,b_name:d.to_department,kind:(d.status==='CANDIDATE'||d.status==='WORKING_ANALYTICAL')?'DEPARTMENT_CANDIDATE':'DEPARTMENT_DOCUMENTED',kind_label:(d.status==='CANDIDATE'||d.status==='WORKING_ANALYTICAL')?'Аналитическая связь — требуется подтверждение':`Документированное взаимодействие (${d.document_year||'без даты'})`,direction:d.direction,evidence:d.evidence,org:d.org,source_title:d.source_title,source_url:d.source_url,document_year:d.document_year,basis:d.basis,current_structure_source:d.current_structure_source,current_structure_status:d.current_structure_status});
+    }
+  }
+
+  // Contextual functional links: same canonical Process_ID in two departments.
+  // These links show shared participation in a process, not a proven direct hand-off.
+  const existingPairs=new Set(links.map(e=>[e.a,e.b].sort().join('|')));
+  const procByDept=new Map(),recordsByDeptProc=new Map();
+  for(const d of deptRows){procByDept.set(d.Dept_Global_ID,new Map());recordsByDeptProc.set(d.Dept_Global_ID,new Map());}
+  const addProcessRecord=r=>{
+    const did=r.Dept_Global_ID,pid=r.Process_ID||r.Process;
+    if(!deptIds.has(did)||!pid)return;
+    if(!procByDept.get(did).has(pid))procByDept.get(did).set(pid,r.Process||pid);
+    if(!recordsByDeptProc.get(did).has(pid))recordsByDeptProc.get(did).set(pid,[]);
+    recordsByDeptProc.get(did).get(pid).push(r);
+  };
+  for(const arr of structureProcessesByDept.values()) for(const r of arr) addProcessRecord(r);
+  for(const arr of structureRolesByDept.values()) for(const r of arr) addProcessRecord(r);
+  const ids=[...deptIds];
+  for(let i=0;i<ids.length;i++) for(let j=i+1;j<ids.length;j++){
+    const a=ids[i],b=ids[j],pair=[a,b].sort().join('|');
+    if(existingPairs.has(pair))continue;
+    const pa=procByDept.get(a)||new Map(),pb=procByDept.get(b)||new Map();
+    const common=[...pa.keys()].filter(pid=>pb.has(pid));
+    if(!common.length)continue;
+    const names=[...new Set(common.map(pid=>pa.get(pid)||pb.get(pid)||pid))];
+    const sourceRecords=[];
+    for(const pid of common){sourceRecords.push(...(recordsByDeptProc.get(a)?.get(pid)||[]),...(recordsByDeptProc.get(b)?.get(pid)||[]));}
+    links.push({
+      id:`STR:SHAREDPROC:${a}:${b}:${common.map(x=>hashString(x)).join('-')}`,
+      a,b,a_name:structureDepartmentName(a),b_name:structureDepartmentName(b),
+      kind:'DEPARTMENT_SHARED_PROCESS',kind_label:common.length===1?'Общий процесс':'Общие процессы',
+      direction:'UNDIRECTED_CONTEXTUAL',evidence:'SHARED_CANONICAL_PROCESS_ID',org:ministryName,
+      process_ids:common,process_names:names,process:names.join(' · '),source_records:sourceRecords,derived_context:true
+    });
+  }
+  return links;
+}
+
+function buildStructureGraph(){
+  const nodes=[],links=[];structureNodeById.clear();
+  const selectedMin=structureMinistryFocusId;
+  const selectedDept=structureDeptDetailId&&structureDeptById.get(structureDeptDetailId);
+  if(selectedMin){
+    nodes.push({...nodeById[selectedMin],type:'MINISTRY',structure:true});
+    for(const r of structureDeptById.values()) if(structureOrgId(r.Org)===selectedMin) nodes.push({id:r.Dept_Global_ID,name:r.Registry_Name,type:'DEPARTMENT',parentOrg:selectedMin,structure:true});
+  } else {
+    for(const [id,name] of CORE) nodes.push({...nodeById[id],id,name,type:'MINISTRY',structure:true});
+  }
+  for(const n of nodes) structureNodeById.set(n.id,n);
+  // В выбранном министерстве принадлежность подразделений показывается пространственным контейнером,
+  // поэтому радиальные ministry→department линии не рисуются. В обзорном режиме департаментов нет.
+  if(!selectedMin){
+    for(const n of nodes.filter(n=>n.type==='DEPARTMENT')) links.push({id:`STR:OWN:${n.id}`,a:n.parentOrg,b:n.id,a_name:nodeById[n.parentOrg]?.name||n.parentOrg,b_name:n.name,kind:'OWNERSHIP',kind_label:'Принадлежность подразделения',direction:'DIRECTED_EXPLICIT',evidence:structureDeptById.get(n.id)?.Registry_Evidence||'',source:structureDeptById.get(n.id)?.Registry_Source||'',org:structureDeptById.get(n.id)?.Org||'',source_urls:structureDeptById.get(n.id)?.Registry_Source||''});
+  }
+  // Все зафиксированные междепартаментные связи остаются видимыми внутри контейнера.
+  if(selectedMin){
+    const handoffLinks=structureDepartmentHandoffLinks(selectedMin);
+    links.push(...handoffLinks.filter(e=>structureNodeById.has(e.a)&&structureNodeById.has(e.b)));
+  }
+  // Functions/processes remain a drill-down layer for the clicked department.
+  if(selectedDept){
+    const depId=selectedDept.Dept_Global_ID;
+    const fnMap=new Map();
+    for(const r of structureFunctionsByDept.get(depId)||[]){const fid=`STR:F:${depId}:${r.Function_ID||r.Function||hashString(JSON.stringify(r))}`;if(!fnMap.has(fid))fnMap.set(fid,r)}
+    for(const [fid,r] of fnMap){const functionName=r.Function||r.Function_ID||'Функция';nodes.push({id:fid,name:`Функция: ${functionName}`,type:'FUNCTION',structure:true,sourceRecords:[r]});links.push({id:`STR:FUNC:${depId}:${fid}`,a:depId,b:fid,a_name:selectedDept.Registry_Name,b_name:functionName,kind:'FUNCTION',kind_label:'Связь с функцией',direction:'DIRECTED_EXPLICIT',evidence:r.Evidence||r.Confidence||'',source:r.Source||r.Basis||''});structureNodeById.set(fid,nodes[nodes.length-1]);}
+    const procMap=new Map();
+    for(const r of structureProcessesByDept.get(depId)||[]){const pid=`STR:P:${depId}:${r.Process_ID||r.Process||hashString(JSON.stringify(r))}`;if(!procMap.has(pid))procMap.set(pid,[]);procMap.get(pid).push(r)}
+    for(const r of structureRolesByDept.get(depId)||[]){const pid=`STR:P:${depId}:${r.Process_ID||r.Process||hashString(JSON.stringify(r))}`;if(!procMap.has(pid))procMap.set(pid,[]);procMap.get(pid).push(r)}
+    for(const [pid,records] of procMap){const primary=records.find(r=>r.Process||r.Process_ID)||records[0];const processName=primary?.Process||primary?.Process_ID||'Процесс';const evidence=[...new Set(records.map(r=>r.Evidence||r.Confidence||'').filter(Boolean))].join(' · ');const source=[...new Set(records.map(r=>r.Source||r.Basis||r.Role_Detail||'').filter(Boolean))].join(' · ');nodes.push({id:pid,name:`Процесс: ${processName}`,type:'PROCESS',structure:true,sourceRecords:records});links.push({id:`STR:PROC:${depId}:${pid}`,a:depId,b:pid,a_name:selectedDept.Registry_Name,b_name:processName,kind:'PROCESS',kind_label:'Связь с процессом',direction:'DIRECTED_EXPLICIT',evidence:evidence,source:source});structureNodeById.set(pid,nodes[nodes.length-1]);}
+  }
+  return {nodes,links};
+}
+function structureMinistryAreaRadius(){
+  const minDim=Math.min(W,H);
+  return Math.max(255,Math.min(390,minDim*.43));
+}
+function arrangeStructureLayout(nodes,links){
+  const cx=W/2,cy=H/2,minDim=Math.min(W,H);const nm=new Map(nodes.map(n=>[n.id,n]));
+  const ministries=nodes.filter(n=>n.type==='MINISTRY'),depts=nodes.filter(n=>n.type==='DEPARTMENT'),funcs=nodes.filter(n=>n.type==='FUNCTION'),procs=nodes.filter(n=>n.type==='PROCESS');
+  if(structureMinistryFocusId){
+    const m=nm.get(structureMinistryFocusId);if(!m)return;m.x=cx;m.y=cy;
+    const ds=depts.filter(n=>n.parentOrg===structureMinistryFocusId);
+    const linkDegree=new Map(ds.map(n=>[n.id,0]));
+    for(const e of links){if(linkDegree.has(e.a)&&linkDegree.has(e.b)){linkDegree.set(e.a,(linkDegree.get(e.a)||0)+1);linkDegree.set(e.b,(linkDegree.get(e.b)||0)+1)}}
+    ds.sort((a,b)=>(linkDegree.get(b.id)||0)-(linkDegree.get(a.id)||0)||a.name.localeCompare(b.name,'ru'));
+    const R=structureMinistryAreaRadius();
+    const rings=[{cap:7,r:R*.31},{cap:11,r:R*.56},{cap:16,r:R*.78},{cap:22,r:R*.91}];
+    let idx=0;
+    for(let ri=0;ri<rings.length&&idx<ds.length;ri++){
+      const ring=rings[ri],count=Math.min(ring.cap,ds.length-idx),offset=(ri%2)*Math.PI/Math.max(1,count);
+      for(let k=0;k<count;k++,idx++){
+        const n=ds[idx],a=-Math.PI/2+offset+(k/count)*Math.PI*2,p=polar(cx,cy,ring.r,a);
+        n.x=p.x;n.y=p.y;n.fx=null;n.fy=null;
+      }
+    }
+    // Rare overflow: keep extra departments in a compact inner ring rather than outside the ministry.
+    for(;idx<ds.length;idx++){
+      const n=ds[idx],k=idx-rings.reduce((s,r)=>s+r.cap,0),count=Math.max(1,ds.length-idx),a=-Math.PI/2+(k/Math.max(1,count))*Math.PI*2,p=polar(cx,cy,R*.16,a);n.x=p.x;n.y=p.y;n.fx=null;n.fy=null;
+    }
+    if(structureDeptDetailId){
+      const dep=nm.get(structureDeptDetailId);
+      if(dep){
+        const ax=Math.atan2(dep.y-cy,dep.x-cx),fr=R+82,prr=R+158;
+        funcs.forEach((n,i)=>{const span=Math.PI*.72,a=ax-span/2+(i/Math.max(1,funcs.length-1))*span,p=polar(cx,cy,fr,a);n.x=p.x;n.y=p.y;n.fx=null;n.fy=null});
+        procs.forEach((n,i)=>{const span=Math.PI*.88,a=ax-span/2+(i/Math.max(1,procs.length-1))*span,p=polar(cx,cy,prr,a);n.x=p.x;n.y=p.y;n.fx=null;n.fy=null});
+      }
+    }
+    return;
+  }
+  // Default structure overview: only the nine major ministries. Departments are revealed by ministry selection.
+  const radius=Math.min(285,minDim*.36);ministries.forEach((m,i)=>{const a=-Math.PI/2+i*(Math.PI*2/Math.max(1,ministries.length)),p=polar(cx,cy,radius,a);m.x=p.x;m.y=p.y;m.fx=null;m.fy=null});
+  resolveNodeOverlaps(nodes,new Set(),40,36);
+}
+function structureLabelLines(name,type,id){
+  const raw=String(name||'');
+  if(type==='DEPARTMENT'){
+    const words=raw.split(/\s+/),lines=[];let line='';const maxChars=24;
+    for(const w of words){
+      const next=line?line+' '+w:w;
+      if(next.length>maxChars&&line){lines.push(line);line=w}else line=next;
+      if(lines.length===2&&line.length>maxChars+5){lines.push(line.slice(0,maxChars+4).trimEnd()+'…');line='';break}
+    }
+    if(line)lines.push(line);
+    if(lines.length>3){lines.length=3;lines[2]=lines[2].slice(0,maxChars+3).trimEnd()+'…'}
+    return lines.slice(0,3);
+  }
+  return [raw.length<=38?raw:raw.slice(0,37).trimEnd()+'…'];
+}
+function structureLabelText(name,type,id){return String(name||'')}
+function updateStructureLabel(g,n,r){const t=g.querySelector('text');if(!t)return;const left=n.x<W/2;if(n.type==='MINISTRY'){t.setAttribute('text-anchor','middle');t.setAttribute('x',0);t.setAttribute('y',r+17);for(const tsp of t.children)tsp.setAttribute('x',0)}else{t.setAttribute('text-anchor',left?'end':'start');const x=left?-(r+7):(r+7);t.setAttribute('x',x);for(const tsp of t.children)tsp.setAttribute('x',x)}}
+function renderStructureGraph(){
+  const st=buildStructureGraph();simulationNodes=st.nodes;simulationEdges=st.links;arrangeStructureLayout(st.nodes,st.links);
+  edgesLayer.innerHTML='';nodesLayer.innerHTML='';
+  if(structureMinistryFocusId){
+    const R=structureMinistryAreaRadius(),cx=W/2,cy=H/2,color=coreColor(structureMinistryFocusId);
+    const depts=st.nodes.filter(n=>n.type==='DEPARTMENT'),internal=st.links.filter(e=>(e.kind==='DEPARTMENT_HANDOFF'||e.kind==='DEPARTMENT_DOCUMENTED'||e.kind==='DEPARTMENT_CANDIDATE'||e.kind==='DEPARTMENT_SHARED_PROCESS'));
+    const boundary=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    boundary.classList.add('structure-ministry-boundary');boundary.setAttribute('cx',cx);boundary.setAttribute('cy',cy);boundary.setAttribute('r',R);boundary.setAttribute('fill',color);boundary.setAttribute('fill-opacity','.075');boundary.setAttribute('stroke',color);boundary.setAttribute('stroke-opacity','.58');boundary.setAttribute('stroke-width','2.3');
+    boundary.addEventListener('click',ev=>{ev.stopPropagation();selectNode(structureMinistryFocusId)});edgesLayer.appendChild(boundary);
+    const title=document.createElementNS('http://www.w3.org/2000/svg','text');title.classList.add('structure-ministry-boundary-title');title.setAttribute('x',cx);title.setAttribute('y',cy-R+30);title.setAttribute('fill',color);title.textContent=nodeById[structureMinistryFocusId]?.name||structureMinistryFocusId;nodesLayer.appendChild(title);
+    const meta=document.createElementNS('http://www.w3.org/2000/svg','text');meta.classList.add('structure-ministry-boundary-meta');meta.setAttribute('x',cx);meta.setAttribute('y',cy-R+48);meta.textContent=`${depts.length} подразделений · ${internal.length} внутренних функциональных связей`;nodesLayer.appendChild(meta);
+  }
+  for(const e of st.links){const hit=document.createElementNS('http://www.w3.org/2000/svg','line');hit.classList.add('edge-hit','structure-edge');if(e.kind==='DEPARTMENT_HANDOFF')hit.classList.add('department-handoff');if(e.kind==='DEPARTMENT_DOCUMENTED')hit.classList.add('department-documented');if(e.kind==='DEPARTMENT_CANDIDATE')hit.classList.add('department-candidate');if(e.kind==='DEPARTMENT_SHARED_PROCESS')hit.classList.add('department-shared-process');hit.dataset.id=e.id;hit.addEventListener('mouseenter',ev=>structureEdgeTooltip(e,ev));hit.addEventListener('mousemove',moveTooltip);hit.addEventListener('mouseleave',hideTooltip);hit.addEventListener('click',ev=>{ev.stopPropagation();selectedEdge=e;selectedNode=null;detail.innerHTML=structureEdgeDetail(e)});edgesLayer.appendChild(hit);const p=document.createElementNS('http://www.w3.org/2000/svg','line');p.classList.add('edge','structure-edge');if(e.kind==='FUNCTION')p.classList.add('function-edge');if(e.kind==='PROCESS')p.classList.add('process-edge');if(e.kind==='DEPARTMENT_HANDOFF')p.classList.add('department-handoff');if(e.kind==='DEPARTMENT_DOCUMENTED')p.classList.add('department-documented');if(e.kind==='DEPARTMENT_CANDIDATE')p.classList.add('department-candidate');if(e.kind==='DEPARTMENT_SHARED_PROCESS')p.classList.add('department-shared-process');p.dataset.id=e.id;edgesLayer.appendChild(p)}
+  for(const n of st.nodes){
+    if(structureMinistryFocusId&&n.type==='MINISTRY')continue;
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.classList.add('node');g.dataset.id=n.id;if(n.type==='MINISTRY')g.classList.add('structure-ministry','ministry','core-ministry');if(n.type==='DEPARTMENT')g.classList.add('structure-dept');if(n.type==='FUNCTION')g.classList.add('structure-function');if(n.type==='PROCESS')g.classList.add('structure-process');if(n.id===structureDeptDetailId||n.id===structureMinistryFocusId)g.classList.add('selected');const r=structureNodeRadius(n);const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r',r);c.setAttribute('fill',n.type==='MINISTRY'?coreColor(n.id):(n.type==='DEPARTMENT'&&structureMinistryFocusId?coreColor(structureMinistryFocusId):colorForType(n.type)));if(n.type==='DEPARTMENT'&&structureMinistryFocusId)c.setAttribute('fill-opacity','.88');g.appendChild(c);const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',r+7);t.setAttribute('y',4);t.setAttribute('title',n.name);const title=document.createElementNS('http://www.w3.org/2000/svg','title');title.textContent=n.name;g.appendChild(title);for(const [i,line] of structureLabelLines(n.name,n.type,n.id).entries()){const tsp=document.createElementNS('http://www.w3.org/2000/svg','tspan');tsp.textContent=line;tsp.setAttribute('x',n.type==='MINISTRY'?0:r+7);tsp.setAttribute('dy',i===0?'0':(n.type==='DEPARTMENT'?'13':'12'));t.appendChild(tsp)}if(n.type==='MINISTRY')t.setAttribute('font-weight','700');if(n.type==='PROCESS'||n.type==='FUNCTION')t.setAttribute('font-style','italic');g.appendChild(t);updateStructureLabel(g,n,r);g.addEventListener('click',ev=>{ev.stopPropagation();if(n.type==='DEPARTMENT')focusDepartment(n.id);else if(n.type==='MINISTRY')focusStructureMinistry(n.id);else selectNode(n.id);});g.addEventListener('mousedown',ev=>startNodeDrag(ev,n));nodesLayer.appendChild(g)
+  }
+  drawStructurePositions();updateStats();
+}
+function drawStructurePositions(){const nm=new Map(simulationNodes.map(n=>[n.id,n]));for(const p of edgesLayer.children){const l=simulationEdges.find(e=>e.id===p.dataset.id);const a=nm.get(l?.a),b=nm.get(l?.b);if(!l||!a||!b)continue;p.setAttribute('x1',a.x);p.setAttribute('y1',a.y);p.setAttribute('x2',b.x);p.setAttribute('y2',b.y)}for(const g of nodesLayer.children){const n=nm.get(g.dataset.id);if(n){g.setAttribute('transform',`translate(${n.x},${n.y})`);const r=structureNodeRadius(n);updateStructureLabel(g,n,r)}}}
+function fitStructureView(){if(graphMode!=='STRUCTURE')return;let f=structureMinistryFocusId?(structureDeptDetailId?.64:.70):.82;scale=f;tx=(W/2)-scale*(W/2);ty=(H/2)-scale*(H/2);applyTransform()}
+
+function toggleFocus(id){if([...focusSet].some(x=>!coreIds.has(x)))focusSet.clear();if(focusSet.has(id))focusSet.delete(id);else focusSet.add(id);selectedEdge=null;selectedNode=focusSet.size===1?id:null;setFocusButtons();startSimulation();if(focusSet.size===1)selectNode(id)}
+function updateFocusModeClass(){svg.classList.toggle('single-focus',focusSet.size===1);svg.classList.toggle('multi-focus',focusSet.size>1)}
+function setFocus(id){focusSet=new Set([id]);selectedEdge=null;selectedNode=id;setFocusButtons();startSimulation();selectNode(id)}
+
+function showEdgeTooltip(e,ev){const srcs=(e.source_ids||[]).map(id=>sourceById[id]).filter(Boolean);const arrow=(e.channel_research||['SECONDARY_ORG_RESEARCH_V131','SECONDARY_ORG_RESEARCH_V132'].includes(e.integration_layer))&&!hasKnownDirection(e)?'—':e.direction.includes('BIDIRECTIONAL')?'↔':'→';const d=REL_DETAIL[e.base_edge_ids?.[0]||e.id];const dataTxt=(e.data_texts?.length?e.data_texts:(d?.data_texts||[])).slice(0,3);const first=srcs.slice(0,3).map(s=>`<div class="src"><strong>${esc(s.title||s.source_id)}</strong><div class="muted">${esc(s.source_id)} · ${esc(s.matrix||'')}</div>${s.url?`<div><a href="${esc(s.url)}" target="_blank" rel="noopener">открыть источник</a></div>`:''}</div>`).join('');tooltip.innerHTML=`<div><strong>${esc(e.a_name)}</strong> ${arrow} <strong>${esc(e.b_name)}</strong></div>${e.channel_link?`<div class="muted">Канал: ${esc(e.channel_name||e.channels||'')}</div>`:''}<div class="muted">${esc(directionLabel(e.direction))} · ${esc(relationLabels(e.relation_types))}</div>${dataTxt.length?`<div class="muted"><strong>Передаваемая информация:</strong><br>${esc(dataTxt.join(' • '))}</div>`:''}${e.processes?`<div class="muted">Процесс: ${esc(e.processes)}</div>`:''}${srcs.length?first:`<div class="src">Документ-источник не привязан к этому ребру</div>`}`;tooltip.style.display='block';moveTooltip(ev);for(const l of edgesLayer.children)l.classList.toggle('hovered',l.dataset.id===e.id)}
+
+function moveTooltip(ev){tooltip.style.left=Math.min(window.innerWidth-450,ev.clientX+14)+'px';tooltip.style.top=Math.min(window.innerHeight-260,ev.clientY+14)+'px'}
+function hideTooltip(){tooltip.style.display='none';for(const l of edgesLayer.children)l.classList.remove('hovered')}
+function selectEdge(e){selectedEdge=e;selectedNode=null;detail.innerHTML=edgeDetail(e)}
+function edgeDetail(e){const srcs=(e.source_ids||[]).map(id=>sourceById[id]).filter(Boolean);const srcHtml=srcs.length?srcs.map(s=>`<div class="card"><h4>Источник ${esc(s.source_id)}</h4><p><strong>${esc(s.title||'')}</strong></p><p>${esc(s.what_confirms||'')}</p><p class="small">Матрица: ${esc(matrixLabel(s.matrix||''))} · ${esc(s.stage||'')} · ${esc(s.actuality||'')}</p>${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a>`:''}</div>`).join(''):`<div class="notice">Для этого ребра в исходных матрицах не найден документ, который можно привязать без предположения.</div>`;const arrow=(e.channel_research||['SECONDARY_ORG_RESEARCH_V131','SECONDARY_ORG_RESEARCH_V132'].includes(e.integration_layer))&&!hasKnownDirection(e)?'—':e.direction.includes('BIDIRECTIONAL')?'↔':'→';const baseInfo=e.channel_link?`<div class="card"><h4>Канальный слой</h4><p><strong>Канал:</strong> ${esc(e.channel_name||e.channels||'не указан')}</p><p><strong>Исходные взаимодействия:</strong> ${esc((e.base_edge_ids||[]).map(id=>{const b=DATA.edges.find(x=>x.id===id);return b?`${b.a_name} → ${b.b_name}`:id}).join(' · '))}</p>${e.data_texts?.length?`<p><strong>Передаваемая информация:</strong> ${esc(e.data_texts.slice(0,8).join(' • '))}</p>`:''}</div>`:'';return `<h2>${esc(e.a_name)} ${arrow} ${esc(e.b_name)}</h2><div class="meta">${esc(e.id)} · ${esc(directionLabel(e.direction))}</div><div class="card"><h4>Параметры</h4><p><strong>Тип:</strong> ${esc(relationLabels(e.relation_types))}</p><p><strong>Статус:</strong> ${esc(e.status||'не указан')}</p>${e.external_context_records?.length?`<p><strong>Строк исходных реестров:</strong> ${e.external_context_records.length}</p>`:''}<p><strong>Матрица:</strong> ${esc((e.matrices||'').split(';').map(matrixLabel).join(' · '))}</p><p><strong>Процесс:</strong> ${esc(e.processes||'не указан')}</p><p><strong>Канал:</strong> ${esc(e.channels||'не указан')}</p><p><strong>Основание направления:</strong> ${esc(e.direction_basis||'не указано')}</p>${['SECONDARY_ORG_RESEARCH_V131','SECONDARY_ORG_RESEARCH_V132'].includes(e.integration_layer)?`<p><strong>Документальное основание и дата:</strong> ${esc(e.basis||'')}</p>`:''}</div>${baseInfo}<div><h4 style="font-size:11px;text-transform:uppercase;color:#566474">Источники (${srcs.length})</h4>${srcHtml}</div>`}
+
+function structureSourceIdsForRecords(org, records) {
+  const ids = new Set();
+  const codes = [];
+  const urls = [];
+  for (const record of records || []) {
+    for (const value of String(record.Source_ID || record.source_id || '').split(/[;,]/)) if (value.trim()) ids.add(value.trim());
+    for (const value of String(record.Source || '').split(/[;,]/)) if (value.trim()) codes.push(value.trim());
+    for (const value of String(record.Registry_Source || '').split('|')) if (value.trim()) urls.push(value.trim());
+  }
+  for (const source of structureSourceRecordsForCodes(org, codes)) ids.add(source.source_id);
+  for (const url of urls) {
+    const source = DATA.sources.find(item => item.url === url);
+    if (source) ids.add(source.source_id);
+  }
+  return [...ids];
+}
+
+function structureSourceHtml(edge) {
+  const ids = new Set((edge.source_ids || []).flatMap(value => String(value || '').split(/[;,]/).map(item => item.trim()).filter(Boolean)));
+  for (const id of structureSourceIdsForRecords(edge.org || '', edge.source_records || [])) ids.add(id);
+  const records = [...ids].map(id => DATA.sources.find(source => source.source_id === id)).filter(Boolean);
+  if (records.length) {
+    return `<div class="source-block"><strong>Документы / источники:</strong>${records.slice(0, 10).map(source => `<div class="src"><strong>${esc(source.title || source.source_id)}</strong><div class="muted">${esc(source.source_id)} · ${esc(source.matrix || '')}</div>${source.what_confirms ? `<div class="small">${esc(source.what_confirms)}</div>` : ''}${source.url ? `<div><a href="${esc(source.url)}" target="_blank" rel="noopener">открыть источник</a></div>` : ''}</div>`).join('')}</div>`;
+  }
+  const urls = String(edge.source_urls || edge.source_url || '').split('|').map(value => value.trim()).filter(Boolean);
+  if (urls.length) return `<div class="source-block"><strong>Источник:</strong>${urls.slice(0, 8).map(url => `<div class="src"><a href="${esc(url)}" target="_blank" rel="noopener">${esc(edge.source_title || url)}</a></div>`).join('')}</div>`;
+  if (edge.kind === 'DEPARTMENT_SHARED_PROCESS') return `<div class="source-block"><strong>Основание:</strong> общий канонический Process_ID с привязанными источниками. <div class="small">Контекст не доказывает прямую передачу между подразделениями.</div></div>`;
+  return '<div class="source-block"><strong>Источник:</strong> не найден. Эта линия не должна считаться документированной.</div>';
+}
+
+function structureDepartmentHandoffLinks(ministryId) {
+  const ministryName = nodeById[ministryId]?.name || '';
+  const deptRows = [...structureDeptById.values()].filter(record => structureOrgId(record.Org) === ministryId);
+  const deptIds = new Set(deptRows.map(record => record.Dept_Global_ID));
+  const rows = [];
+  for (const values of structureRolesByDept.values()) for (const record of values) if (deptIds.has(record.Dept_Global_ID)) rows.push(record);
+  const byProcess = new Map();
+  for (const record of rows) {
+    const processId = record.Process_ID || record.Process;
+    if (!processId) continue;
+    if (!byProcess.has(processId)) byProcess.set(processId, []);
+    byProcess.get(processId).push(record);
+  }
+  const links = [];
+  for (const [processId, records] of byProcess) {
+    const owners = records.filter(record => String(record.Role || '').includes('A/R') || String(record.Basis || '').includes('TO_DEPT'));
+    if (owners.length !== 1) continue;
+    const owner = owners[0];
+    for (const sender of records.filter(record => String(record.Basis || '').includes('FROM_DEPT') && record.Dept_Global_ID !== owner.Dept_Global_ID)) {
+      const sourceRecords = [sender, owner];
+      const sourceIds = structureSourceIdsForRecords(ministryName, sourceRecords);
+      if (!sourceIds.length) continue;
+      links.push({ id: `STR:DEPTLINK:${sender.Dept_Global_ID}:${owner.Dept_Global_ID}:${processId}`, a: sender.Dept_Global_ID, b: owner.Dept_Global_ID, a_name: sender.Department, b_name: owner.Department, kind: 'DEPARTMENT_HANDOFF', kind_label: 'Междепартаментная процессная передача', direction: 'DIRECTED_DERIVED', evidence: sourceIds.length ? 'EXPLICIT_CANONICAL_HANDOFF_WITH_SOURCE' : 'EXPLICIT_CANONICAL_HANDOFF_SOURCE_GAP', org: ministryName, process_id: processId, process: sender.Process || processId, source: `FROM_DEPT · ${sender.Basis} | TO_DEPT · ${owner.Basis}`, source_records: sourceRecords, source_ids: sourceIds, derived: true });
+    }
+  }
+  for (const record of SUPPLEMENTAL_DEPT_LINKS.links || []) {
+    const a = record.from_dept_global_id, b = record.to_dept_global_id;
+    if (record.org !== ministryName || !deptIds.has(a) || !deptIds.has(b)) continue;
+    const candidate = record.status === 'CANDIDATE' || record.status === 'WORKING_ANALYTICAL';
+    const generalDocumented = record.documentation_scope === 'GENERAL_ORGANIZATIONAL';
+    links.push({ ...record, id: record.id, a, b, a_name: record.from_department, b_name: record.to_department, kind: candidate ? 'DEPARTMENT_CANDIDATE' : 'DEPARTMENT_DOCUMENTED', kind_label: candidate ? 'Аналитическая функциональная связь — требуется прямое подтверждение' : (generalDocumented ? 'Документированное общее организационное взаимодействие' : 'Документированное междепартаментное взаимодействие'), direction: record.direction, evidence: record.evidence, org: record.org, process: record.process || record.process_id || '', source_ids: String(record.source_id || '').split(/[;,]/).map(value => value.trim()).filter(Boolean), source_url: record.source_url, source_title: record.source_title });
+  }
+
+  const existingPairs = new Set(links.map(edge => [edge.a, edge.b].sort().join('|')));
+  const processesByDept = new Map(), recordsByDeptProcess = new Map();
+  for (const department of deptRows) {
+    processesByDept.set(department.Dept_Global_ID, new Map());
+    recordsByDeptProcess.set(department.Dept_Global_ID, new Map());
+  }
+  const addProcessRecord = record => {
+    const departmentId = record.Dept_Global_ID, processId = record.Process_ID || record.Process;
+    if (!deptIds.has(departmentId) || !processId) return;
+    if (!processesByDept.get(departmentId).has(processId)) processesByDept.get(departmentId).set(processId, record.Process || processId);
+    if (!recordsByDeptProcess.get(departmentId).has(processId)) recordsByDeptProcess.get(departmentId).set(processId, []);
+    recordsByDeptProcess.get(departmentId).get(processId).push(record);
+  };
+  for (const values of structureProcessesByDept.values()) for (const record of values) addProcessRecord(record);
+  for (const values of structureRolesByDept.values()) for (const record of values) addProcessRecord(record);
+  const ids = [...deptIds];
+  for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) {
+    const a = ids[i], b = ids[j], pair = [a, b].sort().join('|');
+    if (existingPairs.has(pair)) continue;
+    const left = processesByDept.get(a) || new Map(), right = processesByDept.get(b) || new Map();
+    const common = [...left.keys()].filter(processId => right.has(processId));
+    if (!common.length) continue;
+    const sourceRecords = [];
+    for (const processId of common) sourceRecords.push(...(recordsByDeptProcess.get(a)?.get(processId) || []), ...(recordsByDeptProcess.get(b)?.get(processId) || []));
+    const sourceIds = structureSourceIdsForRecords(ministryName, sourceRecords);
+    if (!sourceIds.length) continue;
+    const names = [...new Set(common.map(processId => left.get(processId) || right.get(processId) || processId))];
+    links.push({ id: `STR:SHAREDPROC:${a}:${b}:${common.map(value => hashString(value)).join('-')}`, a, b, a_name: structureDepartmentName(a), b_name: structureDepartmentName(b), kind: 'DEPARTMENT_SHARED_PROCESS', kind_label: common.length === 1 ? 'Общий подтверждённый процесс' : 'Общие подтверждённые процессы', direction: 'UNDIRECTED_CONTEXTUAL', evidence: 'SHARED_CANONICAL_PROCESS_ID_WITH_SOURCE', org: ministryName, process_ids: common, process_names: names, process: names.join(' · '), source_records: sourceRecords, source_ids: sourceIds, derived_context: true });
+  }
+  return links;
+}
+
+function structureMinistryInteractionLinks() {
+  const groups = new Map();
+  for (const edge of DATA.edges) {
+    if (edge.a === edge.b || edge.channel_binding || edge.source_coverage === 'EXCLUDED_NO_DOCUMENT' || !edge.source_ids?.length) continue;
+    if (!coreIds.has(edge.a) || !coreIds.has(edge.b)) continue;
+    const pair = [edge.a, edge.b].sort();
+    const key = pair.join('|');
+    if (!groups.has(key)) groups.set(key, { a: pair[0], b: pair[1], edges: [] });
+    groups.get(key).edges.push(edge);
+  }
+  return [...groups.values()].map(group => {
+    const sourceIds = [...new Set(group.edges.flatMap(edge => edge.source_ids || []))];
+    return { id: `STR:MINISTRY:${group.a}:${group.b}`, a: group.a, b: group.b, a_name: nodeById[group.a]?.name || group.a, b_name: nodeById[group.b]?.name || group.b, kind: 'MINISTRY_INTERACTION', kind_label: 'Межведомственное взаимодействие основных органов', direction: 'UNDIRECTED_AGGREGATED', evidence: sourceIds.length ? 'SOURCE_BACKED_AGGREGATION' : 'SOURCE_GAP', org: 'Межведомственный контур', source_ids: sourceIds, base_edge_ids: group.edges.map(edge => edge.id), relation_types: [...new Set(group.edges.flatMap(edge => String(edge.relation_types || '').split(';').map(value => value.trim()).filter(Boolean)))], channels: [...new Set(group.edges.flatMap(edge => channelNorm(edge.channels)))], processes: [...new Set(group.edges.flatMap(edge => String(edge.processes || '').split('|').map(value => value.trim()).filter(Boolean)))], evidence_count: group.edges.reduce((sum, edge) => sum + Number(edge.evidence_count || 0), 0) };
+  });
+}
+
+function buildStructureGraph() {
+  const nodes = [], links = [];
+  structureNodeById.clear();
+  const selectedMin = structureMinistryFocusId;
+  const selectedDept = structureDeptDetailId && structureDeptById.get(structureDeptDetailId);
+  const ministryIds = selectedMin ? [selectedMin] : CORE.map(([id]) => id);
+  for (const ministryId of ministryIds) nodes.push({ ...nodeById[ministryId], id: ministryId, name: nodeById[ministryId]?.name || CORE.find(([id]) => id === ministryId)?.[1] || ministryId, type: 'MINISTRY', structure: true });
+  for (const record of structureDeptById.values()) {
+    const parentOrg = structureOrgId(record.Org);
+    if (ministryIds.includes(parentOrg)) nodes.push({ id: record.Dept_Global_ID, name: record.Registry_Name, type: 'DEPARTMENT', parentOrg, structure: true });
+  }
+  for (const node of nodes) structureNodeById.set(node.id, node);
+  for (const ministryId of ministryIds) links.push(...structureDepartmentHandoffLinks(ministryId).filter(edge => structureNodeById.has(edge.a) && structureNodeById.has(edge.b)));
+  if (!selectedMin) links.push(...structureMinistryInteractionLinks());
+  if (selectedDept) {
+    const departmentId = selectedDept.Dept_Global_ID;
+    const functions = new Map();
+    for (const record of structureFunctionsByDept.get(departmentId) || []) {
+      const id = `STR:F:${departmentId}:${record.Function_ID || record.Function || hashString(JSON.stringify(record))}`;
+      if (!functions.has(id)) functions.set(id, record);
+    }
+    for (const [id, record] of functions) {
+      const name = record.Function || record.Function_ID || 'Функция';
+      const node = { id, name: `Функция: ${name}`, type: 'FUNCTION', structure: true, sourceRecords: [record] };
+      nodes.push(node); structureNodeById.set(id, node);
+      links.push({ id: `STR:FUNC:${departmentId}:${id}`, a: departmentId, b: id, a_name: selectedDept.Registry_Name, b_name: name, kind: 'FUNCTION', kind_label: 'Связь с функцией', direction: 'DIRECTED_EXPLICIT', evidence: record.Evidence || record.Confidence || '', source: record.Source || record.Basis || '' });
+    }
+    const processes = new Map();
+    for (const record of [...(structureProcessesByDept.get(departmentId) || []), ...(structureRolesByDept.get(departmentId) || [])]) {
+      const id = `STR:P:${departmentId}:${record.Process_ID || record.Process || hashString(JSON.stringify(record))}`;
+      if (!processes.has(id)) processes.set(id, []);
+      processes.get(id).push(record);
+    }
+    for (const [id, records] of processes) {
+      const primary = records.find(record => record.Process || record.Process_ID) || records[0];
+      const name = primary?.Process || primary?.Process_ID || 'Процесс';
+      const node = { id, name: `Процесс: ${name}`, type: 'PROCESS', structure: true, sourceRecords: records };
+      nodes.push(node); structureNodeById.set(id, node);
+      links.push({ id: `STR:PROC:${departmentId}:${id}`, a: departmentId, b: id, a_name: selectedDept.Registry_Name, b_name: name, kind: 'PROCESS', kind_label: 'Связь с процессом', direction: 'DIRECTED_EXPLICIT', evidence: [...new Set(records.map(record => record.Evidence || record.Confidence || '').filter(Boolean))].join(' · '), source: [...new Set(records.map(record => record.Source || record.Basis || record.Role_Detail || '').filter(Boolean))].join(' · ') });
+    }
+  }
+  return { nodes, links };
+}
+
+function structureNodeRadius(node) {
+  if (node.type === 'MINISTRY') return structureMinistryFocusId ? 18 : 12;
+  if (node.type === 'DEPARTMENT') return structureMinistryFocusId ? 10 : 4.5;
+  if (node.type === 'FUNCTION' || node.type === 'PROCESS') return 8;
+  return 7;
+}
+
+function structureOverviewAreaRadius() {
+  const columns = 4, rows = Math.ceil(CORE.length / columns);
+  return Math.max(64, Math.min(W / columns, H / rows) * .36);
+}
+
+function arrangeStructureLayout(nodes, links) {
+  const cx = W / 2, cy = H / 2;
+  const nodeMap = new Map(nodes.map(node => [node.id, node]));
+  const ministries = nodes.filter(node => node.type === 'MINISTRY');
+  const departments = nodes.filter(node => node.type === 'DEPARTMENT');
+  const functions = nodes.filter(node => node.type === 'FUNCTION');
+  const processes = nodes.filter(node => node.type === 'PROCESS');
+  if (structureMinistryFocusId) {
+    const ministry = nodeMap.get(structureMinistryFocusId);
+    if (!ministry) return;
+    ministry.x = cx; ministry.y = cy;
+    const ownDepartments = departments.filter(node => node.parentOrg === structureMinistryFocusId);
+    const degree = new Map(ownDepartments.map(node => [node.id, 0]));
+    for (const edge of links) if (degree.has(edge.a) && degree.has(edge.b)) { degree.set(edge.a, degree.get(edge.a) + 1); degree.set(edge.b, degree.get(edge.b) + 1); }
+    ownDepartments.sort((a, b) => degree.get(b.id) - degree.get(a.id) || a.name.localeCompare(b.name, 'ru'));
+    const radius = structureMinistryAreaRadius();
+    const rings = [{ cap: 7, r: radius * .31 }, { cap: 11, r: radius * .56 }, { cap: 16, r: radius * .78 }, { cap: 30, r: radius * .91 }];
+    let index = 0;
+    for (let ringIndex = 0; ringIndex < rings.length && index < ownDepartments.length; ringIndex++) {
+      const ring = rings[ringIndex], count = Math.min(ring.cap, ownDepartments.length - index), offset = ringIndex % 2 * Math.PI / Math.max(1, count);
+      for (let item = 0; item < count; item++, index++) { const node = ownDepartments[index], point = polar(cx, cy, ring.r, -Math.PI / 2 + offset + item / count * Math.PI * 2); node.x = point.x; node.y = point.y; }
+    }
+    if (structureDeptDetailId) {
+      const department = nodeMap.get(structureDeptDetailId);
+      if (department) {
+        const axis = Math.atan2(department.y - cy, department.x - cx), functionRadius = radius + 82, processRadius = radius + 158;
+        functions.forEach((node, index) => { const span = Math.PI * .72, point = polar(cx, cy, functionRadius, axis - span / 2 + index / Math.max(1, functions.length - 1) * span); node.x = point.x; node.y = point.y; });
+        processes.forEach((node, index) => { const span = Math.PI * .88, point = polar(cx, cy, processRadius, axis - span / 2 + index / Math.max(1, processes.length - 1) * span); node.x = point.x; node.y = point.y; });
+      }
+    }
+    return;
+  }
+  const columns = 4, rows = Math.ceil(ministries.length / columns), cellWidth = W / columns, cellHeight = H / rows, radius = structureOverviewAreaRadius();
+  ministries.forEach((ministry, index) => {
+    const column = index % columns, row = Math.floor(index / columns);
+    ministry.x = cellWidth * (column + .5); ministry.y = cellHeight * (row + .5);
+    const ownDepartments = departments.filter(node => node.parentOrg === ministry.id).sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+    const rings = ownDepartments.length <= 14 ? [{ cap: 14, r: radius * .72 }] : [{ cap: 12, r: radius * .53 }, { cap: 30, r: radius * .84 }];
+    let cursor = 0;
+    for (let ringIndex = 0; ringIndex < rings.length && cursor < ownDepartments.length; ringIndex++) {
+      const ring = rings[ringIndex], count = Math.min(ring.cap, ownDepartments.length - cursor), offset = ringIndex * Math.PI / Math.max(1, count);
+      for (let item = 0; item < count; item++, cursor++) { const node = ownDepartments[cursor], point = polar(ministry.x, ministry.y, ring.r, -Math.PI / 2 + offset + item / count * Math.PI * 2); node.x = point.x; node.y = point.y; }
+    }
+  });
+}
+
+function structureEdgeDetail(edge) {
+  const arrow = String(edge.direction || '').startsWith('UNDIRECTED') || edge.kind === 'DEPARTMENT_SHARED_PROCESS' || edge.kind === 'MINISTRY_INTERACTION' ? '↔' : '→';
+  const status = edge.kind === 'DEPARTMENT_CANDIDATE' ? 'Аналитический функциональный контекст; требуется прямой регламент или документ передачи.' : edge.kind === 'DEPARTMENT_DOCUMENTED' ? 'Документированная связь из исходной матрицы.' : edge.kind === 'MINISTRY_INTERACTION' ? `Агрегировано исходных связей: ${(edge.base_edge_ids || []).length}.` : edge.kind === 'DEPARTMENT_SHARED_PROCESS' ? 'Совместное участие в подтверждённом процессе; прямой обмен не утверждается.' : 'Связь структурного слоя.';
+  const details = edge.kind === 'MINISTRY_INTERACTION' ? `<p><strong>Типы:</strong> ${esc((edge.relation_types || []).join(' · ') || '—')}</p><p><strong>Каналы:</strong> ${esc((edge.channels || []).join(' · ') || '—')}</p>` : `<p><strong>Процесс / основание:</strong> ${esc(edge.process || edge.basis || edge.source || '—')}</p>`;
+  return `<h2>${esc(edge.a_name)} ${arrow} ${esc(edge.b_name)}</h2><div class="meta">${esc(edge.kind_label || edge.kind || 'Связь')}</div><div class="card"><p><strong>Статус:</strong> ${esc(status)}</p><p><strong>Доказательность:</strong> ${esc(edge.evidence || '—')}</p>${details}${edge.input_data ? `<p><strong>Вход:</strong> ${esc(edge.input_data)}</p>` : ''}${edge.output_data ? `<p><strong>Выход:</strong> ${esc(edge.output_data)}</p>` : ''}${edge.qa_note ? `<p class="small">${esc(edge.qa_note)}</p>` : ''}</div>${structureSourceHtml(edge)}`;
+}
+
+function renderStructureGraph() {
+  const state = buildStructureGraph();
+  simulationNodes = state.nodes; simulationEdges = state.links;
+  arrangeStructureLayout(state.nodes, state.links);
+  edgesLayer.innerHTML = ''; nodesLayer.innerHTML = '';
+  const ministryIds = structureMinistryFocusId ? [structureMinistryFocusId] : CORE.map(([id]) => id);
+  for (const ministryId of ministryIds) {
+    const ministry = state.nodes.find(node => node.id === ministryId);
+    if (!ministry) continue;
+    const radius = structureMinistryFocusId ? structureMinistryAreaRadius() : structureOverviewAreaRadius();
+    const color = coreColor(ministryId);
+    const ownDepartments = state.nodes.filter(node => node.type === 'DEPARTMENT' && node.parentOrg === ministryId);
+    const internal = state.links.filter(edge => edge.kind !== 'MINISTRY_INTERACTION' && ownDepartments.some(node => node.id === edge.a) && ownDepartments.some(node => node.id === edge.b));
+    const boundary = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    boundary.classList.add('structure-ministry-boundary'); boundary.setAttribute('cx', ministry.x); boundary.setAttribute('cy', ministry.y); boundary.setAttribute('r', radius); boundary.setAttribute('fill', color); boundary.setAttribute('fill-opacity', structureMinistryFocusId ? '.075' : '.045'); boundary.setAttribute('stroke', color); boundary.setAttribute('stroke-opacity', '.58'); boundary.setAttribute('stroke-width', structureMinistryFocusId ? '2.3' : '1.5');
+    boundary.addEventListener('click', event => { event.stopPropagation(); focusStructureMinistry(ministryId); }); edgesLayer.appendChild(boundary);
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'text'); title.classList.add('structure-ministry-boundary-title'); title.setAttribute('x', ministry.x); title.setAttribute('y', ministry.y - radius + (structureMinistryFocusId ? 30 : 15)); title.setAttribute('fill', color); title.textContent = ministry.name; nodesLayer.appendChild(title);
+    const meta = document.createElementNS('http://www.w3.org/2000/svg', 'text'); meta.classList.add('structure-ministry-boundary-meta'); meta.setAttribute('x', ministry.x); meta.setAttribute('y', ministry.y - radius + (structureMinistryFocusId ? 48 : 28)); meta.textContent = `${ownDepartments.length} подразделений · ${internal.length} связей`; nodesLayer.appendChild(meta);
+  }
+  for (const edge of state.links) {
+    for (const hitMode of [true, false]) {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.classList.add(hitMode ? 'edge-hit' : 'edge', 'structure-edge');
+      if (edge.kind === 'DEPARTMENT_HANDOFF') line.classList.add('department-handoff');
+      if (edge.kind === 'DEPARTMENT_DOCUMENTED') line.classList.add('department-documented');
+      if (edge.kind === 'DEPARTMENT_CANDIDATE') line.classList.add('department-candidate');
+      if (edge.kind === 'DEPARTMENT_SHARED_PROCESS') line.classList.add('department-shared-process');
+      if (edge.kind === 'MINISTRY_INTERACTION') line.classList.add('ministry-interaction');
+      if (edge.kind === 'FUNCTION') line.classList.add('function-edge');
+      if (edge.kind === 'PROCESS') line.classList.add('process-edge');
+      line.dataset.id = edge.id;
+      if (hitMode) { line.addEventListener('mouseenter', event => structureEdgeTooltip(edge, event)); line.addEventListener('mousemove', moveTooltip); line.addEventListener('mouseleave', hideTooltip); line.addEventListener('click', event => { event.stopPropagation(); selectedEdge = edge; selectedNode = null; detail.innerHTML = structureEdgeDetail(edge); }); }
+      edgesLayer.appendChild(line);
+    }
+  }
+  for (const node of state.nodes) {
+    if (structureMinistryFocusId && node.type === 'MINISTRY') continue;
+    const group = document.createElementNS('http://www.w3.org/2000/svg', 'g'); group.classList.add('node'); group.dataset.id = node.id;
+    if (node.type === 'MINISTRY') group.classList.add('structure-ministry', 'ministry', 'core-ministry');
+    if (node.type === 'DEPARTMENT') group.classList.add('structure-dept');
+    if (node.type === 'FUNCTION') group.classList.add('structure-function');
+    if (node.type === 'PROCESS') group.classList.add('structure-process');
+    const radius = structureNodeRadius(node), circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('r', radius); circle.setAttribute('fill', node.type === 'MINISTRY' ? coreColor(node.id) : node.type === 'DEPARTMENT' ? coreColor(node.parentOrg) : colorForType(node.type));
+    if (node.type === 'DEPARTMENT') circle.setAttribute('fill-opacity', structureMinistryFocusId ? '.88' : '.78');
+    group.appendChild(circle);
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title'); title.textContent = node.name; group.appendChild(title);
+    if (structureMinistryFocusId || (node.type !== 'DEPARTMENT' && node.type !== 'MINISTRY')) {
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text'); text.setAttribute('x', radius + 7); text.setAttribute('y', 4);
+      for (const [index, lineText] of structureLabelLines(node.name, node.type, node.id).entries()) { const span = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); span.textContent = lineText; span.setAttribute('x', node.type === 'MINISTRY' ? 0 : radius + 7); span.setAttribute('dy', index === 0 ? '0' : node.type === 'DEPARTMENT' ? '13' : '12'); text.appendChild(span); }
+      if (node.type === 'MINISTRY') text.setAttribute('font-weight', '700'); group.appendChild(text); updateStructureLabel(group, node, radius);
+    }
+    group.addEventListener('click', event => { event.stopPropagation(); if (node.type === 'DEPARTMENT') focusDepartment(node.id); else if (node.type === 'MINISTRY') focusStructureMinistry(node.id); else selectNode(node.id); });
+    group.addEventListener('mousedown', event => startNodeDrag(event, node)); nodesLayer.appendChild(group);
+  }
+  drawStructurePositions(); updateStats();
+}
+
+function fitStructureView() {
+  if (graphMode !== 'STRUCTURE') return;
+  const fit = structureMinistryFocusId ? (structureDeptDetailId ? .64 : .70) : .88;
+  scale = fit; tx = W / 2 - scale * W / 2; ty = H / 2 - scale * H / 2; applyTransform();
+}
+
+function selectNode(id){if(graphMode==='STRUCTURE'){selectedNode=id;selectedEdge=null;detail.innerHTML=injectOfficialSiteButtons(structureNodeDetail(id),id);for(const g of nodesLayer.children)g.classList.toggle('selected',g.dataset.id===id||g.dataset.id===structureMinistryFocusId);return;}selectedNode=id;selectedEdge=null;detail.innerHTML=injectOfficialSiteButtons(nodeDetail(id),id);for(const g of nodesLayer.children)g.classList.toggle('selected',g.dataset.id===id)}
+function ministryContextCategory(node,otherId){
+  if(coreIds.has(otherId))return {key:'CORE',label:'Другие основные ведомства'};
+  if(isMinistryNode(node))return {key:'MINISTRIES',label:'Другие министерства'};
+  const t=node?.type||'UNKNOWN';
+  if(['MINISTRY','FEDERAL_SERVICE','FEDERAL_AGENCY','REGIONAL_AUTHORITY','MUNICIPALITY','CORPORATION','INSTITUTION','ORGANIZATION','ACTOR_GROUP','COMPOSITE_ACTOR'].includes(t))return {key:'ORGS',label:'Организации и органы власти'};
+  if(['SYSTEM','SYSTEM_ARTIFACT'].includes(t))return {key:'SYSTEMS',label:'Информационные системы'};
+  if(t==='REGISTER')return {key:'REGISTERS',label:'Реестры'};
+  if(t==='CHANNEL')return {key:'CHANNELS',label:'Каналы связи'};
+  if(t==='DATA_CLASS')return {key:'DATA',label:'Данные'};
+  if(['PROCESS','FUNCTION','FUNCTIONAL_BLOCK','RESULT'].includes(t))return {key:'PROCESSES',label:'Процессы, функции и результаты'};
+  if(t==='DEPARTMENT')return {key:'DEPARTMENTS',label:'Подразделения'};
+  return {key:'OTHER',label:'Прочие сущности'};
+}
+function ministryContextEdgeLabel(edge,id){
+  const otherId=edge.a===id?edge.b:edge.a;
+  const other=nodeById[otherId];
+  const arrow=edge.integration_layer==='SECONDARY_ORG_RESEARCH_V132'&&!hasKnownDirection(edge)?'—':edge.direction?.includes('BIDIRECTIONAL')?'↔':(edge.a===id?'→':'←');
+  const rel=relationLabels(edge.relation_types||'')||'взаимодействие';
+  return `${arrow} ${other?.name||otherId} · ${rel}`;
+}
+function fullMinistryContextHtml(id){return '';}
+function nodeDetail(id){
+  const n=nodeById[id]||channelNodeById[id];
+  if(!n)return '<div class="empty">Узел не найден.</div>';
+  if(n.synthetic&&n.type==='CHANNEL'){
+    const meta=channelMeta[id]||{baseEdges:new Set(),orgs:new Set(),connections:new Map()};
+    const srcIds=[...new Set([...meta.connections.values()].flatMap(c=>[...c.source_ids]))];
+    const rows=[...meta.connections.entries()].map(([org,c])=>{const data=[...new Set(c.data_texts)].filter(Boolean).slice(0,3);const procs=[...new Set(c.processes)].filter(Boolean).slice(0,2);return `<tr><td><strong>${esc(nodeById[org]?.name||org)}</strong></td><td>${esc(data.join(' • ')||procs.join(' • ')||'Информация не детализирована в нормализованной записи')}</td><td>${c.baseEdges.size}</td></tr>`}).join('');
+    return `<h2>${esc(n.name)}</h2><div class="meta">Канал связи · ${esc(n.id)}</div><div class="card"><h4>Канал как общий узел</h4><p>Один узел соответствует одному нормализованному каналу. Все организации, для которых в исходных матрицах зафиксирован этот канал, соединяются с ним.</p><p><strong>Организаций:</strong> ${meta.orgs.size} · <strong>Исходных взаимодействий:</strong> ${meta.baseEdges.size} · <strong>Источников:</strong> ${srcIds.length}</p><p><strong>Передаваемая информация:</strong> ${esc(meta.data_texts?.slice(0,8).join(' • ')||'в нормализованной записи не детализирована')}</p></div><div class="card"><h4>Участники и передаваемая информация</h4><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:10px"><thead><tr><th style="text-align:left;padding:5px;border-bottom:1px solid #d8dee7">Организация</th><th style="text-align:left;padding:5px;border-bottom:1px solid #d8dee7">Что передаётся / контекст</th><th style="text-align:left;padding:5px;border-bottom:1px solid #d8dee7">Связей</th></tr></thead><tbody>${rows||'<tr><td colspan="3">Нет детализации.</td></tr>'}</tbody></table></div></div>`;
+  }
+  const es=DATA.edges.filter(e=>(e.a===id||e.b===id)&&e.source_coverage!=='EXCLUDED_NO_DOCUMENT');
+  const connectedCore=[...new Set(es.flatMap(e=>[e.a,e.b]).filter(x=>coreIds.has(x)&&x!==id))];
+  const connectedMinistries=[...new Set(es.flatMap(e=>[e.a,e.b]).filter(x=>x!==id&&isMinistryNode(nodeById[x])))];
+  const srcIds=[...new Set(es.flatMap(e=>e.source_ids||[]))];
+  const orgs=connectedMinistries.map(x=>nodeById[x]?.name).filter(Boolean);
+  const focusBtn=coreIds.has(id)?`<button class="btn primary" onclick="setFocus('${id}')">Показать межминистерские связи</button>`:'';
+  const aliases=(Array.isArray(n.aliases)?n.aliases:String(n.aliases||'').split(/[;,]/)).filter(x=>x&&x!==n.name);
+  const stdCard=aliases.length?`<div class="card"><h4>Стандартизация названия</h4><p><strong>Каноническое название:</strong> ${esc(n.name)}</p><p><strong>Встречалось в матрицах как:</strong> ${esc(aliases.join(' · '))}</p></div>`:'';
+  const fullContext=fullMinistryContextHtml(id);
+  const ordinaryEdges=coreIds.has(id)?es.filter(e=>isOverviewEdge(e)):es;
+  const connectionsTitle=coreIds.has(id)?'Связи на главной карте':'Связи узла';
+  const connections=`<div class="card"><h4>${connectionsTitle}</h4>${ordinaryEdges.slice(0,40).map(e=>`<p><button class="btn" style="padding:5px 7px;font-size:10px" onclick="selectEdgeById('${e.id}')">${esc(e.a_name)} ${e.integration_layer==='SECONDARY_ORG_RESEARCH_V132'&&!hasKnownDirection(e)?'—':e.direction.includes('BIDIRECTIONAL')?'↔':'→'} ${esc(e.b_name)}</button></p>`).join('')||'<div class="small">Нет связей этой категории.</div>'}${ordinaryEdges.length>40?`<div class="small">Показаны первые 40 из ${ordinaryEdges.length} связей.</div>`:''}</div>`;
+  return `<h2>${esc(n.name)}</h2><div class="meta">${esc(labelType(n.type))} · ${esc(n.id)}</div>${stdCard}<div class="card"><h4>Контекст</h4><p><strong>Матрицы:</strong> ${esc((n.matrices||'').split(',').filter(Boolean).map(x=>x.trim()).join(' · ')||'—')}</p><p><strong>Прямых действующих записей связей:</strong> ${es.length}</p><p><strong>Источников в связанных рёбрах:</strong> ${srcIds.length}</p><p><strong>Связан с министерствами:</strong> ${connectedMinistries.length}</p><p><strong>Из них основных органов:</strong> ${connectedCore.length}</p>${orgs.length?`<p><strong>Министерства:</strong> ${esc(orgs.join(' · '))}</p>`:''}<div class="btnrow" style="margin-top:8px">${focusBtn}</div></div>${fullContext}${connections}`;
+}
+
+window.selectEdgeById=id=>{const e=DATA.edges.find(x=>x.id===id);if(e){selectEdge(e);for(const l of edgesLayer.children)l.classList.toggle('hovered',l.dataset.id===e.id)}}
+function applySearch(){startSimulation();if(graphMode==='STRUCTURE')return;const q=document.getElementById('search').value.trim().toLowerCase();for(const g of nodesLayer.children){const n=nodeById[g.dataset.id]||channelNodeById[g.dataset.id];g.classList.toggle('dim',!!q&&(!n||!n.name.toLowerCase().includes(q)))}}
+['relFilter','matrixFilter','directionFilter','onlySourced','onlyCore','onlyCommon'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{onlyCommon=document.getElementById('onlyCommon').checked;startSimulation()}));document.getElementById('search').addEventListener('input',applySearch);
+document.getElementById('modeOverview').onclick=()=>setGraphMode('OVERVIEW');(document.getElementById('modeChannels')||document.createElement('button')).onclick=()=>setGraphMode('CHANNELS');document.getElementById('modeStructure').onclick=()=>setGraphMode('STRUCTURE');document.getElementById('structureMinistrySelect').onchange=ev=>{const v=ev.target.value;structureMinistryFocusId=v==='ALL'?null:v;structureDeptDetailId=null;selectedNode=structureMinistryFocusId;selectedEdge=null;startSimulation();fitViewForMode();if(structureMinistryFocusId)detail.innerHTML=injectOfficialSiteButtons(structureNodeDetail(structureMinistryFocusId),structureMinistryFocusId);else structureResetDetail()};document.getElementById('clearStructureFocus').onclick=()=>{structureMinistryFocusId=null;structureDeptDetailId=null;document.getElementById('structureMinistrySelect').value='ALL';selectedNode=null;selectedEdge=null;startSimulation();fitViewForMode();structureResetDetail()};document.getElementById('channelFocusSelect').onchange=ev=>{channelFocusId=ev.target.value==='ALL'?null:ev.target.value;startSimulation();fitChannelView();};document.getElementById('clearChannelFocus').onclick=()=>{channelFocusId=null;document.getElementById('channelFocusSelect').value='ALL';startSimulation();fitChannelView();};
+document.getElementById('resetBtn').onclick=()=>{document.getElementById('relFilter').value='ALL';document.getElementById('matrixFilter').value='ALL';document.getElementById('directionFilter').value='ALL';document.getElementById('onlySourced').checked=false;document.getElementById('onlyCore').checked=false;document.getElementById('search').value='';focusSet.clear();selectedNode=null;selectedEdge=null;channelFocusId=null;structureMinistryFocusId=null;structureDeptDetailId=null;if(document.getElementById('structureMinistrySelect'))document.getElementById('structureMinistrySelect').value='ALL';updateFocusModeClass();graphMode='OVERVIEW';document.getElementById('modeOverview').classList.add('primary');(document.getElementById('modeChannels')||document.createElement('button')).classList.remove('primary');document.getElementById('modeStructure').classList.remove('primary');document.getElementById('ministryFocusSection').style.display='block';document.getElementById('channelFocusSection').style.display='none';document.getElementById('structureFocusSection').style.display='none';onlyCommon=false;document.getElementById('onlyCommon').checked=false;document.getElementById('modeOverview').classList.add('primary');(document.getElementById('modeChannels')||document.createElement('button')).classList.remove('primary');document.getElementById('modeHelp').textContent='Обзор: связи основных ведомств со всеми министерствами, присутствующими в атласе. Выберите основное ведомство, чтобы оставить только его связи с другими министерствами; службы, агентства, Росстат, Росреестр, ФНС, системы, реестры и другие сущности раскрываются в карточке ведомства.';doc
