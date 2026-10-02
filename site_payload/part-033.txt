@@ -151,11 +151,12 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
     const featuredIds = ['GOV:TYPE-INTERNAL-REGULATION-452','MTRANS:PUBLIC-COUNCIL-PLAN-2023','MINAGRI:RIA-GRAIN-2019'];
     const featured = featuredIds.map(id => DATA.sources.find(source => source.source_id === id)).filter(Boolean);
     const escapeText = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-    detail.innerHTML = `<h2>Документальная база</h2><div class="meta">${DATA.sources.length} источников в интегрированной модели</div><div class="card"><h4>Как читать атлас</h4><p>Крупные цветные круги обозначают двенадцать основных органов. Среди остальных участников узлы с 6 и более связями на главной карте показаны как компактные хабы: число внутри узла — количество их связей, а размер кольца растёт по трём ступеням связности. Такие хабы остаются второстепенными и визуально не конкурируют с основными органами. Карта шире экрана: перемещайте её или уменьшайте масштаб, чтобы раскрыть дальние узлы и связи. Каждая линия сохраняет карточку документального основания.</p></div><div class="source-block"><strong>Опорные документы</strong>${featured.map(source => `<div class="src"><strong>${escapeText(source.title)}</strong><div class="small">${escapeText(source.what_confirms)}</div><div><a href="${escapeText(source.url)}" target="_blank" rel="noopener">Открыть источник</a></div></div>`).join('')}</div>`;
+    detail.innerHTML = `<h2>Документальная база</h2><div class="meta">${DATA.sources.length} источников в интегрированной модели</div><div class="card"><h4>Как читать атлас</h4><p>Крупные цветные круги обозначают двенадцать основных органов. Среди остальных участников узлы с 6 и более связями на главной карте показаны как компактные хабы: число внутри узла — количество уникальных связанных объектов, а размер кольца по-прежнему растёт по трём ступеням общего числа связей. Такие хабы остаются второстепенными и визуально не конкурируют с основными органами. Карта шире экрана: перемещайте её или уменьшайте масштаб, чтобы раскрыть дальние узлы и связи. Каждая линия сохраняет карточку документального основания.</p></div><div class="source-block"><strong>Опорные документы</strong>${featured.map(source => `<div class="src"><strong>${escapeText(source.title)}</strong><div class="small">${escapeText(source.what_confirms)}</div><div><a href="${escapeText(source.url)}" target="_blank" rel="noopener">Открыть источник</a></div></div>`).join('')}</div>`;
   }
   const svgNamespace = 'http://www.w3.org/2000/svg';
   const ATLAS_SECONDARY_HUB_MIN_DEGREE = 6;
   const atlasSecondaryHubDegree = new Map();
+  const atlasSecondaryHubNeighbors = new Map();
   function isAtlasSecondaryHubBaseEdge(edge) {
     if (!edge || edge.source_coverage === 'EXCLUDED_NO_DOCUMENT' || edge.channel_binding || edge.a === edge.b) return false;
     const a = nodeById[edge.a], b = nodeById[edge.b];
@@ -170,8 +171,13 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
     if (!isAtlasSecondaryHubBaseEdge(edge)) continue;
     atlasSecondaryHubDegree.set(edge.a,(atlasSecondaryHubDegree.get(edge.a)||0)+1);
     atlasSecondaryHubDegree.set(edge.b,(atlasSecondaryHubDegree.get(edge.b)||0)+1);
+    if (!atlasSecondaryHubNeighbors.has(edge.a)) atlasSecondaryHubNeighbors.set(edge.a,new Set());
+    if (!atlasSecondaryHubNeighbors.has(edge.b)) atlasSecondaryHubNeighbors.set(edge.b,new Set());
+    atlasSecondaryHubNeighbors.get(edge.a).add(edge.b);
+    atlasSecondaryHubNeighbors.get(edge.b).add(edge.a);
   }
   function atlasHubDegree(id) { return atlasSecondaryHubDegree.get(id) || 0; }
+  function atlasHubObjectCount(id) { return atlasSecondaryHubNeighbors.get(id)?.size || 0; }
   function atlasHubTier(degree) { return degree >= 15 ? 3 : degree >= 10 ? 2 : degree >= ATLAS_SECONDARY_HUB_MIN_DEGREE ? 1 : 0; }
 
   function ministryGlyph(id) {
@@ -269,9 +275,11 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
         }
       } else {
         const degree = atlasHubDegree(group.dataset.id);
+        const objectCount = atlasHubObjectCount(group.dataset.id);
         const tier = atlasHubTier(degree);
         const isHub = tier > 0;
         group.dataset.hubDegree = String(degree);
+        group.dataset.hubObjectCount = String(objectCount);
         group.classList.toggle('secondary-hub',isHub);
         for (const name of ['hub-tier-1','hub-tier-2','hub-tier-3']) group.classList.remove(name);
         if (isHub) group.classList.add(`hub-tier-${tier}`);
@@ -316,7 +324,7 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
             group.insertBefore(counter,label || null);
           }
           const countText = counter.querySelector('.secondary-hub-degree');
-          if (countText) countText.textContent=String(degree);
+          if (countText) countText.textContent=String(objectCount);
         } else {
           ring?.remove();
           group.querySelector(':scope > g.secondary-hub-counter')?.remove();
@@ -328,7 +336,7 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
           const node=simulationNodes?.find(item=>item.id===group.dataset.id),left=node?.x<W/2;
           label.setAttribute('x',String(left?-(radius+7):(radius+7))); label.setAttribute('text-anchor',left?'end':'start'); label.setAttribute('y','3.5');
           let title=group.querySelector(':scope > title'); if (!title) { title=document.createElementNS(svgNamespace,'title'); group.insertBefore(title,group.firstChild); }
-          title.textContent=isHub?`${full} — ${degree} связей на главной карте` : full;
+          title.textContent=isHub?`${full} — ${objectCount} связанных объектов · ${degree} связей на главной карте` : full;
         }
       }
     });
@@ -364,7 +372,7 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
     if (!hint) return;
     const title = hint.querySelector('strong'), text = hint.querySelector('span');
     if (title) title.textContent = internal ? 'Внутренний контур' : 'Широкая карта';
-    if (text) text.textContent = internal ? 'Уменьшите масштаб ниже 0,82 — департаменты скроются и вернётся общий слой' : 'Перемещайте карту мышью или пальцем · кнопка «−» раскрывает дальние связи';
+    if (text) text.textContent = internal ? 'Масштабируйте и перемещайте карту свободно · режим департаментов сохраняется до возврата на главную карту' : 'Перемещайте карту мышью или пальцем · кнопка «−» раскрывает дальние связи';
   }
   function clearInternalRelations() {
     internalMinistryId = null;
@@ -382,12 +390,37 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
   }
   function centerInternalCamera(id) {
     const ministry = simulationNodes?.find(node => node.id === id); if (!ministry) return;
-    const widthFit = (W * (window.innerWidth <= 820 ? .88 : .82)) / (internalBoundaryRadius * 2);
-    const heightFit = (H * (window.innerWidth <= 820 ? .82 : .78)) / (internalBoundaryRadius * 2);
-    scale = Math.max(.58,Math.min(window.innerWidth <= 820 ? 1.02 : 1.16,widthFit,heightFit));
+    const framingRadius = internalBoundaryRadius + (window.innerWidth <= 820 ? 38 : 54);
+    const widthFit = (W * (window.innerWidth <= 820 ? .94 : .91)) / (framingRadius * 2);
+    const heightFit = (H * (window.innerWidth <= 820 ? .88 : .86)) / (framingRadius * 2);
+    scale = Math.max(window.innerWidth <= 820 ? .58 : .68,Math.min(window.innerWidth <= 820 ? 1.02 : 1.12,widthFit,heightFit));
     tx = W / 2 - scale * ministry.x;
     ty = H / 2 - scale * ministry.y;
     applyTransform();
+  }
+  function internalDepartmentLabelLines(name,dense=false){
+    const base=String(name||'').replace(/^Департамент\s+/i,'').replace(/^Управление\s+/i,'Управление ');
+    const words=base.split(/\s+/).filter(Boolean),lines=[]; let line='';
+    const maxChars=dense?16:18, maxLines=2;
+    for (const word of words) {
+      const next=line?`${line} ${word}`:word;
+      if (next.length>maxChars && line) {
+        lines.push(line); line=word;
+      } else line=next;
+      if (lines.length===maxLines-1 && line.length>maxChars+5) break;
+    }
+    if (line) lines.push(line);
+    const out=[];
+    let rest=lines.join(' ').trim();
+    while (rest && out.length<maxLines) {
+      if (rest.length<=maxChars) { out.push(rest); rest=''; break; }
+      let cut=rest.lastIndexOf(' ',maxChars);
+      if (cut<Math.floor(maxChars*0.55)) cut=maxChars;
+      out.push(rest.slice(0,cut).trim());
+      rest=rest.slice(cut).trim();
+    }
+    if (rest) out[Math.max(0,out.length-1)]=out[Math.max(0,out.length-1)].replace(/[.,;:!?]?$/,'')+'…';
+    return out.filter(Boolean);
   }
   function renderInternalRelations(id, recenter = true) {
     if (!id || !ensureInternalLayers()) return;
@@ -400,18 +433,18 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
     links.forEach(edge => { degree.set(edge.a,(degree.get(edge.a)||0)+1); degree.set(edge.b,(degree.get(edge.b)||0)+1); });
     departments.sort((a,b) => (degree.get(b.Dept_Global_ID)||0)-(degree.get(a.Dept_Global_ID)||0) || a.Registry_Name.localeCompare(b.Registry_Name,'ru'));
     const positions = new Map();
-    const capacities = [8,10,12,16]; let cursor = 0, lastRingRadius = 80;
+    const capacities = [7,8,10,14,18]; let cursor = 0, lastRingRadius = 100;
     capacities.forEach((capacity,ring) => {
       const count = Math.min(capacity,departments.length-cursor); if (count <= 0) return;
-      const radius = 80 + ring * 52; lastRingRadius = radius;
+      const radius = 100 + ring * 72; lastRingRadius = radius;
       for (let index=0; index<count; index++) {
         const row = departments[cursor+index];
         const angle = -Math.PI/2 + ring*.19 + index*(Math.PI*2/count);
-        positions.set(row.Dept_Global_ID,{x:ministry.x+Math.cos(angle)*radius,y:ministry.y+Math.sin(angle)*radius,row,angle});
+        positions.set(row.Dept_Global_ID,{x:ministry.x+Math.cos(angle)*radius,y:ministry.y+Math.sin(angle)*radius,row,angle,radius});
       }
       cursor += count;
     });
-    internalBoundaryRadius = Math.max(190,lastRingRadius+38);
+    internalBoundaryRadius = Math.max(235,lastRingRadius+72);
     internalEdgesLayer.replaceChildren(); internalNodesLayer.replaceChildren();
     const coreColorValue = coreColor(id);
     const boundary = document.createElementNS(svgNamespace,'circle'); boundary.classList.add('atlas-internal-boundary');
@@ -436,14 +469,74 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
       const openEdge = event => { event?.stopPropagation?.(); selectedNode=null; selectedEdge=edge; detail.innerHTML=structureEdgeDetail(edge); };
       hit.addEventListener('click',openEdge); internalEdgesLayer.append(line,hit);
     });
+
+    const dense = departments.length > 22;
     for (const position of positions.values()) {
-      const group = document.createElementNS(svgNamespace,'g'); group.classList.add('atlas-internal-dept'); if (departments.length>24) group.classList.add('dense'); group.dataset.id=position.row.Dept_Global_ID; group.setAttribute('transform',`translate(${position.x},${position.y})`);
-      const circle = document.createElementNS(svgNamespace,'circle'); circle.setAttribute('r',String((degree.get(position.row.Dept_Global_ID)||0)>2?7:5.5)); circle.setAttribute('fill',coreColorValue);
-      const label = document.createElementNS(svgNamespace,'text'); const short = String(position.row.Registry_Name||'').replace(/^Департамент\s+/i,'').replace(/^Управление\s+/i,'Упр. '); const labelLimit=departments.length>24?22:32; label.textContent=short.length>labelLimit?short.slice(0,labelLimit-2).replace(/\s+\S*$/,'')+'…':short; const rightSide=Math.cos(position.angle)>=0; label.setAttribute('x',rightSide?'-9':'9'); label.setAttribute('text-anchor',rightSide?'end':'start'); label.setAttribute('y','3');
-      const title = document.createElementNS(svgNamespace,'title'); title.textContent=position.row.Registry_Name;
-      group.append(circle,label,title); group.addEventListener('click',event => { event.stopPropagation(); selectedNode=position.row.Dept_Global_ID; selectedEdge=null; detail.innerHTML=internalDepartmentDetail(position.row,links); }); internalNodesLayer.appendChild(group);
+      const group = document.createElementNS(svgNamespace,'g');
+      group.classList.add('atlas-internal-dept');
+      if (dense) group.classList.add('dense');
+      group.dataset.id=position.row.Dept_Global_ID;
+      group.setAttribute('transform',`translate(${position.x},${position.y})`);
+
+      const nodeRadius = (degree.get(position.row.Dept_Global_ID)||0)>2?7:5.5;
+      const circle = document.createElementNS(svgNamespace,'circle');
+      circle.setAttribute('r',String(nodeRadius));
+      circle.setAttribute('fill',coreColorValue);
+
+      const labelGroup = document.createElementNS(svgNamespace,'g');
+      labelGroup.classList.add('atlas-internal-label');
+      const text = document.createElementNS(svgNamespace,'text');
+      text.classList.add('atlas-internal-label-text');
+      const lines = internalDepartmentLabelLines(position.row.Registry_Name,dense);
+      const lineStep = dense ? 9.2 : 10;
+      const firstOffset = lines.length===1 ? 0 : -((lines.length-1)*lineStep/2);
+      lines.forEach((lineText,index) => {
+        const tsp = document.createElementNS(svgNamespace,'tspan');
+        tsp.textContent=lineText;
+        tsp.setAttribute('x','0');
+        tsp.setAttribute('dy',index===0?String(firstOffset):String(lineStep));
+        text.appendChild(tsp);
+      });
+
+      const rightSide = Math.cos(position.angle) >= 0;
+      const topBottom = Math.abs(Math.cos(position.angle)) < .28;
+      const gap = dense ? 11 : 13;
+      let offsetX = rightSide ? nodeRadius + gap : -(nodeRadius + gap);
+      let offsetY = 1.5;
+      if (topBottom) {
+        offsetX = 0;
+        offsetY = Math.sin(position.angle) >= 0 ? nodeRadius + gap + 5 : -(nodeRadius + gap + 5);
+        text.setAttribute('text-anchor','middle');
+      } else {
+        text.setAttribute('text-anchor',rightSide?'start':'end');
+      }
+      labelGroup.setAttribute('transform',`translate(${offsetX},${offsetY})`);
+      labelGroup.appendChild(text);
+
+      group.append(circle,labelGroup);
+      internalNodesLayer.appendChild(group);
+
+      const bbox = text.getBBox();
+      const rect = document.createElementNS(svgNamespace,'rect');
+      rect.classList.add('atlas-internal-label-box');
+      rect.setAttribute('x',String(bbox.x-4.5));
+      rect.setAttribute('y',String(bbox.y-2.8));
+      rect.setAttribute('width',String(bbox.width+9));
+      rect.setAttribute('height',String(bbox.height+5.6));
+      labelGroup.insertBefore(rect,text);
+
+      const title = document.createElementNS(svgNamespace,'title');
+      title.textContent=position.row.Registry_Name;
+      group.appendChild(title);
+      group.addEventListener('click',event => {
+        event.stopPropagation();
+        selectedNode=position.row.Dept_Global_ID;
+        selectedEdge=null;
+        detail.innerHTML=internalDepartmentDetail(position.row,links);
+      });
     }
-    const boundaryTitle = document.createElementNS(svgNamespace,'text'); boundaryTitle.classList.add('atlas-internal-boundary-title'); boundaryTitle.setAttribute('x',ministry.x); boundaryTitle.setAttribute('y',ministry.y-internalBoundaryRadius+23); boundaryTitle.setAttribute('fill',coreColorValue); boundaryTitle.textContent=`${ministryName.replace(' России','')} · ${departments.length} подразделений · ${links.length} связей`; internalNodesLayer.insertBefore(boundaryTitle,internalNodesLayer.firstChild);
+
+    const boundaryTitle = document.createElementNS(svgNamespace,'text'); boundaryTitle.classList.add('atlas-internal-boundary-title'); boundaryTitle.setAttribute('x',ministry.x); boundaryTitle.setAttribute('y',ministry.y-internalBoundaryRadius+25); boundaryTitle.setAttribute('fill',coreColorValue); boundaryTitle.textContent=`${ministryName.replace(' России','')} · ${departments.length} подразделений · ${links.length} связей`; internalNodesLayer.insertBefore(boundaryTitle,internalNodesLayer.firstChild);
     body.classList.add('atlas-internal-mode'); internalMinistryId=id;
     document.querySelector(`#nodesLayer .node[data-id="${id}"]`)?.classList.add('internal-origin');
     showBackHome(true);
@@ -472,7 +565,7 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
     };
     requestAnimationFrame(() => { reveal(); requestAnimationFrame(reveal); });
   }
-  function collapseInternalOnZoom() { if (internalMinistryId && scale < .82) { clearInternalRelations(); showBackHome(false); } }
+  function collapseInternalOnZoom() { /* v161: масштабирование больше не закрывает внутренний контур */ }
   // v153: any organisational node on the overview map can become the external-relations focus.
   function focusExternalNode(id) {
     if (!id || !nodeById[id]) return;
@@ -504,8 +597,6 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
     body.classList.toggle('atlas-external-focus',singleExternalFocus);
 
     if (singleExternalFocus) {
-      // The focused graph is already laid out in compact concentric rings by arrangeClusterLayout.
-      // Do not apply the 4.15x wide-map stretch: it was the reason remote nodes and edges flew off-screen.
       for (const node of simulationNodes) node._atlasWideApplied = true;
       if (typeof drawPositions === 'function') drawPositions();
       if (resetView) {
@@ -578,6 +669,7 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
     syncModeNav('STRUCTURE');
     showBackHome(true);
   }
+  window.renderInternalRelations = renderInternalRelations;
   function openDepartment(ministryId, departmentId) {
     openMinistry(ministryId);
     requestAnimationFrame(() => {
