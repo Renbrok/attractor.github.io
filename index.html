@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Attractor — Документальный атлас РЭН</title>
+<style>
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#f4f6f8;color:#1d2733}
+#loading{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.spinner{width:36px;height:36px;border:4px solid #d7dde4;border-top-color:#4B7188;border-radius:50%;animation:s .8s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+.small{font-size:13px;color:#687585}
+</style>
+</head>
+<body>
+<div id="loading"><div class="spinner"></div><div>Загрузка карты РЭН…</div><div class="small">Attractor</div></div>
+<script>
+(async()=>{
+ const files=["site_payload/part-000.txt","site_payload/part-001.txt","site_payload/part-002.txt","site_payload/part-003.txt","site_payload/part-004.txt","site_payload/part-005.txt","site_payload/part-006.txt","site_payload/part-007.txt","site_payload/part-008.txt","site_payload/part-009.txt","site_payload/part-010.txt","site_payload/part-011.txt","site_payload/part-012.txt","site_payload/part-013.txt","site_payload/part-014.txt","site_payload/part-015.txt","site_payload/part-016.txt","site_payload/part-017.txt","site_payload/part-018.txt","site_payload/part-019.txt","site_payload/part-020.txt","site_payload/part-021.txt","site_payload/part-022.txt","site_payload/part-023.txt","site_payload/part-024.txt","site_payload/part-025.txt","site_payload/part-026.txt","site_payload/part-027.txt","site_payload/part-028.txt","site_payload/part-029.txt","site_payload/part-030.txt","site_payload/part-031.txt","site_payload/part-032.txt","site_payload/part-033.txt"];
+ try{
+   const parts=[];
+   for(const f of files){
+     const r=await fetch(f,{cache:"no-cache"});
+     if(!r.ok) throw new Error(f+" — HTTP "+r.status);
+     parts.push(await r.text());
+   }
+   const html=parts.join("");
+   document.open();
+   document.write(html);
+   document.close();
+ }catch(e){
+   const el=document.getElementById("loading");
+   if(el) el.innerHTML="<b>Не удалось загрузить карту.</b><div class='small'>"+String(e)+"</div>";
+ }
+})();
+</script>
+</body>
+</html>
