@@ -13,14 +13,14 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;backg
 </style>
 </head>
 <body>
-<div id="loading"><div class="spinner"></div><div>Загрузка карты РЭН v202…</div><div class="small">Команда «Аттрактор»</div></div>
+<div id="loading"><div class="spinner"></div><div>Загрузка карты РЭН v203…</div><div class="small">Команда «Аттрактор»</div></div>
 <script>
 (async()=>{
- const files=["site_payload/v202/part-000.txt","site_payload/v202/part-001.txt","site_payload/v202/part-002.txt","site_payload/v202/part-003.txt","site_payload/v202/part-004.txt","site_payload/v202/part-005.txt","site_payload/v202/part-006.txt","site_payload/v202/part-007.txt","site_payload/v202/part-008.txt","site_payload/v202/part-009.txt","site_payload/v202/part-010.txt","site_payload/v202/part-011.txt","site_payload/v202/part-012.txt","site_payload/v202/part-013.txt","site_payload/v202/part-014.txt","site_payload/v202/part-015.txt","site_payload/v202/part-016.txt","site_payload/v202/part-017.txt"];
+ const files=["site_payload/v203/part-000.txt","site_payload/v203/part-001.txt","site_payload/v203/part-002.txt","site_payload/v203/part-003.txt","site_payload/v203/part-004.txt","site_payload/v203/part-005.txt","site_payload/v203/part-006.txt","site_payload/v203/part-007.txt","site_payload/v203/part-008.txt","site_payload/v203/part-009.txt","site_payload/v203/part-010.txt","site_payload/v203/part-011.txt","site_payload/v203/part-012.txt","site_payload/v203/part-013.txt","site_payload/v203/part-014.txt","site_payload/v203/part-015.txt","site_payload/v203/part-016.txt","site_payload/v203/part-017.txt"];
  try{
    const parts=[];
    for(const f of files){
-     const r=await fetch(f+"?v=202-ui-search-20261003",{cache:"no-cache"});
+     const r=await fetch(f+"?v=203-popup-20261004",{cache:"no-cache"});
      if(!r.ok) throw new Error(f+" — HTTP "+r.status);
      parts.push(await r.text());
    }

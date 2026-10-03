@@ -1,0 +1,1426 @@
+nnel_research:old};e.channels=p.channels.join('; ');e.source_ids=[...new Set([...(e.source_ids||[]),...p.source_ids])];}for(const r of P.reviews.filter(r=>!['CONFIRMED_SOURCE_SCOPED','NEW_PAIR_CONFIRMED_SOURCE','EXISTING_CONFIRMED_ROUTE_ENRICHED'].includes(r.outcome))){const e=DATA.edges.find(e=>e.id===r.edge_id);e.channel_research={...e.channel_research,followup_v200:r};}DATA.channel_verification_v200={checked_on:'2026-10-03',confirmed_edge_ids:P.patches.map(p=>p.id),reviews:P.reviews};DATA.meta=DATA.meta||{};DATA.meta.version='v200';startSimulation();fitViewForMode();})();
+
+// v201: source-scoped verification; preserve topology and previous audits
+(function(){const P={"patches":[{"id":"DEDGE-0051","channels":["МЭДО"],"grade":"DOCUMENTED_TRANSPORT_SCOPED","planned_channels":[],"conditional_channels":["Альтернативы электронной передаче: почтовая корреспонденция и фельдъегерская связь, пп.1,2б,4."],"date":"2026-10-03","source_ids":["V201:S01","V201:S02"],"scope":"Минпромторг→Минздрав: запрос сведений о лекарствах для лицензирования производства и GMP; Минздрав→Минпромторг: ответ со сведениями или отказ.","note":"Порядок прямо называет межведомственный электронный документооборот для запросов и ответов; это способ передачи, а не только электронный формат. МЭДО — нормализованное сокращение этого канала на карте. Почтовая и фельдъегерская связь допускаются как альтернативы; канал не объявляется исключительным. Фактический трафик и подключение2026 не проверены. ГИСП и СМЭВ для данного процесса не назначены. Полный первичный нормативный текст прочитан в двух правовых базах.","environment":"NORMATIVE_AS_OF_2024","operation_as_of_source":null,"current_operation_2026_asserted":false,"locator":"Порядок, пп.1,2б,4; определение системы — ПП754, пп.1,4","channel_scopes":[{"channels":["МЭДО"],"scope":"Минпромторг→Минздрав: запрос сведений о лекарствах для лицензирования производства и GMP; Минздрав→Минпромторг: ответ со сведениями или отказ.","source_ids":["V201:S01","V201:S02"],"environment":"NORMATIVE_AS_OF_2024","locator":"Пп.1,2б,4"}]}],"sources":[{"source_id":"V201:S01","title":"Приказ Минпромторга/Минздрава07.08.2024 №3554/406н: полный текст порядка","url":"https://legalacts.ru/doc/prikaz-minpromtorga-rossii-n-3554-minzdrava-rossii-n-406n/","what_confirms":"Минпромторг→Минздрав: запрос сведений о лекарствах для лицензирования производства и GMP; Минздрав→Минпромторг: ответ со сведениями или отказ.","matrix":"v201: проверка каналов главной карты","stage":"Проверка 03.10.2026","actuality":"NORMATIVE_AS_OF_2024","evidence_locator":"Порядок, пп.1,2б,4; определение системы — ПП754, пп.1,4"},{"source_id":"V201:S02","title":"ПП РФ22.09.2009 №754, положение о системе межведомственного электронного документооборота","url":"https://www.consultant.ru/document/cons_doc_LAW_91827/d3734035781c5e717fa6d5c50bda8c3f10da39d9/","what_confirms":"Определение МЭДО как взаимодействия информационных систем и обмена электронными сообщениями; не самостоятельное доказательство пары.","evidence_locator":"Пп.1,4","actuality":"Редакция16.03.2019"}],"reviews":[{"edge_id":"DEDGE-0051","outcome":"CONFIRMED_SOURCE_SCOPED","channels":"МЭДО","scope":"Минпромторг→Минздрав: запрос сведений о лекарствах для лицензирования производства и GMP; Минздрав→Минпромторг: ответ со сведениями или отказ.","note":"Порядок прямо называет межведомственный электронный документооборот для запросов и ответов; это способ передачи, а не только электронный формат. МЭДО — нормализованное сокращение этого канала на карте. Почтовая и фельдъегерская связь допускаются как альтернативы; канал не объявляется исключительным. Фактический трафик и подключение2026 не проверены. ГИСП и СМЭВ для данного процесса не назначены. Полный первичный нормативный текст прочитан в двух правовых базах.","url":"https://legalacts.ru/doc/prikaz-minpromtorga-rossii-n-3554-minzdrava-rossii-n-406n/","locator":"Порядок, пп.1,2б,4; определение системы — ПП754, пп.1,4","environment":"NORMATIVE_AS_OF_2024"},{"edge_id":"V131-SECONDARY-020","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"Поиск полного соглашения20.03.2017 №1-с/СС-16 и технических условий снова дал только реестр с13 показателями Росстата и8 Росрыболовства. Именованная доставка не найдена; обмен с другими ведомствами через информационные системы не переносится на эту пару.","url":"https://www.rosstat.gov.ru/storage/mediabank/Rsogl-2021.pdf","locator":"Реестр, строка7; поисковый индекс, полный договор не получен","environment":"UNRESOLVED"},{"edge_id":"V131-SECONDARY-021","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"Уточнены реквизиты соглашения23.03.2017 №2-С. Реестр описывает5 показателей Росздравнадзора→Росстат, но не их транспорт. Размещённая в интернете статистика Росстата относится к обратному направлению и не закрывает исходный поток.","url":"https://www.rosstat.gov.ru/storage/mediabank/Rsogl-2021.pdf","locator":"Реестр, строка11; поисковый индекс, технические приложения не получены","environment":"UNRESOLVED"},{"edge_id":"V131-SECONDARY-022","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"По точным реквизитам03.08.2020 №5-С/12-С найден реестр:38+4 показателя Росстата и4 Минобрнауки. Полный договор/техническое приложение с каналом не найден; ЕМИСС по общей публикации не назначена.","url":"https://www.rosstat.gov.ru/storage/mediabank/Rsogl-2021.pdf","locator":"Реестр, строка14; поисковый индекс","environment":"UNRESOLVED"},{"edge_id":"V131-SECONDARY-017","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"Повторный поиск технических требований ГНИВЦ/ГМЦ и изменений2017 не дал документа с конкретной доставкой. Прежнее решение по статье5 соглашения2005 сохранено: отдельные требования не получены, электронная форма не равна каналу.","url":"https://www.rosstat.gov.ru/storage/mediabank/Rsogl-2021.pdf","locator":"Реестр, строка3; поиск технических требований","environment":"UNRESOLVED"},{"edge_id":"V131-SECONDARY-019","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"Поиск соглашения13.05.2008, приказа113 и дополнительного соглашения28.07.2020 дал реестр, перечень функций Казначейства и карточку документа, но не технические условия доставки20/159 показателей. Электронный бюджет как иной процесс не назначен.","url":"https://www.rosstat.gov.ru/storage/mediabank/Rsogl-2021.pdf","locator":"Реестр, строка6; техническое приложение не получено","environment":"UNRESOLVED"}],"newEdges":[],"newNodes":[],"plannedLeads":[]};for(const s of P.sources){DATA.sources.push(s);sourceById[s.source_id]=s;}for(const n of P.newNodes){DATA.nodes.push(n);nodeById[n.id]=n;}DATA.edges.push(...P.newEdges);const oldOverview=isOverviewEdge;isOverviewEdge=e=>e.integration_layer==='VERIFIED_NEW_V201'?true:oldOverview(e);for(const p of P.patches){const e=DATA.edges.find(e=>e.id===p.id);if(!e)throw Error('Missing v201 edge '+p.id);const old=e.channel_research;e.channel_research={...old,...p,mechanism:p.scope,version:'v201',checked_on:'2026-10-03',previous_channel_research:old};e.channels=p.channels.join('; ');e.source_ids=[...new Set([...(e.source_ids||[]),...p.source_ids])];}for(const r of P.reviews.filter(r=>!['CONFIRMED_SOURCE_SCOPED','NEW_PAIR_CONFIRMED_SOURCE','EXISTING_CONFIRMED_ROUTE_ENRICHED'].includes(r.outcome))){const e=DATA.edges.find(e=>e.id===r.edge_id);e.channel_research={...e.channel_research,followup_v201:r};}DATA.channel_verification_v201={checked_on:'2026-10-03',confirmed_edge_ids:P.patches.map(p=>p.id),reviews:P.reviews};DATA.meta=DATA.meta||{};DATA.meta.version='v201';startSimulation();fitViewForMode();})();
+
+// v202: source-scoped verification; preserve topology and previous audits
+(function(){const P={"patches":[{"id":"MFIN-ORG-011","channels":["СЭД Минфина России"],"grade":"DOCUMENTED_TRANSPORT_SCOPED","planned_channels":[],"conditional_channels":[],"date":"2026-10-03","source_ids":["V202:S01"],"scope":"Минфин→ФНС: получение входящей служебной корреспонденции через удалённый доступ к СЭД Минфина в рамках документального взаимодействия.","note":"Прямо названа СЭД Минфина и получение входящих документов ФНС через удалённый доступ. Подтверждение ограничено служебной корреспонденцией; универсальный транспорт всех массивов налоговой аналитики и обратный маршрут не утверждаются. Способ предусмотрен инструкцией2022, фактический трафик2026 не проверен. СМЭВ не назначена.","environment":"NORMATIVE_AS_OF_2022","operation_as_of_source":null,"current_operation_2026_asserted":false,"locator":"Используемые сокращения; раздел4.1, перечень способов получения входящей корреспонденции"},{"id":"DEDGE-0040","channels":["Видеоконференцсвязь"],"grade":"DOCUMENTED_TRANSPORT_SCOPED","planned_channels":[],"conditional_channels":[],"date":"2026-10-03","source_ids":["V202:S02"],"scope":"Участие Ростехнадзора вместе с исполнительными органами региона в совещании по подготовке к отопительному периоду через видеоконференцсвязь.","note":"Официальное сообщение прямо называет участников и видеоконференцсвязь. Документирован общий сеанс совещания в Хакасии2024, а не отдельный интерфейс доставки паспортов готовности или универсальный канал всех регионов. Конкретное программное средство не названо; фактическое использование2026 не утверждается. Классы региональных органов и муниципалитетов — разные существующие узлы карты.","environment":"HISTORICAL_EVENT_AS_OF_2024","operation_as_of_source":true,"current_operation_2026_asserted":false,"locator":"Дата25.07.2024; первый абзац сообщения"},{"id":"DEDGE-0078","channels":["Видеоконференцсвязь"],"grade":"DOCUMENTED_TRANSPORT_SCOPED","planned_channels":[],"conditional_channels":[],"date":"2026-10-03","source_ids":["V202:S03"],"scope":"Участие Ростехнадзора вместе с руководителями муниципальных образований в совещании по подготовке к отопительному периоду через видеоконференцсвязь.","note":"Официальное сообщение прямо называет участников и видеоконференцсвязь. Документирован общий сеанс совещания в Хакасии2024, а не отдельный интерфейс доставки паспортов готовности или универсальный канал всех регионов. Конкретное программное средство не названо; фактическое использование2026 не утверждается. Классы региональных органов и муниципалитетов — разные существующие узлы карты.","environment":"HISTORICAL_EVENT_AS_OF_2024","operation_as_of_source":true,"current_operation_2026_asserted":false,"locator":"Дата25.07.2024; первый абзац сообщения"}],"sources":[{"source_id":"V202:S01","title":"Приказ ФНС01.09.2022 №ЕД-7-10/799@: инструкция по делопроизводству","url":"https://pravo.ppt.ru/prikaz/fns/n-yed-7-10-799-316922","what_confirms":"Минфин→ФНС: получение входящей служебной корреспонденции через удалённый доступ к СЭД Минфина в рамках документального взаимодействия.","matrix":"v202: проверка каналов главной карты","stage":"Проверка 03.10.2026","actuality":"NORMATIVE_AS_OF_2022","evidence_locator":"Используемые сокращения; раздел4.1, перечень способов получения входящей корреспонденции"},{"source_id":"V202:S02","title":"Правительство Хакасии: совещание по отопительному сезону25.07.2024","url":"https://r-19.ru/news/obshchestvo/165861/","what_confirms":"Участие Ростехнадзора вместе с исполнительными органами региона в совещании по подготовке к отопительному периоду через видеоконференцсвязь.","matrix":"v202: проверка каналов главной карты","stage":"Проверка 03.10.2026","actuality":"HISTORICAL_EVENT_AS_OF_2024","evidence_locator":"Дата25.07.2024; первый абзац сообщения"},{"source_id":"V202:S03","title":"Правительство Хакасии: совещание по отопительному сезону25.07.2024","url":"https://r-19.ru/news/obshchestvo/165861/","what_confirms":"Участие Ростехнадзора вместе с руководителями муниципальных образований в совещании по подготовке к отопительному периоду через видеоконференцсвязь.","matrix":"v202: проверка каналов главной карты","stage":"Проверка 03.10.2026","actuality":"HISTORICAL_EVENT_AS_OF_2024","evidence_locator":"Дата25.07.2024; первый абзац сообщения"}],"reviews":[{"edge_id":"MFIN-ORG-011","outcome":"CONFIRMED_SOURCE_SCOPED","channels":"СЭД Минфина России","scope":"Минфин→ФНС: получение входящей служебной корреспонденции через удалённый доступ к СЭД Минфина в рамках документального взаимодействия.","note":"Прямо названа СЭД Минфина и получение входящих документов ФНС через удалённый доступ. Подтверждение ограничено служебной корреспонденцией; универсальный транспорт всех массивов налоговой аналитики и обратный маршрут не утверждаются. Способ предусмотрен инструкцией2022, фактический трафик2026 не проверен. СМЭВ не назначена.","url":"https://pravo.ppt.ru/prikaz/fns/n-yed-7-10-799-316922","locator":"Используемые сокращения; раздел4.1, перечень способов получения входящей корреспонденции","environment":"NORMATIVE_AS_OF_2022"},{"edge_id":"DEDGE-0040","outcome":"CONFIRMED_SOURCE_SCOPED","channels":"Видеоконференцсвязь","scope":"Участие Ростехнадзора вместе с исполнительными органами региона в совещании по подготовке к отопительному периоду через видеоконференцсвязь.","note":"Официальное сообщение прямо называет участников и видеоконференцсвязь. Документирован общий сеанс совещания в Хакасии2024, а не отдельный интерфейс доставки паспортов готовности или универсальный канал всех регионов. Конкретное программное средство не названо; фактическое использование2026 не утверждается. Классы региональных органов и муниципалитетов — разные существующие узлы карты.","url":"https://r-19.ru/news/obshchestvo/165861/","locator":"Дата25.07.2024; первый абзац сообщения","environment":"HISTORICAL_EVENT_AS_OF_2024"},{"edge_id":"DEDGE-0078","outcome":"CONFIRMED_SOURCE_SCOPED","channels":"Видеоконференцсвязь","scope":"Участие Ростехнадзора вместе с руководителями муниципальных образований в совещании по подготовке к отопительному периоду через видеоконференцсвязь.","note":"Официальное сообщение прямо называет участников и видеоконференцсвязь. Документирован общий сеанс совещания в Хакасии2024, а не отдельный интерфейс доставки паспортов готовности или универсальный канал всех регионов. Конкретное программное средство не названо; фактическое использование2026 не утверждается. Классы региональных органов и муниципалитетов — разные существующие узлы карты.","url":"https://r-19.ru/news/obshchestvo/165861/","locator":"Дата25.07.2024; первый абзац сообщения","environment":"HISTORICAL_EVENT_AS_OF_2024"},{"edge_id":"DEDGE-0057","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Совместная технологическая и цифровая политика Минтранса и Минпромторга в транспортном комплексе.","note":"Повторный поиск по ГИСП/ГосЛог и цифровой логистике дал стратегические планы с совместными исполнителями, но не прямой обмен данных Минпромторг–Минтранс. Косвенный обзор о поставщиках ГосЛог не использован вместо текста принятого акта.","url":"https://pravo.ppt.ru/rasporyazheniye/260235","locator":"Поиск цифровых транспортных мероприятий","environment":"UNRESOLVED"},{"edge_id":"DEDGE-0109","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"Для работы по налоговым стимулам НИОКР найдены совместные поручения, но канал именно обмена Роспатент–Минпромторг не найден. Исторический СМЭВ другого процесса не переносится.","url":"https://rospatent.gov.ru/ru/news/drussiacoll","locator":"Поиск процесса НИОКР; транспорт не подтверждён","environment":"UNRESOLVED"},{"edge_id":"MFIN-ORG-008","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Нормативно-правовая и антикоррупционная экспертиза / совместные мероприятия Минфина и Минюста.","note":"Поиск канала правовой/антикоррупционной экспертизы Минфин–Минюст не дал точной привязки. Общая инструкция Минюста401/2024 содержит разные способы получения документов и не определяет маршрут именно этой пары.","url":"https://legalacts.ru/doc/prikaz-miniusta-rossii-ot-26122024-n-401-ob-utverzhdenii/","locator":"Поисковый индекс; отдельное доказательство пары не найдено","environment":"UNRESOLVED"},{"edge_id":"MFIN-ORG-010","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Международное финансовое сотрудничество Минфина и МИД России.","note":"Проверены поисковые направления МЭДО и международного финансового сотрудничества Минфина с МИД. Найденные справочники адресатов означают доступность системы, не транспорт конкретного финансового процесса.","url":"https://delopro.admin-smolensk.ru/spravochniki-adresatov-sistemy-medo/dsp/","locator":"Список участников не доказательство маршрута","environment":"UNRESOLVED"},{"edge_id":"INT-MINAGRI-REL-MINAGRI-001","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Контроль Минсельхозом деятельности подведомственного Россельхознадзора.","note":"Для административного контроля Минсельхозом Россельхознадзора не найден точный цифровой маршрут. Инструкция388/2016 отмечена недействующей; список способов доставки и поручений не выбран как единственный канал.","url":"https://base.garant.ru/73713786/","locator":"Поиск действующей инструкции и контрольного процесса","environment":"UNRESOLVED"},{"edge_id":"INT-MINAGRI-REL-MINAGRI-003","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Координация Минсельхозом деятельности подведомственного Россельхознадзора.","note":"Для управленческой координации пары не найден документированный транспорт. ВетИС/Меркурий относятся к ветеринарным данным и не доказывают передачу административной координации.","url":"https://base.garant.ru/73713786/","locator":"Поиск координации и электронной передачи","environment":"UNRESOLVED"},{"edge_id":"INT-MINAGRI-REL-MINAGRI-006","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Подготовка и направление Росрыболовством предложений в Минсельхоз России.","note":"Поиск направления предложений Росрыболовства в Минсельхоз дал общие функции управлений и внедрение МЭДО ведомства. Они не задают способ именно этого потока предложений.","url":"https://legalacts.ru/doc/prikaz-rosrybolovstva-ot-24022021-n-61-ob-utverzhdenii-polozhenii/","locator":"Поисковый индекс положений61/2021","environment":"UNRESOLVED"},{"edge_id":"INT-MINTRUD-REL-MT-001","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"Положение о ГИС ЕЦП закрепляет Минтруд координатором и СФР оператором. Проверка не показала, что административные решения Минтруд→СФР передаются через саму платформу.","url":"https://base.garant.ru/408324253/","locator":"Положение2386; поиск управленческого маршрута","environment":"UNRESOLVED"},{"edge_id":"INT-MINTRUD-REL-MT-002","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Согласование СФР с Минтрудом в рамках нормативной и функциональной координации социальной цифровой платформы.","note":"Для согласования СФР с Минтрудом транспорт не найден. Приказ642/2025 называет МЭДО при доставке сведений СФР в ФГБУ ВНИИ труда, но это другой получатель и процесс.","url":"https://www.garant.ru/products/ipo/prime/doc/413118663/","locator":"Пп.12,18: получатель ВНИИ труда, не Минтруд","environment":"UNRESOLVED"},{"edge_id":"INT-MINTRUD-REL-MT-006","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"Инструкция Роструда149/2021 перечисляет МЭДО, СЭД, почту и факс. Канал исходной управленческой координации Минтруд→Роструд отдельным правилом не установлен.","url":"https://rulaws.ru/acts/Prikaz-Rostruda-ot-20.05.2021-N-149/","locator":"Пп.3.1.1,3.5,3.6; перечень способов не привязка","environment":"UNRESOLVED"},{"edge_id":"INT-MINTRUD-REL-MT-007","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Согласование Минтрудом ежегодных планов работы, отчетов и показателей деятельности Роструда.","note":"Для согласования ежегодных планов/отчётов Роструда найденная инструкция149/2021 не задаёт конкретный транспорт Минтруд→Роструд. МЭДО для мониторинга органов занятости в приказе642/2025 относится к иному получателю и потоку.","url":"https://rulaws.ru/acts/Prikaz-Rostruda-ot-20.05.2021-N-149/","locator":"Пп.3.1.1,3.5–3.6; приказ642,пп.12,18","environment":"UNRESOLVED"},{"edge_id":"INT-MINTRUD-REL-MT-008","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Запрос Минтрудом справок и иных документов у Роструда и его территориальных органов.","note":"Для запросов Минтруда о справках и документах общие способы доставки инструкции149/2021 не показывают выбранный канал этой пары. Электронная почта для обращений граждан — иной процесс.","url":"https://rulaws.ru/acts/Prikaz-Rostruda-ot-20.05.2021-N-149/","locator":"Пп.3.1.1,3.5–3.6; поиск справок","environment":"UNRESOLVED"},{"edge_id":"V177-RTN-MVD-001","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Проверка действительности документа, удостоверяющего личность, при ведении реестра СРО","note":"Повторно проверен имеющийся полный официальный стандарт ведения реестра СРО: МВД поставщик проверки паспорта, но транспорт в строке не назван. Поиск СМЭВ не дал карточки с подтверждённой привязкой к этой услуге.","url":"https://www.gosnadzor.ru/service/opt_st/SRO_EE.pdf","locator":"Стр.4; сохранённый официальныйPDF","environment":"UNRESOLVED"},{"edge_id":"V132-SECONDARY-009","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"Поиск полного соглашения2010 и регламента оперативного обмена по ЧС Росприроднадзор–МЧС не дал именованного канала. Типовые регламенты РСЧС и связь МЧС с другими службами не переносятся.","url":"","locator":"Поиск соглашения и технических приложений","environment":"UNRESOLVED"},{"edge_id":"V131-SECONDARY-034","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Стороны договорились взаимно обмениваться экологической информацией.","note":"Официальное сообщение о соглашении Росприроднадзор–РЖД подтверждает взаимный экологический обмен, но способ доставки не назван. Прямое открытие страницы недоступно; поиск не дал технического приложения.","url":"https://rpn.gov.ru/press/news/rosprirodnadzor_i_oao_rzhd_zaklyuchili_soglashenie_o_vzaimodeystvii/","locator":"Поисковый индекс официальной страницы","environment":"UNRESOLVED"},{"edge_id":"V131-SECONDARY-041","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Повторный проход P3 / NEEDS_MORE; канал не назначен.","note":"Полное официальное разъяснение о первом чеке подтверждает передачу ФНС→Роспотребнадзор и соглашение, но не транспорт. Автоматизация из сообщений СМИ не приравнена к СМЭВ.","url":"https://77.rospotrebnadzor.ru/index.php/press-centr/press-relizy/14023-chto-dolzhen-znat-predprinimatel-o-pervom-cheke-05-03-2025","locator":"Абзацы о273-ФЗ,соглашении и проверках; дата06.03.2025","environment":"UNRESOLVED"},{"edge_id":"V131-SECONDARY-036","outcome":"SEARCHED_UNRESOLVED","channels":"","scope":"Заключено соглашение по работе с детьми и молодёжью.","note":"Сообщение Минпросвещения21.03.2023 подтверждает соглашение и оперативный обмен по детям/молодёжи, но не конкретный транспорт. МЭДО для направления нормативных актов в Минюст относится к иному процессу.","url":"https://edu.gov.ru/press/6701/minprosvescheniya-rossii-i-minyust-rossii-zaklyuchili-soglashenie-o-vzaimodeystvii-v-sfere-raboty-s-detmi-i-molodezhyu/","locator":"Поисковый индекс: полный основной текст сообщения","environment":"UNRESOLVED"}],"newEdges":[],"newNodes":[],"plannedLeads":[]};for(const s of P.sources){DATA.sources.push(s);sourceById[s.source_id]=s;}for(const n of P.newNodes){DATA.nodes.push(n);nodeById[n.id]=n;}DATA.edges.push(...P.newEdges);const oldOverview=isOverviewEdge;isOverviewEdge=e=>e.integration_layer==='VERIFIED_NEW_V202'?true:oldOverview(e);for(const p of P.patches){const e=DATA.edges.find(e=>e.id===p.id);if(!e)throw Error('Missing v202 edge '+p.id);const old=e.channel_research;e.channel_research={...old,...p,mechanism:p.scope,version:'v202',checked_on:'2026-10-03',previous_channel_research:old};e.channels=p.channels.join('; ');e.source_ids=[...new Set([...(e.source_ids||[]),...p.source_ids])];}for(const r of P.reviews.filter(r=>!['CONFIRMED_SOURCE_SCOPED','NEW_PAIR_CONFIRMED_SOURCE','EXISTING_CONFIRMED_ROUTE_ENRICHED'].includes(r.outcome))){const e=DATA.edges.find(e=>e.id===r.edge_id);e.channel_research={...e.channel_research,followup_v202:r};}DATA.channel_verification_v202={checked_on:'2026-10-03',confirmed_edge_ids:P.patches.map(p=>p.id),reviews:P.reviews};DATA.meta=DATA.meta||{};DATA.meta.version='v202';startSimulation();fitViewForMode();})();
+</script>
+
+<script id="v93-ui-layer">
+// v93 interface layer: responsive drawers, mobile details, touch/wheel navigation,
+// and non-destructive research annotations from the v92 checkpoint.
+const REVIEW_BY_EDGE = {"DEDGE-0064":[{"interaction_id":"EDGE-00001","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S02","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0058":[{"interaction_id":"EDGE-00002","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0060":[{"interaction_id":"EDGE-00003","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0068":[{"interaction_id":"EDGE-00004","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S02"],"issues":["AMBIGUOUS_STAGE_NOT_RESOLVED"],"scope_conflict":false},{"interaction_id":"EDGE-00052","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNER:S08"],"issues":[],"scope_conflict":false}],"DEDGE-0047":[{"interaction_id":"EDGE-00005","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S02"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0066":[{"interaction_id":"EDGE-00006","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0061":[{"interaction_id":"EDGE-00007","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0113":[{"interaction_id":"EDGE-00008","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNPR:S01","MNPR:S02","MNPR:S04","MNPR:S05"],"issues":["AMBIGUOUS_STAGE_NOT_RESOLVED","PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY","URL_MATCH_CANDIDATE_CHECK_SUBJECT"],"scope_conflict":false}],"DEDGE-0104":[{"interaction_id":"EDGE-00009","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNPR:S01","MNPR:S02","MNPR:S06"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY","URL_MATCH_CANDIDATE_CHECK_SUBJECT"],"scope_conflict":false}],"DEDGE-0107":[{"interaction_id":"EDGE-00010","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S02","MNPR:S07"],"issues":["AMBIGUOUS_STAGE_NOT_RESOLVED","PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0098":[{"interaction_id":"EDGE-00011","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNPR:S01","MNPR:S02","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY","URL_MATCH_CANDIDATE_CHECK_SUBJECT"],"scope_conflict":false}],"DEDGE-0099":[{"interaction_id":"EDGE-00012","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S02","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0118":[{"interaction_id":"EDGE-00013","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0116":[{"interaction_id":"EDGE-00014","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0102":[{"interaction_id":"EDGE-00015","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S02","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0024":[{"interaction_id":"EDGE-00016","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0120":[{"interaction_id":"EDGE-00017","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNPR:S02","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY","URL_MATCH_CANDIDATE_CHECK_SUBJECT"],"scope_conflict":false}],"DEDGE-0135":[{"interaction_id":"EDGE-00018","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0110":[{"interaction_id":"EDGE-00019","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0056":[{"interaction_id":"EDGE-00020","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S02"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0080":[{"interaction_id":"EDGE-00021","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S02","MNPR:S05"],"issues":["AMBIGUOUS_STAGE_NOT_RESOLVED","PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0128":[{"interaction_id":"EDGE-00022","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S08","MNPR:S09"],"issues":["AMBIGUOUS_STAGE_NOT_RESOLVED"],"scope_conflict":false}],"DEDGE-0036":[{"interaction_id":"EDGE-00023","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNPR:S01","MNPR:S03","MNPR:S06"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0076":[{"interaction_id":"EDGE-00024","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNPR:S01","MNPR:S02"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY","URL_MATCH_CANDIDATE_CHECK_SUBJECT"],"scope_conflict":false}],"DEDGE-0089":[{"interaction_id":"EDGE-00025","label":"Конфликт исходных участников/предмета: направление не публиковать","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNPR:S01","MNPR:S02","MNPR:S04"],"issues":["AMBIGUOUS_STAGE_NOT_RESOLVED","PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY","URL_MATCH_CANDIDATE_CHECK_SUBJECT"],"scope_conflict":true}],"DEDGE-0073":[{"interaction_id":"EDGE-00026","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S02","MNPR:S05"],"issues":["AMBIGUOUS_STAGE_NOT_RESOLVED","PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0023":[{"interaction_id":"EDGE-00027","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S04"],"issues":["AMBIGUOUS_STAGE_NOT_RESOLVED"],"scope_conflict":false}],"DEDGE-0034":[{"interaction_id":"EDGE-00028","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPR:S01","MNPR:S03"],"issues":["PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY"],"scope_conflict":false}],"DEDGE-0065":[{"interaction_id":"EDGE-00029","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S025","MNPT:S055","MNPT:S061"],"issues":[],"scope_conflict":false}],"DEDGE-0059":[{"interaction_id":"EDGE-00030","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S044","MNPT:S056"],"issues":[],"scope_conflict":false}],"DEDGE-0052":[{"interaction_id":"EDGE-00031","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S025","MNPT:S047","MNPT:S055"],"issues":[],"scope_conflict":false}],"DEDGE-0051":[{"interaction_id":"EDGE-00032","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S046","MNPT:S041"],"issues":[],"scope_conflict":false}],"DEDGE-0069":[{"interaction_id":"EDGE-00033","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S044"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00053","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNER:S08"],"issues":[],"scope_conflict":false}],"DEDGE-0055":[{"interaction_id":"EDGE-00034","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S063","MNPT:S055"],"issues":[],"scope_conflict":false}],"DEDGE-0057":[{"interaction_id":"EDGE-00035","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S064","MNPT:S055"],"issues":[],"scope_conflict":false}],"DEDGE-0126":[{"interaction_id":"EDGE-00036","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S044","MNPT:S045"],"issues":[],"scope_conflict":false}],"DEDGE-0140":[{"interaction_id":"EDGE-00037","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S052"],"issues":[],"scope_conflict":false}],"DEDGE-0119":[{"interaction_id":"EDGE-00038","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S053","MNPT:S054"],"issues":[],"scope_conflict":false}],"DEDGE-0096":[{"interaction_id":"EDGE-00039","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S053","MNPT:S054"],"issues":[],"scope_conflict":false}],"DEDGE-0101":[{"interaction_id":"EDGE-00040","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S053"],"issues":[],"scope_conflict":false}],"DEDGE-0109":[{"interaction_id":"EDGE-00041","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S047"],"issues":[],"scope_conflict":false}],"DEDGE-0017":[{"interaction_id":"EDGE-00042","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S049"],"issues":[],"scope_conflict":false}],"DEDGE-0143":[{"interaction_id":"EDGE-00043","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S065"],"issues":[],"scope_conflict":false}],"DEDGE-0019":[{"interaction_id":"EDGE-00044","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S065"],"issues":[],"scope_conflict":false}],"DEDGE-0043":[{"interaction_id":"EDGE-00045","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S045"],"issues":[],"scope_conflict":false}],"DEDGE-0033":[{"interaction_id":"EDGE-00046","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S057","MNPT:S058"],"issues":[],"scope_conflict":false}],"DEDGE-0037":[{"interaction_id":"EDGE-00047","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S025","MNPT:S041","MNPT:S059"],"issues":[],"scope_conflict":false}],"DEDGE-0026":[{"interaction_id":"EDGE-00048","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S062"],"issues":[],"scope_conflict":false}],"DEDGE-0136":[{"interaction_id":"EDGE-00049","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S053","MNPT:S055"],"issues":[],"scope_conflict":false}],"DEDGE-0042":[{"interaction_id":"EDGE-00050","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNPT:S055","MNPT:S043"],"issues":[],"scope_conflict":false}],"DEDGE-0063":[{"interaction_id":"EDGE-00051","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNER:S08"],"issues":[],"scope_conflict":false}],"DEDGE-0067":[{"interaction_id":"EDGE-00054","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNER:S08"],"issues":[],"scope_conflict":false}],"DEDGE-0127":[{"interaction_id":"EDGE-00055","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNER:S09"],"issues":[],"scope_conflict":false}],"DEDGE-0070":[{"interaction_id":"EDGE-00056","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNER:S09"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00063","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.03"],"issues":["SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP"],"scope_conflict":false},{"interaction_id":"EDGE-00223","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-10","RTN:S08-11"],"issues":[],"scope_conflict":false}],"DEDGE-0049":[{"interaction_id":"EDGE-00057","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MNER:S10"],"issues":[],"scope_conflict":false}],"DEDGE-0121":[{"interaction_id":"EDGE-00058","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNER:S11"],"issues":[],"scope_conflict":false}],"DEDGE-0039":[{"interaction_id":"EDGE-00059","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNER:S02","MNER:S06"],"issues":[],"scope_conflict":false}],"DEDGE-0077":[{"interaction_id":"EDGE-00060","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["MNER:S02","MNER:S06"],"issues":[],"scope_conflict":false}],"DEDGE-0137":[{"interaction_id":"EDGE-00061","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.01"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00211","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-03","RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00214","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-03","RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00221","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-17","RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00264","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00267","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05","RTN:S08-06","RTN:S08-08"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00273","label":"Направление не установлено","baseline_status":"SOURCE_GAP","source_codes":[],"issues":[],"scope_conflict":false}],"DEDGE-0117":[{"interaction_id":"EDGE-00062","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.02"],"issues":["SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP"],"scope_conflict":false},{"interaction_id":"EDGE-00212","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-03","RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00215","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-03","RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00235","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-02","RTN:S08-10"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00265","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00268","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05","RTN:S08-06","RTN:S08-08"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00274","label":"Направление не установлено","baseline_status":"SOURCE_GAP","source_codes":[],"issues":[],"scope_conflict":false}],"DEDGE-0050":[{"interaction_id":"EDGE-00064","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.04"],"issues":["SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP"],"scope_conflict":false},{"interaction_id":"EDGE-00231","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05","RTN:S08-06"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00253","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-13","RTN:S08-05"],"issues":[],"scope_conflict":false}],"DEDGE-0111":[{"interaction_id":"EDGE-00065","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.04"],"issues":["SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP"],"scope_conflict":false},{"interaction_id":"EDGE-00232","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05","RTN:S08-06"],"issues":[],"scope_conflict":false}],"DEDGE-0132":[{"interaction_id":"EDGE-00066","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.04"],"issues":["SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP"],"scope_conflict":false},{"interaction_id":"EDGE-00233","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05","RTN:S08-06"],"issues":[],"scope_conflict":false}],"DEDGE-0025":[{"interaction_id":"EDGE-00067","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00230","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05","RTN:S08-06"],"issues":[],"scope_conflict":false}],"DEDGE-0071":[{"interaction_id":"EDGE-00068","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.06"],"issues":["SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP"],"scope_conflict":false},{"interaction_id":"EDGE-00234","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05","RTN:S08-06"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00256","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-13","RTN:S08-05"],"issues":[],"scope_conflict":false}],"DEDGE-0075":[{"interaction_id":"EDGE-00069","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.07"],"issues":[],"scope_conflict":false}],"DEDGE-0078":[{"interaction_id":"EDGE-00070","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.08"],"issues":[],"scope_conflict":false}],"DEDGE-0093":[{"interaction_id":"EDGE-00071","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.09"],"issues":["SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP"],"scope_conflict":false}],"DEDGE-0085":[{"interaction_id":"EDGE-00072","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.10"],"issues":["SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP"],"scope_conflict":false}],"DEDGE-0146":[{"interaction_id":"EDGE-00073","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.11"],"issues":["SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP"],"scope_conflict":false}],"DEDGE-0124":[{"interaction_id":"EDGE-00074","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S5.12"],"issues":[],"scope_conflict":false}],"DEDGE-0141":[{"interaction_id":"EDGE-00075","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MTRS:S13"],"issues":["UNIQUE_PREFIX_ALIAS_CANDIDATE_NOT_PROOF"],"scope_conflict":false}],"DEDGE-0048":[{"interaction_id":"EDGE-00076","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MTRS:S14"],"issues":["UNIQUE_PREFIX_ALIAS_CANDIDATE_NOT_PROOF"],"scope_conflict":false}],"DEDGE-0139":[{"interaction_id":"EDGE-00077","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MTRS:S15"],"issues":["UNIQUE_PREFIX_ALIAS_CANDIDATE_NOT_PROOF"],"scope_conflict":false}],"DEDGE-0045":[{"interaction_id":"EDGE-00078","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MTRS:S15"],"issues":["UNIQUE_PREFIX_ALIAS_CANDIDATE_NOT_PROOF"],"scope_conflict":false}],"DEDGE-0062":[{"interaction_id":"EDGE-00079","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MTRS:S16"],"issues":["UNIQUE_PREFIX_ALIAS_CANDIDATE_NOT_PROOF"],"scope_conflict":false}],"DEDGE-0038":[{"interaction_id":"EDGE-00080","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MTRS:S02","MTRS:S08","MTRS:S10"],"issues":["UNIQUE_PREFIX_ALIAS_CANDIDATE_NOT_PROOF"],"scope_conflict":false}],"DEDGE-0072":[{"interaction_id":"EDGE-00081","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MTRS:S08"],"issues":["UNIQUE_PREFIX_ALIAS_CANDIDATE_NOT_PROOF"],"scope_conflict":false}],"DEDGE-0029":[{"interaction_id":"EDGE-00082","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["MTRS:S09","MTRS:S10"],"issues":["UNIQUE_PREFIX_ALIAS_CANDIDATE_NOT_PROOF"],"scope_conflict":false}],"DEDGE-0035":[{"interaction_id":"EDGE-00213","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-03","RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00216","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-03","RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00220","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-08"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00222","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-17","RTN:S08-05"],"issues":[],"scope_conflict":false}],"DEDGE-0084":[{"interaction_id":"EDGE-00217","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-13","RTN:S08-06"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00239","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-13","RTN:S08-09"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00280","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-24"],"issues":[],"scope_conflict":false}],"DEDGE-0160":[{"interaction_id":"EDGE-00218","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-13","RTN:S08-06"],"issues":[],"scope_conflict":false}],"DEDGE-0145":[{"interaction_id":"EDGE-00219","label":"Конфликт исходных участников/предмета: направление не публиковать","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-06","RTN:S08-07"],"issues":[],"scope_conflict":true}],"DEDGE-0158":[{"interaction_id":"EDGE-00224","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-10","RTN:S08-11"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00227","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-18","RTN:S08-20"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00236","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-02","RTN:S08-10"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00247","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-22","RTN:S08-13"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00251","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-10","RTN:S08-11"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00254","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-13","RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00261","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-01","RTN:S08-10"],"issues":[],"scope_conflict":false}],"DEDGE-0152":[{"interaction_id":"EDGE-00225","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-10","RTN:S08-11"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00228","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-18","RTN:S08-20"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00237","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-02","RTN:S08-10"],"issues":[],"scope_conflict":false}],"DEDGE-0153":[{"interaction_id":"EDGE-00226","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-10","RTN:S08-11"],"issues":[],"scope_conflict":false}],"DEDGE-0159":[{"interaction_id":"EDGE-00229","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-18","RTN:S08-20"],"issues":[],"scope_conflict":false}],"DEDGE-0149":[{"interaction_id":"EDGE-00238","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-02","RTN:S08-10"],"issues":[],"scope_conflict":false}],"DEDGE-0090":[{"interaction_id":"EDGE-00240","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-13","RTN:S08-09"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00250","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-10","RTN:S08-11"],"issues":[],"scope_conflict":false}],"DEDGE-0094":[{"interaction_id":"EDGE-00241","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-15","RTN:S08-16"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00243","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-19"],"issues":[],"scope_conflict":false}],"DEDGE-0156":[{"interaction_id":"EDGE-00242","label":"Конфликт исходных участников/предмета: направление не публиковать","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-15","RTN:S08-16"],"issues":[],"scope_conflict":true},{"interaction_id":"EDGE-00244","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-19"],"issues":[],"scope_conflict":false}],"DEDGE-0123":[{"interaction_id":"EDGE-00245","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-21"],"issues":[],"scope_conflict":false}],"DEDGE-0138":[{"interaction_id":"EDGE-00246","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-22","RTN:S08-13"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00260","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-01","RTN:S08-10"],"issues":[],"scope_conflict":false}],"DEDGE-0151":[{"interaction_id":"EDGE-00248","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-22","RTN:S08-13"],"issues":[],"scope_conflict":false}],"DEDGE-0083":[{"interaction_id":"EDGE-00249","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-13","RTN:S08-24"],"issues":[],"scope_conflict":false}],"DEDGE-0154":[{"interaction_id":"EDGE-00252","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-10","RTN:S08-11"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00255","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-13","RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00258","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-24"],"issues":[],"scope_conflict":false}],"DEDGE-0028":[{"interaction_id":"EDGE-00257","label":"Предыдущая оценка направления, действующая редакция не подтверждена","baseline_status":"DIRECTION_CONFIRMED","source_codes":["RTN:S08-24"],"issues":[],"scope_conflict":false}],"DEDGE-0125":[{"interaction_id":"EDGE-00259","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-01","RTN:S08-10"],"issues":[],"scope_conflict":false}],"DEDGE-0086":[{"interaction_id":"EDGE-00262","label":"Направление не установлено","baseline_status":"SOURCE_GAP","source_codes":[],"issues":[],"scope_conflict":false}],"DEDGE-0147":[{"interaction_id":"EDGE-00263","label":"Направление не установлено","baseline_status":"SOURCE_GAP","source_codes":[],"issues":[],"scope_conflict":false}],"DEDGE-0150":[{"interaction_id":"EDGE-00266","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05"],"issues":[],"scope_conflict":false},{"interaction_id":"EDGE-00275","label":"Направление не установлено","baseline_status":"SOURCE_GAP","source_codes":[],"issues":[],"scope_conflict":false}],"DEDGE-0161":[{"interaction_id":"EDGE-00269","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-05","RTN:S08-06","RTN:S08-08"],"issues":[],"scope_conflict":false}],"DEDGE-0088":[{"interaction_id":"EDGE-00270","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-09","RTN:S08-23"],"issues":[],"scope_conflict":false}],"DEDGE-0148":[{"interaction_id":"EDGE-00271","label":"Направление не установлено","baseline_status":"UNDIRECTED_RETAINED","source_codes":["RTN:S08-09","RTN:S08-23"],"issues":[],"scope_conflict":false}],"DEDGE-0087":[{"interaction_id":"EDGE-00272","label":"Направление не установлено","baseline_status":"SOURCE_GAP","source_codes":[],"issues":[],"scope_conflict":false}],"DEDGE-0020":[{"interaction_id":"EDGE-00276","label":"Направление не установлено","baseline_status":"SOURCE_GAP","source_codes":[],"issues":[],"scope_conflict":false}],"DEDGE-0079":[{"interaction_id":"EDGE-00277","label":"Направление не установлено","baseline_status":"SOURCE_GAP","source_codes":[],"issues":[],"scope_conflict":false}],"DEDGE-0030":[{"interaction_id":"EDGE-00278","label":"Направление не установлено","baseline_status":"SOURCE_GAP","source_codes":[],"issues":[],"scope_conflict":false}]};
+const REVIEW_ISSUE_LABELS={
+  'PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY':'совпадение участников не доказывает тождество процесса',
+  'SOURCE_MISSING_IN_MASTER_EXPLICIT_GAP':'источник отсутствует в master-реестре',
+  'AMBIGUOUS_STAGE_NOT_RESOLVED':'стадия источника неоднозначна',
+  'UNIQUE_PREFIX_ALIAS_CANDIDATE_NOT_PROOF':'алиас источника требует проверки',
+  'URL_MATCH_CANDIDATE_CHECK_SUBJECT':'URL совпадает, предмет документа требует проверки'
+};
+function v93Esc(v){return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+function reviewCardForEdge(e){
+  const rows=REVIEW_BY_EDGE[e?.id]||[]; if(!rows.length)return '';
+  const labels=[...new Set(rows.map(x=>x.label).filter(Boolean))];
+  const statuses=[...new Set(rows.map(x=>x.baseline_status).filter(Boolean))];
+  const issues=[...new Set(rows.flatMap(x=>x.issues||[]))];
+  const hasWarn=rows.some(x=>x.scope_conflict)||issues.some(x=>x!=='PAIR_CANDIDATE_NOT_DOCUMENT_IDENTITY')||statuses.includes('SOURCE_GAP');
+  const chips=labels.map(x=>`<span class="review-chip ${/конфликт|не подтверждена|не установлено/i.test(x)?'warn':''}">${v93Esc(x)}</span>`).join('');
+  const issueHtml=issues.length?`<ul class="review-list">${issues.map(x=>`<li>${v93Esc(REVIEW_ISSUE_LABELS[x]||x)}</li>`).join('')}</ul>`:'';
+  const ids=rows.map(x=>x.interaction_id).filter(Boolean);
+  return `<div class="card review-card ${hasWarn?'warn':''}"><h4>Исследовательская проверка v92</h4><p><strong>Записей аудита:</strong> ${rows.length}${ids.length?` · <span class="small">${v93Esc(ids.slice(0,6).join(', '))}${ids.length>6?' …':''}</span>`:''}</p><div>${chips}</div>${issueHtml}<p class="small">Аннотации не создают новое ребро и не меняют направление master-графа автоматически.</p></div>`;
+}
+try{
+  const _edgeDetail=edgeDetail;
+  edgeDetail=function(e){const base=_edgeDetail(e);return base+reviewCardForEdge(e)};
+}catch(err){console.warn('v93 review layer: edgeDetail override unavailable',err)}
+
+const filtersToggle=document.getElementById('filtersToggle');
+const detailToggle=document.getElementById('detailToggle');
+const filtersClose=document.getElementById('filtersClose');
+const detailClose=document.getElementById('detailClose');
+const uiBackdrop=document.getElementById('uiBackdrop');
+const activeFilterCount=document.getElementById('activeFilterCount');
+const selectionDot=document.getElementById('selectionDot');
+function isCompactUI(){return window.matchMedia('(max-width:1100px)').matches}
+function closePanels(){document.body.classList.remove('filters-open','detail-open','channel-filter-open');filtersToggle?.setAttribute('aria-expanded','false');detailToggle?.setAttribute('aria-expanded','false')}
+function openFilters(){document.body.classList.remove('filters-open','detail-open');document.body.classList.add('channel-filter-open');filtersToggle?.setAttribute('aria-expanded','true');detailToggle?.setAttribute('aria-expanded','false')}
+function openDetails(){if(!isCompactUI())return;document.body.classList.remove('filters-open','channel-filter-open');document.body.classList.add('detail-open');filtersToggle?.setAttribute('aria-expanded','false');detailToggle?.setAttribute('aria-expanded','true')}
+filtersToggle?.addEventListener('click',()=>document.body.classList.contains('channel-filter-open')?closePanels():openFilters());
+detailToggle?.addEventListener('click',()=>document.body.classList.contains('detail-open')?closePanels():openDetails());
+filtersClose?.addEventListener('click',closePanels);detailClose?.addEventListener('click',closePanels);uiBackdrop?.addEventListener('click',closePanels);
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape')closePanels()});
+document.addEventListener('pointerdown',ev=>{
+  if(!document.body.classList.contains('channel-filter-open'))return;
+  const panel=document.getElementById('channelToolbar134');
+  const secondaryButton=document.getElementById('atlasFiltersButton');
+  if(panel?.contains(ev.target)||filtersToggle?.contains(ev.target)||secondaryButton?.contains(ev.target))return;
+  document.body.classList.remove('channel-filter-open');
+  filtersToggle?.setAttribute('aria-expanded','false');
+});
+
+function hasDetailSelection(){
+  const t=(detail?.textContent||'').trim();
+  return !!t && !t.includes('Кликните по узлу или связи') && !t.includes('Здесь появится подробная карточка') && !t.includes('Здесь появится детальная карточка');
+}
+function syncDetailState(autoOpen=false){const has=hasDetailSelection();if(selectionDot)selectionDot.hidden=!has;if(autoOpen&&has&&isCompactUI())openDetails()}
+const detailObserver=new MutationObserver(()=>syncDetailState(true));if(detail)detailObserver.observe(detail,{childList:true,subtree:true,characterData:true});syncDetailState(false);
+
+function countActiveFilters(){
+  let n=0;
+  const rel=document.getElementById('relFilter'),mat=document.getElementById('matrixFilter'),dir=document.getElementById('directionFilter'),search=document.getElementById('search');
+  if(rel&&rel.value!=='ALL')n++; if(mat&&mat.value!=='ALL')n++; if(dir&&dir.value!=='ALL')n++;
+  for(const id of ['onlySourced','onlyCore','onlyCommon'])if(document.getElementById(id)?.checked)n++;
+  if(search?.value.trim())n++; if(typeof focusSet!=='undefined'&&focusSet.size)n++;
+  if(typeof channelFocusId!=='undefined'&&channelFocusId)n++; if(typeof structureMinistryFocusId!=='undefined'&&structureMinistryFocusId)n++;
+  return n;
+}
+function updateActiveFilterCount(){const n=countActiveFilters();if(!activeFilterCount)return;activeFilterCount.hidden=n===0;activeFilterCount.textContent=String(n)}
+for(const id of ['relFilter','matrixFilter','directionFilter','onlySourced','onlyCore','onlyCommon','search','channelFocusSelect','structureMinistrySelect']){
+  const el=document.getElementById(id);if(el){el.addEventListener('change',updateActiveFilterCount);el.addEventListener('input',updateActiveFilterCount)}
+}
+document.getElementById('focusGrid')?.addEventListener('click',()=>setTimeout(updateActiveFilterCount,0));
+document.getElementById('resetBtn')?.addEventListener('click',()=>setTimeout(updateActiveFilterCount,0));
+updateActiveFilterCount();
+
+// More natural desktop trackpad/mouse zoom. Zoom around pointer position.
+if(typeof svg!=='undefined'){
+  svg.addEventListener('wheel',ev=>{
+    ev.preventDefault();
+    const rect=svg.getBoundingClientRect();const px=ev.clientX-rect.left,py=ev.clientY-rect.top;
+    const old=scale;const factor=Math.exp(-ev.deltaY*0.0012);const next=Math.max(.36,Math.min(3.2,old*factor));
+    if(Math.abs(next-old)<.0001)return;
+    tx=px-(px-tx)*(next/old);ty=py-(py-ty)*(next/old);scale=next;applyTransform();
+  },{passive:false});
+
+  // One-finger background pan + two-finger pinch for touch devices.
+  let touches=new Map(),lastPinch=null,panMoved=false;
+  function touchPoint(ev){const r=svg.getBoundingClientRect();return {x:ev.clientX-r.left,y:ev.clientY-r.top}}
+  svg.addEventListener('pointerdown',ev=>{
+    if(ev.pointerType!=='touch')return;
+    touches.set(ev.pointerId,touchPoint(ev));try{svg.setPointerCapture(ev.pointerId)}catch(_){ }
+    if(touches.size===2){const p=[...touches.values()];lastPinch={dist:Math.hypot(p[1].x-p[0].x,p[1].y-p[0].y),cx:(p[0].x+p[1].x)/2,cy:(p[0].y+p[1].y)/2};}
+    panMoved=false;
+  });
+  svg.addEventListener('pointermove',ev=>{
+    if(ev.pointerType!=='touch'||!touches.has(ev.pointerId))return;
+    const prev=touches.get(ev.pointerId),now=touchPoint(ev);touches.set(ev.pointerId,now);
+    if(touches.size===1 && (ev.target===svg || ev.target?.closest?.('#graph'))){const dx=now.x-prev.x,dy=now.y-prev.y;if(Math.abs(dx)+Math.abs(dy)>1){tx+=dx;ty+=dy;applyTransform();panMoved=true;}}
+    else if(touches.size>=2){const p=[...touches.values()].slice(0,2);const dist=Math.hypot(p[1].x-p[0].x,p[1].y-p[0].y),cx=(p[0].x+p[1].x)/2,cy=(p[0].y+p[1].y)/2;if(lastPinch&&lastPinch.dist>0){const old=scale,next=Math.max(.36,Math.min(3.2,old*(dist/lastPinch.dist)));tx=cx-(cx-tx)*(next/old)+(cx-lastPinch.cx);ty=cy-(cy-ty)*(next/old)+(cy-lastPinch.cy);scale=next;applyTransform();panMoved=true;}lastPinch={dist,cx,cy};}
+  });
+  const endTouch=ev=>{touches.delete(ev.pointerId);if(touches.size<2)lastPinch=null};
+  svg.addEventListener('pointerup',endTouch);svg.addEventListener('pointercancel',endTouch);
+}
+
+document.body.dataset.uiMode=(typeof graphMode!=='undefined'?graphMode:'OVERVIEW');
+try{
+  const _setGraphModeV93=setGraphMode;
+  setGraphMode=function(mode){const r=_setGraphModeV93(mode);document.body.dataset.uiMode=(typeof graphMode!=='undefined'?graphMode:mode);return r};
+}catch(err){console.warn('v93 mode tracker unavailable',err)}
+window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
+</script>
+
+
+<script id="atlas-v115-script">
+(() => {
+  const body = document.body;
+  const strip = document.getElementById('atlasMinistryStrip');
+  const allButton = document.querySelector('[data-ministry-id="ALL"]');
+  const landing = document.getElementById('atlasLandingMap');
+  const clustersHost = document.getElementById('atlasClusters');
+  const landingLines = document.getElementById('atlasLandingLines');
+  const featureNames = ['Минфин России','Минэкономразвития России','Минтранс России','Минприроды России','Минстрой России'];
+  const featureColors = ['#7b4350','#243f57','#687b84','#4e705d','#a78662'];
+  let atlasEdges = [];
+
+  function syncModeNav(mode) {
+    document.querySelectorAll('[data-atlas-mode]').forEach(button => button.classList.toggle('active', button.dataset.atlasMode === mode));
+  }
+  function syncMinistry(id) {
+    body.dataset.atlasFocus = id || 'ALL';
+    document.querySelectorAll('[data-ministry-id]').forEach(button => button.classList.toggle('active', button.dataset.ministryId === (id || 'ALL')));
+  }
+  function chooseStructureMinistry(id) {
+    const select = document.getElementById('structureMinistrySelect');
+    if (select) { select.value = id || 'ALL'; select.dispatchEvent(new Event('change', {bubbles:true})); }
+    syncMinistry(id || 'ALL');
+  }
+  function renderAtlasWelcome() {
+    const detail = document.getElementById('detail');
+    if (!detail || typeof DATA === 'undefined') return;
+    const featuredIds = ['GOV:TYPE-INTERNAL-REGULATION-452','MTRANS:PUBLIC-COUNCIL-PLAN-2023','MINAGRI:RIA-GRAIN-2019'];
+    const featured = featuredIds.map(id => DATA.sources.find(source => source.source_id === id)).filter(Boolean);
+    const escapeText = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    detail.innerHTML = `<h2>Документальная база</h2><div class="meta">${DATA.sources.length} источников в интегрированной модели</div><div class="card"><h4>Как читать атлас</h4><p>Крупные цветные круги обозначают двенадцать основных органов. Среди остальных участников узлы с 6 и более связями на главной карте показаны как компактные хабы: число внутри узла — количество уникальных связанных объектов, а размер кольца по-прежнему растёт по трём ступеням общего числа связей. Такие хабы остаются второстепенными и визуально не конкурируют с основными органами. Карта шире экрана: перемещайте её или уменьшайте масштаб, чтобы раскрыть дальние узлы и связи. Каждая линия сохраняет карточку документального основания.</p></div><div class="source-block"><strong>Опорные документы</strong>${featured.map(source => `<div class="src"><strong>${escapeText(source.title)}</strong><div class="small">${escapeText(source.what_confirms)}</div><div><a href="${escapeText(source.url)}" target="_blank" rel="noopener">Открыть источник</a></div></div>`).join('')}</div>`;
+  }
+  const svgNamespace = 'http://www.w3.org/2000/svg';
+  const ATLAS_SECONDARY_HUB_MIN_DEGREE = 6;
+  const atlasSecondaryHubDegree = new Map();
+  const atlasSecondaryHubNeighbors = new Map();
+  function isAtlasSecondaryHubBaseEdge(edge) {
+    if (!edge || edge.source_coverage === 'EXCLUDED_NO_DOCUMENT' || edge.channel_binding || edge.a === edge.b) return false;
+    const a = nodeById[edge.a], b = nodeById[edge.b];
+    if (!a || !b || !ORGANIZATION_TYPES.has(a.type) || !ORGANIZATION_TYPES.has(b.type)) return false;
+    if (edge.integration_layer === 'SECONDARY_ORG_RESEARCH_V131' || edge.integration_layer === 'SECONDARY_ORG_RESEARCH_V132') return true;
+    if (edge.integration_layer === 'EXTERNAL_CONTEXTS_ALL_REGISTRIES') return isMinistryNode(a) && isMinistryNode(b) && (coreIds.has(edge.a) || coreIds.has(edge.b));
+    const sharedA = !coreIds.has(edge.a) && sharedCoreDegree(edge.a) >= 2;
+    const sharedB = !coreIds.has(edge.b) && sharedCoreDegree(edge.b) >= 2;
+    return coreIds.has(edge.a) || coreIds.has(edge.b) || sharedA || sharedB;
+  }
+  for (const edge of DATA.edges) {
+    if (!isAtlasSecondaryHubBaseEdge(edge)) continue;
+    atlasSecondaryHubDegree.set(edge.a,(atlasSecondaryHubDegree.get(edge.a)||0)+1);
+    atlasSecondaryHubDegree.set(edge.b,(atlasSecondaryHubDegree.get(edge.b)||0)+1);
+    if (!atlasSecondaryHubNeighbors.has(edge.a)) atlasSecondaryHubNeighbors.set(edge.a,new Set());
+    if (!atlasSecondaryHubNeighbors.has(edge.b)) atlasSecondaryHubNeighbors.set(edge.b,new Set());
+    atlasSecondaryHubNeighbors.get(edge.a).add(edge.b);
+    atlasSecondaryHubNeighbors.get(edge.b).add(edge.a);
+  }
+  function atlasHubDegree(id) { return atlasSecondaryHubDegree.get(id) || 0; }
+  function atlasHubObjectCount(id) { return atlasSecondaryHubNeighbors.get(id)?.size || 0; }
+  function atlasHubTier(degree) { return degree >= 15 ? 3 : degree >= 10 ? 2 : degree >= ATLAS_SECONDARY_HUB_MIN_DEGREE ? 1 : 0; }
+
+  function ministryGlyph(id) {
+    const glyph = document.createElementNS(svgNamespace,'g');
+    glyph.classList.add('ministry-glyph');
+    const path = document.createElementNS(svgNamespace,'path');
+    const paths = {
+      'ORG-MINPRIRODY':'M-12 9 C-10 -5 0 -14 13 -12 C12 2 5 11 -9 12 M-9 10 C-3 5 3 -1 10 -8',
+      'ORG-MINPROMTORG':'M-14 12 V-4 L-5 -9 V-2 L4 -8 V12 M-14 12 H14 V-4 H4 M-9 4 H-5 M0 4 H4 M9 4 H13',
+      'ORG-MINENERGO':'M3 -15 L-10 3 H-2 L-5 15 L11 -5 H3 Z',
+      'ORG-MINTRANS':'M-11 8 V-8 Q-11 -12 -7 -12 H7 Q11 -12 11 -8 V8 Z M-7 -4 H7 M-7 3 H-2 M2 3 H7 M-8 13 L-4 8 M8 13 L4 8',
+      'ORG-ROSTEHNADZOR':'M0 -14 L12 -9 V0 C12 8 6 13 0 16 C-6 13 -12 8 -12 0 V-9 Z M-6 0 L-1 5 L7 -5',
+      'ORG-6FE300D804':'M-14 13 V-7 H-4 V13 M-4 13 V-14 H11 V13 M-10 -2 H-7 M1 -8 H5 M1 -2 H5 M1 4 H5 M8 -8 H11 M8 -2 H11 M8 4 H11 M-16 13 H15',
+      'ORG-220DD3C42B':'M-10 -10 H10 V10 H-10 Z M-14 -6 H-10 M-14 0 H-10 M-14 6 H-10 M10 -6 H14 M10 0 H14 M10 6 H14 M-6 -14 V-10 M0 -14 V-10 M6 -14 V-10 M-6 10 V14 M0 10 V14 M6 10 V14 M-4 -4 H4 V4 H-4 Z',
+      'ORG-EF362DC98F':'M-5 -14 V14 M-5 -12 H2 C10 -12 10 0 2 1 H-5 M-10 6 H5',
+      'ORG-DD97210FEA':'M-13 12 V-12 M-13 12 H13 M-9 7 L-2 0 L3 4 L12 -8 M6 -8 H12 V-2',
+      'ORG-MINAGRI-RU':'M0 15 V-14 M0 -8 C-7 -10 -10 -5 0 0 M0 -2 C7 -4 10 1 0 6 M0 4 C-7 2 -10 7 0 11',
+      'ORG-MINZDRAV':'M-5 -14 H5 V-5 H14 V5 H5 V14 H-5 V5 H-14 V-5 H-5 Z',
+      'ORG-MINTRUD':'M-13 -5 H13 V11 H-13 Z M-5 -5 V-10 H5 V-5 M-13 2 C-5 6 5 6 13 2'
+    };
+    path.setAttribute('d',paths[id] || 'M-13 -7 L0 -15 L13 -7 M-11 -5 H11 M-9 -3 V9 M-3 -3 V9 M3 -3 V9 M9 -3 V9 M-13 11 H13 M-15 15 H15');
+    if (id === 'ORG-MINENERGO' || id === 'ORG-MINZDRAV') { path.setAttribute('fill','#fff'); path.setAttribute('stroke','none'); }
+    glyph.appendChild(path);
+    return glyph;
+  }
+  let labelCollisionFrame = 0;
+  function rectanglesOverlap(a,b,padding=1) {
+    return a.left < b.right+padding && a.right+padding > b.left && a.top < b.bottom+padding && a.bottom+padding > b.top;
+  }
+  function resolveTextCollisions(labelSelector,obstacleSelector,maxShift=36) {
+    const labels=[...document.querySelectorAll(labelSelector)].filter(label => getComputedStyle(label).display!=='none');
+    if (!labels.length) return;
+    labels.forEach(label => { label.classList.remove('atlas-collision-hidden'); label.removeAttribute('transform'); });
+    const shifts=new Map(labels.map(label=>[label,0]));
+    const scaleValue=Math.max(.2,typeof scale==='number'?scale:1);
+    const applyShift=(label,value) => { const next=Math.max(-maxShift,Math.min(maxShift,value)); shifts.set(label,next); label.setAttribute('transform',`translate(0,${next})`); };
+    const obstacles=[...document.querySelectorAll(obstacleSelector)].filter(node => getComputedStyle(node).display!=='none');
+    for (let pass=0;pass<55;pass++) {
+      let moved=false;
+      for (let i=0;i<labels.length;i++) for (let j=i+1;j<labels.length;j++) {
+        const a=labels[i].getBoundingClientRect(),b=labels[j].getBoundingClientRect(); if (!rectanglesOverlap(a,b,2)) continue;
+        const overlap=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)+3;
+        const direction=(a.top+a.height/2)<=(b.top+b.height/2)?-1:1;
+        const delta=Math.min(5,Math.max(1,overlap/2/scaleValue));
+        applyShift(labels[i],shifts.get(labels[i])+direction*delta); applyShift(labels[j],shifts.get(labels[j])-direction*delta); moved=true;
+      }
+      for (const label of labels) {
+        const owner=label.closest('.node,.atlas-internal-dept');
+        for (const obstacle of obstacles) {
+          if (obstacle.closest('.node,.atlas-internal-dept')===owner) continue;
+          const a=label.getBoundingClientRect(),b=obstacle.getBoundingClientRect(); if (!rectanglesOverlap(a,b,2)) continue;
+          const direction=(a.top+a.height/2)<=(b.top+b.height/2)?-1:1;
+          applyShift(label,shifts.get(label)+direction*Math.min(6,Math.max(2,(Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)+3)/scaleValue))); moved=true;
+        }
+      }
+      if (!moved) break;
+    }
+    const accepted=[];
+    for (const label of labels) {
+      const rect=label.getBoundingClientRect(); const owner=label.closest('.node,.atlas-internal-dept');
+      const blocked=accepted.some(other=>rectanglesOverlap(rect,other.getBoundingClientRect(),2)) || obstacles.some(obstacle=>obstacle.closest('.node,.atlas-internal-dept')!==owner && rectanglesOverlap(rect,obstacle.getBoundingClientRect(),2));
+      if (blocked) label.classList.add('atlas-collision-hidden'); else accepted.push(label);
+    }
+  }
+  function layoutAtlasLabels() {
+    resolveTextCollisions('#nodesLayer .node:not(.core-ministry)>text','#nodesLayer .node>circle:not(.node-dot)',42);
+    if (body.classList.contains('atlas-internal-mode')) resolveTextCollisions('#atlasInternalNodesLayer .atlas-internal-dept>text','#atlasInternalNodesLayer .atlas-internal-dept>circle,#nodesLayer .internal-origin>circle:not(.ministry-halo)',30);
+  }
+  function scheduleLabelLayout() {
+    cancelAnimationFrame(labelCollisionFrame);
+    labelCollisionFrame=requestAnimationFrame(()=>requestAnimationFrame(layoutAtlasLabels));
+  }
+  function enhanceAtlasNodes() {
+    if (!body.classList.contains('atlas-wide')) return;
+    document.querySelectorAll('#nodesLayer .node').forEach(group => {
+      const label = group.querySelector(':scope > text');
+      const mainCircle = [...group.children].find(item => item.tagName?.toLowerCase() === 'circle' && !item.classList.contains('ministry-halo') && !item.classList.contains('node-dot') && !item.classList.contains('secondary-hub-ring'));
+      if (!mainCircle) return;
+      const color = group.dataset.atlasNodeColor || mainCircle.getAttribute('fill') || '#526b79';
+      group.dataset.atlasNodeColor = color;
+      if (group.classList.contains('core-ministry')) {
+        group.classList.remove('secondary-hub','hub-tier-1','hub-tier-2','hub-tier-3');
+        group.querySelector('.secondary-hub-ring')?.remove();
+        group.querySelector('.secondary-hub-counter')?.remove();
+        if (!group.querySelector('.ministry-halo')) {
+          const halo = document.createElementNS(svgNamespace,'circle');
+          halo.classList.add('ministry-halo'); halo.setAttribute('r','37'); halo.setAttribute('stroke',color);
+          group.insertBefore(halo,mainCircle);
+        }
+        mainCircle.setAttribute('r','30'); mainCircle.setAttribute('stroke','#fbf8f1'); mainCircle.setAttribute('stroke-width','4');
+        if (!group.querySelector('.ministry-glyph')) group.insertBefore(ministryGlyph(group.dataset.id),label || null);
+        if (label) {
+          label.textContent = label.textContent.replace(' России','');
+          label.setAttribute('x','0'); label.setAttribute('y','51'); label.setAttribute('text-anchor','middle');
+        }
+      } else {
+        const degree = atlasHubDegree(group.dataset.id);
+        const objectCount = atlasHubObjectCount(group.dataset.id);
+        const tier = atlasHubTier(degree);
+        const isHub = tier > 0;
+        group.dataset.hubDegree = String(degree);
+        group.dataset.hubObjectCount = String(objectCount);
+        group.classList.toggle('secondary-hub',isHub);
+        for (const name of ['hub-tier-1','hub-tier-2','hub-tier-3']) group.classList.remove(name);
+        if (isHub) group.classList.add(`hub-tier-${tier}`);
+
+        const radius = tier === 3 ? 16.5 : tier === 2 ? 14.5 : tier === 1 ? 12.5 : 9.5;
+        const dotRadius = tier === 3 ? 9.6 : tier === 2 ? 8.3 : tier === 1 ? 7.0 : 4.8;
+        mainCircle.classList.add('node-shell');
+        mainCircle.setAttribute('r',String(radius));
+        mainCircle.setAttribute('fill','#fffdf8');
+        mainCircle.setAttribute('stroke',color);
+        mainCircle.style.stroke=color;
+        mainCircle.style.strokeWidth=tier === 3 ? '2.1px' : tier === 2 ? '1.9px' : tier === 1 ? '1.8px' : '1.7px';
+        mainCircle.style.filter='none';
+
+        let dot = group.querySelector(':scope > circle.node-dot');
+        if (!dot) {
+          dot = document.createElementNS(svgNamespace,'circle');
+          dot.classList.add('node-dot');
+          group.insertBefore(dot,label || null);
+        }
+        dot.setAttribute('r',String(dotRadius));
+        dot.setAttribute('fill',color);
+        dot.style.fill=color;
+        dot.style.filter='none';
+
+        let ring = group.querySelector(':scope > circle.secondary-hub-ring');
+        if (isHub) {
+          if (!ring) {
+            ring = document.createElementNS(svgNamespace,'circle');
+            ring.classList.add('secondary-hub-ring');
+            group.insertBefore(ring,mainCircle);
+          }
+          ring.setAttribute('r',String(radius+3.8));
+          let counter = group.querySelector(':scope > g.secondary-hub-counter');
+          if (!counter) {
+            counter = document.createElementNS(svgNamespace,'g');
+            counter.classList.add('secondary-hub-counter');
+            const countText = document.createElementNS(svgNamespace,'text');
+            countText.classList.add('secondary-hub-degree');
+            countText.setAttribute('x','0'); countText.setAttribute('y','.5');
+            counter.appendChild(countText);
+            group.insertBefore(counter,label || null);
+          }
+          const countText = counter.querySelector('.secondary-hub-degree');
+          if (countText) countText.textContent=String(objectCount);
+        } else {
+          ring?.remove();
+          group.querySelector(':scope > g.secondary-hub-counter')?.remove();
+        }
+
+        if (label) {
+          const full=label.dataset.fullLabel||label.textContent||''; label.dataset.fullLabel=full;
+          label.textContent=full.length>30?full.slice(0,28).replace(/\s+\S*$/,'')+'…':full;
+          const node=simulationNodes?.find(item=>item.id===group.dataset.id),left=node?.x<W/2;
+          label.setAttribute('x',String(left?-(radius+7):(radius+7))); label.setAttribute('text-anchor',left?'end':'start'); label.setAttribute('y','3.5');
+          let title=group.querySelector(':scope > title'); if (!title) { title=document.createElementNS(svgNamespace,'title'); group.insertBefore(title,group.firstChild); }
+          title.textContent=isHub?`${full} — ${objectCount} связанных объектов · ${degree} связей на главной карте` : full;
+        }
+      }
+    });
+    scheduleLabelLayout();
+  }
+  let internalMinistryId = null;
+  let internalEdgesLayer = null;
+  let internalNodesLayer = null;
+  let internalBoundaryRadius = 190;
+  const backHomeButton = document.getElementById('atlasBackHome');
+  function showBackHome(active) {
+    body.classList.toggle('atlas-route-active',Boolean(active));
+    if (backHomeButton) backHomeButton.hidden=!active;
+  }
+  function ensureInternalLayers() {
+    const viewportLayer = document.getElementById('viewport');
+    const baseNodesLayer = document.getElementById('nodesLayer');
+    if (!viewportLayer || !baseNodesLayer) return false;
+    if (!internalEdgesLayer) {
+      internalEdgesLayer = document.createElementNS(svgNamespace,'g');
+      internalEdgesLayer.id = 'atlasInternalEdgesLayer';
+      viewportLayer.insertBefore(internalEdgesLayer,baseNodesLayer);
+    }
+    if (!internalNodesLayer) {
+      internalNodesLayer = document.createElementNS(svgNamespace,'g');
+      internalNodesLayer.id = 'atlasInternalNodesLayer';
+      viewportLayer.appendChild(internalNodesLayer);
+    }
+    return true;
+  }
+  function setWideHint(internal = false) {
+    const hint = document.getElementById('wideMapHint');
+    if (!hint) return;
+    const title = hint.querySelector('strong'), text = hint.querySelector('span');
+    if (title) title.textContent = internal ? 'Внутренний контур' : 'Широкая карта';
+    if (text) text.textContent = internal ? 'Масштабируйте и перемещайте карту свободно · режим департаментов сохраняется до возврата на главную карту' : 'Перемещайте карту мышью или пальцем · кнопка «−» раскрывает дальние связи';
+  }
+  function clearInternalRelations() {
+    internalMinistryId = null;
+    internalEdgesLayer?.replaceChildren(); internalNodesLayer?.replaceChildren();
+    body.classList.remove('atlas-internal-mode');
+    document.querySelectorAll('#nodesLayer .internal-origin,.internal-occluded').forEach(node => node.classList.remove('internal-origin','internal-occluded'));
+    setWideHint(false);
+    const badge = document.getElementById('modeBadge'); if (badge && body.classList.contains('atlas-wide')) badge.textContent = 'Обзор';
+    scheduleLabelLayout();
+  }
+  function internalDepartmentDetail(row, links) {
+    const own = links.filter(edge => edge.a === row.Dept_Global_ID || edge.b === row.Dept_Global_ID);
+    const sourceUrls = String(row.Registry_Source || '').split('|').map(value => value.trim()).filter(Boolean);
+    return `<h2>${esc(row.Registry_Name)}</h2><div class="meta">Подразделение · ${esc(row.Org || '')}</div><div class="card"><h4>Внутренний контур</h4><p><strong>Связей с другими подразделениями:</strong> ${own.length}</p><p><strong>Документированных:</strong> ${own.filter(edge => edge.kind === 'DEPARTMENT_DOCUMENTED').length}</p><p><strong>Процессных:</strong> ${own.filter(edge => edge.kind === 'DEPARTMENT_HANDOFF' || edge.kind === 'DEPARTMENT_SHARED_PROCESS').length}</p></div><div class="card"><h4>Связанные подразделения</h4>${own.slice(0,30).map(edge => `<p>${esc(edge.a === row.Dept_Global_ID ? edge.b_name : edge.a_name)}<br><span class="small">${esc(edge.kind_label || edge.kind || '')}</span></p>`).join('') || '<p>Связи не зафиксированы.</p>'}</div><div class="source-block"><strong>Источники принадлежности</strong>${sourceUrls.slice(0,8).map(url => `<div class="src"><a href="${esc(url)}" target="_blank" rel="noopener">${esc(url)}</a></div>`).join('') || '<div class="src">Источник в реестровой записи не указан.</div>'}</div>`;
+  }
+  function centerInternalCamera(id) {
+    const ministry = simulationNodes?.find(node => node.id === id); if (!ministry) return;
+    const framingRadius = internalBoundaryRadius + (window.innerWidth <= 820 ? 38 : 54);
+    const widthFit = (W * (window.innerWidth <= 820 ? .94 : .91)) / (framingRadius * 2);
+    const heightFit = (H * (window.innerWidth <= 820 ? .88 : .86)) / (framingRadius * 2);
+    scale = Math.max(window.innerWidth <= 820 ? .58 : .68,Math.min(window.innerWidth <= 820 ? 1.02 : 1.12,widthFit,heightFit));
+    tx = W / 2 - scale * ministry.x;
+    ty = H / 2 - scale * ministry.y;
+    applyTransform();
+  }
+  function internalDepartmentLabelLines(name,dense=false){
+    const base=String(name||'').replace(/^Департамент\s+/i,'').replace(/^Управление\s+/i,'Управление ');
+    const words=base.split(/\s+/).filter(Boolean),lines=[]; let line='';
+    const maxChars=dense?16:18, maxLines=2;
+    for (const word of words) {
+      const next=line?`${line} ${word}`:word;
+      if (next.length>maxChars && line) {
+        lines.push(line); line=word;
+      } else line=next;
+      if (lines.length===maxLines-1 && line.length>maxChars+5) break;
+    }
+    if (line) lines.push(line);
+    const out=[];
+    let rest=lines.join(' ').trim();
+    while (rest && out.length<maxLines) {
+      if (rest.length<=maxChars) { out.push(rest); rest=''; break; }
+      let cut=rest.lastIndexOf(' ',maxChars);
+      if (cut<Math.floor(maxChars*0.55)) cut=maxChars;
+      out.push(rest.slice(0,cut).trim());
+      rest=rest.slice(cut).trim();
+    }
+    if (rest) out[Math.max(0,out.length-1)]=out[Math.max(0,out.length-1)].replace(/[.,;:!?]?$/,'')+'…';
+    return out.filter(Boolean);
+  }
+  function renderInternalRelations(id, recenter = true) {
+    if (!id || !ensureInternalLayers()) return;
+    const ministry = simulationNodes?.find(node => node.id === id); if (!ministry) return;
+    const ministryName = nodeById[id]?.name || CORE.find(([coreId]) => coreId === id)?.[1] || '';
+    const departments = [...structureDeptById.values()].filter(row => row.Org === ministryName);
+    const departmentIds = new Set(departments.map(row => row.Dept_Global_ID));
+    const links = structureDepartmentHandoffLinks(id).filter(edge => departmentIds.has(edge.a) && departmentIds.has(edge.b));
+    const degree = new Map(departments.map(row => [row.Dept_Global_ID,0]));
+    links.forEach(edge => { degree.set(edge.a,(degree.get(edge.a)||0)+1); degree.set(edge.b,(degree.get(edge.b)||0)+1); });
+    departments.sort((a,b) => (degree.get(b.Dept_Global_ID)||0)-(degree.get(a.Dept_Global_ID)||0) || a.Registry_Name.localeCompare(b.Registry_Name,'ru'));
+    const positions = new Map();
+    const capacities = [7,8,10,14,18]; let cursor = 0, lastRingRadius = 100;
+    capacities.forEach((capacity,ring) => {
+      const count = Math.min(capacity,departments.length-cursor); if (count <= 0) return;
+      const radius = 100 + ring * 72; lastRingRadius = radius;
+      for (let index=0; index<count; index++) {
+        const row = departments[cursor+index];
+        const angle = -Math.PI/2 + ring*.19 + index*(Math.PI*2/count);
+        positions.set(row.Dept_Global_ID,{x:ministry.x+Math.cos(angle)*radius,y:ministry.y+Math.sin(angle)*radius,row,angle,radius});
+      }
+      cursor += count;
+    });
+    internalBoundaryRadius = Math.max(235,lastRingRadius+72);
+    internalEdgesLayer.replaceChildren(); internalNodesLayer.replaceChildren();
+    const coreColorValue = coreColor(id);
+    const boundary = document.createElementNS(svgNamespace,'circle'); boundary.classList.add('atlas-internal-boundary');
+    boundary.setAttribute('cx',ministry.x); boundary.setAttribute('cy',ministry.y); boundary.setAttribute('r',internalBoundaryRadius); boundary.setAttribute('fill',coreColorValue); boundary.setAttribute('stroke',coreColorValue); internalEdgesLayer.appendChild(boundary);
+    const boundaryRing = document.createElementNS(svgNamespace,'circle'); boundaryRing.classList.add('atlas-internal-boundary-ring');
+    boundaryRing.setAttribute('cx',ministry.x); boundaryRing.setAttribute('cy',ministry.y); boundaryRing.setAttribute('r',internalBoundaryRadius-8); boundaryRing.setAttribute('stroke',coreColorValue); internalEdgesLayer.appendChild(boundaryRing);
+    document.querySelectorAll('#nodesLayer .node').forEach(group => {
+      const node = simulationNodes.find(item => item.id === group.dataset.id); if (!node || node.id === id) return;
+      group.classList.toggle('internal-occluded',Math.hypot(node.x-ministry.x,node.y-ministry.y) < internalBoundaryRadius+34);
+    });
+    for (const position of positions.values()) {
+      const spoke = document.createElementNS(svgNamespace,'line'); spoke.classList.add('atlas-internal-spoke');
+      spoke.setAttribute('x1',ministry.x); spoke.setAttribute('y1',ministry.y); spoke.setAttribute('x2',position.x); spoke.setAttribute('y2',position.y); internalEdgesLayer.appendChild(spoke);
+    }
+    links.forEach(edge => {
+      const a = positions.get(edge.a), b = positions.get(edge.b); if (!a || !b) return;
+      const line = document.createElementNS(svgNamespace,'line'); line.classList.add('atlas-internal-edge');
+      if (edge.kind === 'DEPARTMENT_SHARED_PROCESS') line.classList.add('shared');
+      if (edge.kind === 'DEPARTMENT_HANDOFF') line.classList.add('handoff');
+      line.setAttribute('x1',a.x); line.setAttribute('y1',a.y); line.setAttribute('x2',b.x); line.setAttribute('y2',b.y);
+      const hit = line.cloneNode(); hit.classList.remove('atlas-internal-edge','shared','handoff'); hit.classList.add('atlas-internal-edge-hit');
+      const openEdge = event => { event?.stopPropagation?.(); selectedNode=null; selectedEdge=edge; detail.innerHTML=structureEdgeDetail(edge); };
+      hit.addEventListener('click',openEdge); internalEdgesLayer.append(line,hit);
+    });
+
+    const dense = departments.length > 22;
+    for (const position of positions.values()) {
+      const group = document.createElementNS(svgNamespace,'g');
+      group.classList.add('atlas-internal-dept');
+      if (dense) group.classList.add('dense');
+      group.dataset.id=position.row.Dept_Global_ID;
+      group.setAttribute('transform',`translate(${position.x},${position.y})`);
+
+      const nodeRadius = (degree.get(position.row.Dept_Global_ID)||0)>2?7:5.5;
+      const circle = document.createElementNS(svgNamespace,'circle');
+      circle.setAttribute('r',String(nodeRadius));
+      circle.setAttribute('fill',coreColorValue);
+
+      const labelGroup = document.createElementNS(svgNamespace,'g');
+      labelGroup.classList.add('atlas-internal-label');
+      const text = document.createElementNS(svgNamespace,'text');
+      text.classList.add('atlas-internal-label-text');
+      const lines = internalDepartmentLabelLines(position.row.Registry_Name,dense);
+      const lineStep = dense ? 9.2 : 10;
+      const firstOffset = lines.length===1 ? 0 : -((lines.length-1)*lineStep/2);
+      lines.forEach((lineText,index) => {
+        const tsp = document.createElementNS(svgNamespace,'tspan');
+        tsp.textContent=lineText;
+        tsp.setAttribute('x','0');
+        tsp.setAttribute('dy',index===0?String(firstOffset):String(lineStep));
+        text.appendChild(tsp);
+      });
+
+      const rightSide = Math.cos(position.angle) >= 0;
+      const topBottom = Math.abs(Math.cos(position.angle)) < .28;
+      const gap = dense ? 11 : 13;
+      let offsetX = rightSide ? nodeRadius + gap : -(nodeRadius + gap);
+      let offsetY = 1.5;
+      if (topBottom) {
+        offsetX = 0;
+        offsetY = Math.sin(position.angle) >= 0 ? nodeRadius + gap + 5 : -(nodeRadius + gap + 5);
+        text.setAttribute('text-anchor','middle');
+      } else {
+        text.setAttribute('text-anchor',rightSide?'start':'end');
+      }
+      labelGroup.setAttribute('transform',`translate(${offsetX},${offsetY})`);
+      labelGroup.appendChild(text);
+
+      group.append(circle,labelGroup);
+      internalNodesLayer.appendChild(group);
+
+      const bbox = text.getBBox();
+      const rect = document.createElementNS(svgNamespace,'rect');
+      rect.classList.add('atlas-internal-label-box');
+      rect.setAttribute('x',String(bbox.x-4.5));
+      rect.setAttribute('y',String(bbox.y-2.8));
+      rect.setAttribute('width',String(bbox.width+9));
+      rect.setAttribute('height',String(bbox.height+5.6));
+      labelGroup.insertBefore(rect,text);
+
+      const title = document.createElementNS(svgNamespace,'title');
+      title.textContent=position.row.Registry_Name;
+      group.appendChild(title);
+      group.addEventListener('click',event => {
+        event.stopPropagation();
+        selectedNode=position.row.Dept_Global_ID;
+        selectedEdge=null;
+        detail.innerHTML=internalDepartmentDetail(position.row,links);
+      });
+    }
+
+    const boundaryTitle = document.createElementNS(svgNamespace,'text'); boundaryTitle.classList.add('atlas-internal-boundary-title'); boundaryTitle.setAttribute('x',ministry.x); boundaryTitle.setAttribute('y',ministry.y-internalBoundaryRadius+25); boundaryTitle.setAttribute('fill',coreColorValue); boundaryTitle.textContent=`${ministryName.replace(' России','')} · ${departments.length} подразделений · ${links.length} связей`; internalNodesLayer.insertBefore(boundaryTitle,internalNodesLayer.firstChild);
+    body.classList.add('atlas-internal-mode'); internalMinistryId=id;
+    document.querySelector(`#nodesLayer .node[data-id="${id}"]`)?.classList.add('internal-origin');
+    showBackHome(true);
+    setWideHint(true); const badge=document.getElementById('modeBadge'); if (badge) badge.textContent=`Внутренние связи · ${ministryName.replace(' России','')}`;
+    if (recenter) centerInternalCamera(id);
+    scheduleLabelLayout();
+    [0,80,220].forEach(delay => setTimeout(() => {
+      if (internalMinistryId !== id) return;
+      layoutAtlasLabels();
+      if (window.innerWidth <= 1100) body.classList.remove('detail-open');
+    },delay));
+  }
+  function activateInternalRelations(id) {
+    setAtlasHome(true);
+    focusSet.clear(); setFocusButtons(); startSimulation();
+    selectedNode=id; selectedEdge=null; selectNode(id);
+    internalMinistryId=id;
+    if (window.innerWidth <= 1100) {
+      body.classList.remove('detail-open');
+      document.getElementById('atlasMobileMap')?.classList.add('active');
+      document.getElementById('atlasMobileDocuments')?.classList.remove('active');
+    }
+    const reveal = () => {
+      applyWideAtlasLayout(false); enhanceAtlasNodes(); renderInternalRelations(id,true);
+      if (window.innerWidth <= 1100) body.classList.remove('detail-open');
+    };
+    requestAnimationFrame(() => { reveal(); requestAnimationFrame(reveal); });
+  }
+  function collapseInternalOnZoom() { /* v164: масштабирование больше не закрывает внутренний контур */ }
+  // v153: any organisational node on the overview map can become the external-relations focus.
+  function focusExternalNode(id) {
+    if (!id || !nodeById[id]) return;
+    clearInternalRelations();
+    setAtlasHome(true);
+    setFocus(id);
+    syncModeNav('ATLAS');
+    showBackHome(true);
+    requestAnimationFrame(() => { applyWideAtlasLayout(true); enhanceAtlasNodes(); });
+  }
+  window.focusExternalNode = focusExternalNode;
+  function enhanceNodeDetail() {
+    if (!detail || typeof selectedNode === 'undefined' || !selectedNode || graphMode !== 'OVERVIEW' || detail.querySelector('.core-route-actions')) return;
+    const nodeId = selectedNode;
+    const node = nodeById[nodeId];
+    if (!node || !ORGANIZATION_TYPES.has(node.type)) return;
+    [...detail.querySelectorAll('button')].filter(button => /Показать межминистерские связи|Фокус на этом органе|Фокус внешних связей/.test(button.textContent)).forEach(button => button.closest('.btnrow')?.remove());
+    const isCore = coreIds.has(nodeId);
+    const actions = document.createElement('div'); actions.className = 'core-route-actions' + (isCore ? '' : ' single');
+    actions.innerHTML = `<button type="button" data-node-route="external">Фокус внешних связей<small>Показать только прямые документированные организационные связи выбранного узла</small></button>${isCore?`<button type="button" data-node-route="internal">Внутренние связи<small>Все департаменты и связи внутри выбранного министерства</small></button>`:''}`;
+    actions.querySelector('[data-node-route="external"]')?.addEventListener('click', () => focusExternalNode(nodeId));
+    actions.querySelector('[data-node-route="internal"]')?.addEventListener('click', () => activateInternalRelations(nodeId));
+    const meta = detail.querySelector('.meta');
+    if (meta) meta.insertAdjacentElement('afterend',actions); else detail.prepend(actions);
+    // UI patch 2026-10-03: for non-core organisations keep the official-site link
+    // immediately below the external-relations focus button instead of lower in the card.
+    if (!isCore) {
+      const siteCard = detail.querySelector('.ministry-site-card');
+      if (siteCard) {
+        siteCard.classList.add('after-external-focus');
+        actions.insertAdjacentElement('afterend', siteCard);
+      }
+    }
+  }
+  function applyWideAtlasLayout(resetView = true) {
+    if (!body.classList.contains('atlas-wide') || typeof graphMode === 'undefined' || graphMode !== 'OVERVIEW' || !simulationNodes?.length) return;
+    const singleExternalFocus = typeof focusSet !== 'undefined' && focusSet.size === 1;
+    body.classList.toggle('atlas-external-focus',singleExternalFocus);
+
+    if (singleExternalFocus) {
+      for (const node of simulationNodes) node._atlasWideApplied = true;
+      if (typeof drawPositions === 'function') drawPositions();
+      if (resetView) {
+        const xs=simulationNodes.map(n=>n.x), ys=simulationNodes.map(n=>n.y);
+        const minX=Math.min(...xs), maxX=Math.max(...xs), minY=Math.min(...ys), maxY=Math.max(...ys);
+        const spanX=Math.max(1,maxX-minX), spanY=Math.max(1,maxY-minY);
+        const padX=window.innerWidth<=820?52:76, padY=window.innerWidth<=820?50:36;
+        const fitX=(W-padX*2)/spanX, fitY=(H-padY*2)/spanY;
+        scale=Math.max(window.innerWidth<=820?.62:.72,Math.min(.98,fitX,fitY));
+        const midX=(minX+maxX)/2, midY=(minY+maxY)/2;
+        tx=(W/2)-scale*midX;
+        ty=(H/2)-scale*midY;
+        if (typeof applyTransform === 'function') applyTransform();
+      }
+      const badge=document.getElementById('modeBadge');
+      if (badge) badge.textContent='Фокус внешних связей';
+      const hint=document.getElementById('wideMapHint');
+      if (hint) {
+        const title=hint.querySelector('strong'), text=hint.querySelector('span');
+        if (title) title.textContent='Фокус внешних связей';
+        if (text) text.textContent='В центре — выбранный узел · ближе к центру — основные органы и общие хабы · дальше — остальные внешние участники';
+      }
+      return;
+    }
+
+    const horizontal = window.innerWidth <= 820 ? 5.2 : 4.15;
+    const vertical = window.innerWidth <= 820 ? 1.9 : 1.55;
+    const centerX = W / 2, centerY = H / 2;
+    let changed = false;
+    for (const node of simulationNodes) {
+      if (node._atlasWideApplied) continue;
+      node.x = centerX + (node.x - centerX) * horizontal;
+      node.y = centerY + (node.y - centerY) * vertical;
+      node._atlasWideApplied = true;
+      changed = true;
+    }
+    if (changed && typeof drawPositions === 'function') drawPositions();
+    if (resetView) {
+      scale = window.innerWidth <= 820 ? .88 : .96;
+      tx = (W / 2) - scale * centerX;
+      ty = (H / 2) - scale * centerY;
+      if (typeof applyTransform === 'function') applyTransform();
+    }
+    const badge = document.getElementById('modeBadge');
+    if (badge) badge.textContent = 'Обзор';
+    const hint=document.getElementById('wideMapHint');
+    if (hint) {
+      const title=hint.querySelector('strong'), text=hint.querySelector('span');
+      if (title) title.textContent='Широкая карта';
+      if (text) text.textContent='Перемещайте карту мышью или пальцем · кнопка «−» раскрывает дальние связи';
+    }
+  }
+  function setAtlasHome(active) {
+    clearInternalRelations();
+    if (active) showBackHome(false);
+    body.classList.remove('atlas-home');
+    body.classList.toggle('atlas-wide', active);
+    if (active) {
+      document.getElementById('modeOverview')?.click();
+      syncMinistry('ALL');
+      syncModeNav('ATLAS');
+      renderAtlasWelcome();
+      requestAnimationFrame(() => applyWideAtlasLayout(true));
+    }
+  }
+  function openMinistry(id) {
+    setAtlasHome(false);
+    document.getElementById('modeStructure')?.click();
+    chooseStructureMinistry(id);
+    syncModeNav('STRUCTURE');
+    showBackHome(true);
+  }
+  window.renderInternalRelations = renderInternalRelations;
+  function openDepartment(ministryId, departmentId) {
+    openMinistry(ministryId);
+    requestAnimationFrame(() => {
+      try {
+        structureDeptDetailId = departmentId;
+        if (typeof startSimulation === 'function') startSimulation();
+        if (typeof fitViewForMode === 'function') fitViewForMode();
+        if (typeof selectNode === 'function') selectNode(departmentId);
+      } catch (_) {}
+    });
+  }
+  document.querySelectorAll('[data-atlas-mode]').forEach(button => button.addEventListener('click', () => {
+    const mode = button.dataset.atlasMode;
+    if (mode === 'ATLAS') { setAtlasHome(true); return; }
+    setAtlasHome(false);
+    document.getElementById(mode === 'STRUCTURE' ? 'modeStructure' : 'modeChannels')?.click();
+    if (mode === 'STRUCTURE') chooseStructureMinistry('ALL');
+    syncModeNav(mode);
+    showBackHome(true);
+  }));
+  function returnToMainMap() {
+    clearInternalRelations();
+    focusSet.clear(); setFocusButtons(); selectedNode=null; selectedEdge=null;
+    setAtlasHome(true); startSimulation(); renderAtlasWelcome();
+    requestAnimationFrame(() => {
+      applyWideAtlasLayout(true); enhanceAtlasNodes();
+      if (window.innerWidth <= 1100) body.classList.remove('detail-open');
+    });
+  }
+  backHomeButton?.addEventListener('click',returnToMainMap);
+  document.getElementById('modeStructure')?.addEventListener('click',()=>showBackHome(true));
+  (document.getElementById('modeChannels')||document.createElement('button'))?.addEventListener('click',()=>showBackHome(true));
+  document.getElementById('focusGrid')?.addEventListener('click',()=>requestAnimationFrame(()=>{showBackHome(focusSet.size>0);applyWideAtlasLayout(true);enhanceAtlasNodes();}));
+
+  function shortDepartmentName(name) {
+    const clean = String(name || '').replace(/^Департамент\s+/i,'').replace(/^Управление\s+/i,'Управление ');
+    return clean.length > 58 ? clean.slice(0,55).replace(/\s+\S*$/,'') + '…' : clean;
+  }
+  function buildAtlasClusters() {
+    if (!clustersHost || typeof CORE === 'undefined' || typeof structureDeptById === 'undefined') return;
+    const features = featureNames.map((name,index) => {
+      const core = CORE.find(([,value]) => value === name);
+      if (!core) return null;
+      const [id] = core;
+      const departments = [...structureDeptById.values()].filter(row => row.Org === name);
+      const documented = typeof structureDepartmentHandoffLinks === 'function'
+        ? structureDepartmentHandoffLinks(id).filter(edge => edge.kind !== 'DEPARTMENT_CANDIDATE' && (edge.source_ids?.length || edge.source_url || edge.kind === 'DEPARTMENT_DOCUMENTED')) : [];
+      const degree = new Map(departments.map(row => [row.Dept_Global_ID,0]));
+      documented.forEach(edge => { if (degree.has(edge.a)) degree.set(edge.a,degree.get(edge.a)+1); if (degree.has(edge.b)) degree.set(edge.b,degree.get(edge.b)+1); });
+      const top = departments.sort((a,b) => (degree.get(b.Dept_Global_ID)||0)-(degree.get(a.Dept_Global_ID)||0) || String(a.Registry_Name).localeCompare(String(b.Registry_Name),'ru')).slice(0,4);
+      return {id,name,index,color:featureColors[index],departments,documented,top};
+    }).filter(Boolean);
+    clustersHost.innerHTML = '';
+    features.forEach(feature => {
+      const cluster = document.createElement('article');
+      cluster.className = `atlas-feature-cluster p${feature.index+1}`;
+      cluster.dataset.ministryId = feature.id;
+      cluster.style.setProperty('--cluster', feature.color);
+      cluster.innerHTML = `<button type="button" class="atlas-feature-core" aria-label="Открыть структуру ${feature.name}"><span><strong>${feature.name.replace(' России','')}</strong><small>${feature.departments.length} подразделений · ${feature.documented.length} документированных связей</small></span></button><div class="atlas-feature-depts">${feature.top.map(row => `<button type="button" class="atlas-feature-dept" data-department-id="${row.Dept_Global_ID}" title="${String(row.Registry_Name).replace(/"/g,'&quot;')}"><i></i><span>${shortDepartmentName(row.Registry_Name)}</span></button>`).join('')}</div>`;
+      cluster.querySelector('.atlas-feature-core')?.addEventListener('click', () => openMinistry(feature.id));
+      cluster.querySelectorAll('[data-department-id]').forEach(button => button.addEventListener('click', () => openDepartment(feature.id, button.dataset.departmentId)));
+      clustersHost.appendChild(cluster);
+    });
+    atlasEdges = typeof structureMinistryInteractionLinks === 'function'
+      ? structureMinistryInteractionLinks().filter(edge => features.some(f => f.id === edge.a) && features.some(f => f.id === edge.b)) : [];
+    requestAnimationFrame(renderAtlasLines);
+  }
+  function renderAtlasLines() {
+    if (!landingLines || !landing || !body.classList.contains('atlas-home')) return;
+    const bounds = landing.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    landingLines.setAttribute('viewBox',`0 0 ${bounds.width} ${bounds.height}`);
+    landingLines.innerHTML = '';
+    const ns = 'http://www.w3.org/2000/svg';
+    atlasEdges.forEach(edge => {
+      const left = clustersHost?.querySelector(`[data-ministry-id="${edge.a}"] .atlas-feature-core`);
+      const rightNode = clustersHost?.querySelector(`[data-ministry-id="${edge.b}"] .atlas-feature-core`);
+      if (!left || !rightNode) return;
+      const a = left.getBoundingClientRect(), b = rightNode.getBoundingClientRect();
+      const x1 = a.left + 26 - bounds.left, y1 = a.top + 26 - bounds.top;
+      const x2 = b.left + 26 - bounds.left, y2 = b.top + 26 - bounds.top;
+      const group = document.createElementNS(ns,'g'); group.classList.add('atlas-link-group'); group.setAttribute('tabindex','0'); group.setAttribute('role','button'); group.setAttribute('aria-label',`${edge.a_name} и ${edge.b_name}: ${edge.base_edge_ids?.length || 0} документированных связей`);
+      const line = document.createElementNS(ns,'line'); line.classList.add('atlas-link'); line.setAttribute('x1',x1); line.setAttribute('y1',y1); line.setAttribute('x2',x2); line.setAttribute('y2',y2);
+      const halo = line.cloneNode(); halo.classList.remove('atlas-link'); halo.classList.add('atlas-link-halo');
+      const title = document.createElementNS(ns,'title'); title.textContent = `${edge.a_name} ↔ ${edge.b_name} · ${edge.base_edge_ids?.length || 0} исходных связей`;
+      group.append(line,halo,title);
+      const openEdge = () => {
+        const detail = document.getElementById('detail');
+        if (detail && typeof structureEdgeDetail === 'function') detail.innerHTML = structureEdgeDetail(edge);
+        if (window.innerWidth <= 820) body.classList.add('detail-open');
+      };
+      group.addEventListener('click',openEdge); group.addEventListener('keydown',event => { if (event.key === 'Enter' || event.key === ' ') openEdge(); });
+      landingLines.appendChild(group);
+    });
+  }
+  if (strip && typeof CORE !== 'undefined') {
+    for (const [id, name] of CORE) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.ministryId = id;
+      button.textContent = String(name).replace(' России','');
+      button.addEventListener('click', () => openMinistry(id));
+      strip.appendChild(button);
+    }
+  }
+  allButton?.addEventListener('click', () => setAtlasHome(true));
+  document.getElementById('structureMinistrySelect')?.addEventListener('change', event => { if (!body.classList.contains('atlas-wide')) syncMinistry(event.target.value); });
+  document.getElementById('atlasFiltersButton')?.addEventListener('click', () => document.getElementById('filtersToggle')?.click());
+
+  const right = document.getElementById('rightPanel');
+  const detail = document.getElementById('detail');
+  const updateDetailAvailability = () => { if (right && detail) right.dataset.hasSources = detail.querySelector('.source-block') ? 'true' : 'false'; };
+  document.querySelectorAll('[data-detail-section]').forEach(button => button.addEventListener('click', () => {
+    document.querySelectorAll('[data-detail-section]').forEach(item => item.classList.toggle('active', item === button));
+    if (right) right.dataset.detailSection = button.dataset.detailSection;
+    updateDetailAvailability();
+  }));
+  if (right) right.dataset.detailSection = 'all';
+
+  const mapButton = document.getElementById('atlasMobileMap');
+  const documentsButton = document.getElementById('atlasMobileDocuments');
+  mapButton?.addEventListener('click', () => {
+    body.classList.remove('detail-open');
+    mapButton.classList.add('active'); documentsButton?.classList.remove('active');
+  });
+  documentsButton?.addEventListener('click', () => {
+    body.classList.add('detail-open');
+    documentsButton.classList.add('active'); mapButton?.classList.remove('active');
+  });
+  document.getElementById('detailClose')?.addEventListener('click', () => {
+    mapButton?.classList.add('active'); documentsButton?.classList.remove('active');
+  });
+  if (detail) new MutationObserver(() => {
+    updateDetailAvailability();
+    enhanceNodeDetail();
+    if (window.innerWidth <= 820 && (detail.querySelector('.card') || detail.querySelector('.source-block'))) {
+      documentsButton?.classList.add('has-content');
+    }
+  }).observe(detail, {childList:true, subtree:true});
+
+  buildAtlasClusters();
+  setAtlasHome(true);
+  if (window.innerWidth <= 820) {
+    body.classList.remove('detail-open');
+    document.getElementById('detailToggle')?.setAttribute('aria-expanded','false');
+    mapButton?.classList.add('active'); documentsButton?.classList.remove('active');
+    requestAnimationFrame(() => {
+      body.classList.remove('detail-open');
+      document.getElementById('detailToggle')?.setAttribute('aria-expanded','false');
+    });
+  }
+  updateDetailAvailability();
+  const compactStructureLabels = () => {
+    if (window.innerWidth > 480 || body.dataset.atlasFocus !== 'ALL') return;
+    document.querySelectorAll('.structure-ministry-boundary-title').forEach(label => {
+      const value = label.textContent || '';
+      if (value.includes(' России')) label.textContent = value.replace(' России','');
+    });
+  };
+  const nodesLayer = document.getElementById('nodesLayer');
+  if (nodesLayer) new MutationObserver(compactStructureLabels).observe(nodesLayer, {childList:true,subtree:true});
+  if (nodesLayer) new MutationObserver(() => {
+    if (body.classList.contains('atlas-wide')) requestAnimationFrame(() => {
+      applyWideAtlasLayout(!internalMinistryId);
+      enhanceAtlasNodes();
+      if (internalMinistryId) renderInternalRelations(internalMinistryId,false);
+    });
+  }).observe(nodesLayer, {childList:true});
+  compactStructureLabels();
+  requestAnimationFrame(enhanceAtlasNodes);
+  const zoomOut = document.getElementById('zoomOut');
+  const zoomIn = document.getElementById('zoomIn');
+  if (zoomOut) zoomOut.onclick = () => { scale = Math.max(body.classList.contains('atlas-wide') ? .16 : .45, scale / 1.22); applyTransform(); collapseInternalOnZoom(); scheduleLabelLayout(); };
+  if (zoomIn) zoomIn.onclick = () => { scale = Math.min(3.2, scale * 1.18); applyTransform(); scheduleLabelLayout(); };
+  const centerButton = document.getElementById('centerBtn');
+  if (centerButton) centerButton.onclick = () => internalMinistryId ? centerInternalCamera(internalMinistryId) : body.classList.contains('atlas-wide') ? applyWideAtlasLayout(true) : fitViewForMode();
+  const graphSvg = document.getElementById('graph');
+  try {
+    startNodeDrag = (event,node) => { event.stopPropagation(); draggingNode=null; selectNode(node.id); };
+  } catch (_) {}
+  graphSvg?.addEventListener('wheel', () => requestAnimationFrame(() => { collapseInternalOnZoom(); scheduleLabelLayout(); }));
+  document.getElementById('resetBtn')?.addEventListener('click',clearInternalRelations);
+  let widePointer = null;
+  graphSvg?.addEventListener('pointerdown', event => {
+    if (!body.classList.contains('atlas-wide') || event.pointerType === 'mouse' || event.target !== graphSvg) return;
+    widePointer = {id:event.pointerId,x:event.clientX,y:event.clientY,tx,ty};
+    graphSvg.setPointerCapture?.(event.pointerId);
+  });
+  graphSvg?.addEventListener('pointermove', event => {
+    if (!widePointer || event.pointerId !== widePointer.id) return;
+    tx = widePointer.tx + event.clientX - widePointer.x;
+    ty = widePointer.ty + event.clientY - widePointer.y;
+    applyTransform(); event.preventDefault();
+  });
+  const stopWidePointer = event => { if (widePointer && event.pointerId === widePointer.id) widePointer = null; };
+  graphSvg?.addEventListener('pointerup', stopWidePointer);
+  graphSvg?.addEventListener('pointercancel', stopWidePointer);
+  window.addEventListener('resize', () => requestAnimationFrame(() => { body.classList.contains('atlas-wide') ? applyWideAtlasLayout(true) : renderAtlasLines(); scheduleLabelLayout(); }));
+})();
+</script>
+<script>
+// v133: statistics use the rendered graph; only resolvable sources qualify links.
+const contourAliases133={...DATA.canonical_org_map,...DATA.canonical_secondary_map_v123,...DATA.canonical_secondary_map_v128,'ORG-RU-ROSIM':'ORG-MINSTROY-001','EXT-GOV-RU':'ORG-27A23B51B9','EXT-RZN-001':'ORG-1D31CFD65B','EXT-FMBA-001':'ORG-557F8E3CD3','EXTCTX-MINTRUD-E8981688':'ORG-SFR','EXTCTX-MINTRUD-6EEA5974':'ORG-FB-MSE','EXTCTX-MINZDRAV-10F349E9':'EXT-FFOMS-001','EXTCTX-MINZDRAV-C4C7CC10':'EXT-FFOMS-001'};
+function contourCanonical133(id){const seen=new Set();while(contourAliases133[id]&&!seen.has(id)){seen.add(id);id=contourAliases133[id];}return id;}
+function contourSources133(e){const ids=new Set((e.source_ids||[]).flatMap(id=>String(id).split(/[;,]/).map(x=>x.trim()).filter(Boolean)));if(graphMode==='STRUCTURE')for(const id of structureSourceIdsForRecords(e.org||'',e.source_records||[]))ids.add(id);return [...ids].map(id=>sourceById[id]).filter(Boolean);}
+function contourHasSource133(e){if(contourSources133(e).length)return true;if(graphMode==='STRUCTURE')return !!String(e.source_urls||e.source_url||'').trim();return false;}
+function contourState133(id){
+ const visible=new Set(simulationNodes.map(n=>n.id)),key=contourCanonical133(id);
+ const all=simulationEdges.filter(e=>visible.has(e.a)&&visible.has(e.b)&&e.a!==e.b&&(contourCanonical133(e.a)===key||contourCanonical133(e.b)===key));
+ const neighbors=new Set(all.map(e=>contourCanonical133(e.a)===key?contourCanonical133(e.b):contourCanonical133(e.a)).filter(x=>x!==key));
+ const edges=[...new Map(all.filter(contourHasSource133).map(e=>[e.id,e])).values()];
+ return {neighbors,edges};
+}
+function contourHtml133(id){const s=contourState133(id);return `<div class="card ministry-context-summary" id="contour133" data-node-id="${esc(id)}"><h4>Полный контур данных</h4><p class="small">Объекты на текущей карте с учётом фильтров. Связи — только с доступными в карточках источниками.</p><div class="context-kpis"><button type="button" class="context-kpi contour-action" data-action="focus" onclick="contourFocus133('${esc(id)}')" title="Выбрать этот узел в качестве фокуса"><strong>${s.neighbors.size}</strong><span>связанных объектов</span></button><button type="button" class="context-kpi contour-action" data-action="links" onclick="contourShowLinks133('${esc(id)}')" title="Открыть список связей"><strong>${s.edges.length}</strong><span>связей</span></button></div><div id="contourLinks133" hidden></div></div>`;}
+function contourShowLinks133(id){const box=document.getElementById('contourLinks133');if(!box)return;const s=contourState133(id);box.hidden=false;box.innerHTML=`<h4>Связи (${s.edges.length})</h4>`+(s.edges.length?s.edges.map((e,i)=>{const a=simulationNodes.find(n=>n.id===e.a)?.name||e.a_name||e.a,b=simulationNodes.find(n=>n.id===e.b)?.name||e.b_name||e.b;const arrow=hasKnownDirection(e)?(String(e.direction).includes('BIDIRECTIONAL')?'↔':'→'):'—';const sources=contourSources133(e);const titles=sources.map(s=>s.title||s.source_id).concat((e.source_records||[]).map(s=>s.title||s.source_title||s.Source_Title||s.source_id||'Документ структурного слоя'));return `<div class="card"><button class="btn contour-link" data-edge-id="${esc(e.id)}" onclick="contourOpenEdge133('${esc(e.id)}')">${i+1}. ${esc(a)} ${arrow} ${esc(b)}</button><p class="small">${esc(e.processes||e.process||e.kind_label||relationLabels(e.relation_types||'')||'Взаимодействие')}</p><p class="small">${esc(titles.join(' · ')||e.source_url||'Источник в карточке связи')}</p></div>`;}).join(''):'<p class="empty">В текущем виде карты нет связей с доступными источниками.</p>');}
+function contourOpenEdge133(id){const e=simulationEdges.find(e=>e.id===id);if(!e)return;if(graphMode==='STRUCTURE'){selectedEdge=e;selectedNode=null;detail.innerHTML=structureEdgeDetail(e);}else selectEdge(e);}
+function contourFocus133(id){
+ contourLocalFocus133=null;
+ if(graphMode==='STRUCTURE'){const n=simulationNodes.find(n=>n.id===id);if(n?.type==='MINISTRY'){focusStructureMinistry(id);return;}if(n?.type==='DEPARTMENT'){focusDepartment(id);return;}
+ // Functions and processes have no native focus control: retain their direct visible neighborhood.
+ contourLocalFocus133={id,mode:graphMode};applyContourLocalFocus133();selectedNode=id;selectNode(id);return;}
+ if(graphMode==='CHANNELS'){if(channelNodeById[id]){focusChannel(id);return;}contourLocalFocus133={id,mode:graphMode};applyContourLocalFocus133();selectedNode=id;selectNode(id);return;}
+ if(typeof window.focusExternalNode==='function')window.focusExternalNode(id);else setFocus(id);
+}
+let contourLocalFocus133=null;
+const filteredEdgesBefore133=filteredEdges;
+filteredEdges=function(){return contourLocalFocus133?.mode===graphMode?simulationEdges:filteredEdgesBefore133();};
+function applyContourLocalFocus133(){if(!contourLocalFocus133||contourLocalFocus133.mode!==graphMode)return;const id=contourLocalFocus133.id,s=simulationEdges.filter(e=>e.a===id||e.b===id),ids=new Set([id,...s.flatMap(e=>[e.a,e.b])]),es=new Set(s.map(e=>e.id));simulationNodes=simulationNodes.filter(n=>ids.has(n.id));simulationEdges=s;for(const el of [...nodesLayer.children])if(!ids.has(el.dataset.id))el.remove();for(const el of [...edgesLayer.children])if(!es.has(el.dataset.id))el.remove();updateStats();document.getElementById('modeBadge').textContent+=' · фокус: '+(simulationNodes.find(n=>n.id===id)?.name||id);}
+
+function stripLeadingDetailTitle(html){
+  return String(html||'').replace(/^<h2>[\s\S]*?<\/h2>/,'');
+}
+for(const name of ['nodeDetail','channelNodeDetail','structureNodeDetail']){
+ const original=window[name];window[name]=function(id){const html=original(id),pos=html.indexOf('</div>',html.indexOf('class="meta"'));return pos>=0?html.slice(0,pos+6)+contourHtml133(id)+html.slice(pos+6):contourHtml133(id)+html;};
+}
+const stripNodeTitleWrapperNames=['nodeDetail','channelNodeDetail','structureNodeDetail'];
+for(const name of stripNodeTitleWrapperNames){
+ const original=window[name];
+ window[name]=function(id){return stripLeadingDetailTitle(original(id));};
+}
+const startSimulationBefore133=startSimulation;
+startSimulation=function(){startSimulationBefore133();applyContourLocalFocus133();const panel=document.getElementById('contour133');if(panel){const id=panel.dataset.nodeId,wasOpen=!document.getElementById('contourLinks133').hidden;panel.outerHTML=contourHtml133(id);if(wasOpen)contourShowLinks133(id);}};
+const setGraphModeBefore133=setGraphMode;
+setGraphMode=function(mode){contourLocalFocus133=null;setGraphModeBefore133(mode);};
+// The legacy structure renderer calls these controls but did not define them.
+function focusStructureMinistry(id){contourLocalFocus133=null;structureMinistryFocusId=id;structureDeptDetailId=null;selectedNode=id;selectedEdge=null;document.getElementById('structureMinistrySelect').value=id;startSimulation();fitViewForMode();selectNode(id);}
+function focusDepartment(id){contourLocalFocus133=null;const record=structureDeptById.get(id);if(!record)return;structureMinistryFocusId=structureOrgId(record.Org);structureDeptDetailId=id;selectedNode=id;selectedEdge=null;document.getElementById('structureMinistrySelect').value=structureMinistryFocusId||'ALL';startSimulation();fitViewForMode();selectNode(id);}
+for(const id of ['clearChannelFocus','clearStructureFocus','resetBtn']){const el=document.getElementById(id),old=el.onclick;el.onclick=function(event){contourLocalFocus133=null;return old?.call(this,event);};}
+
+</script>
+<script>
+function chosenChannel134(){return document.getElementById('channelFilter134').value;}
+const channelLabels134=[...new Set(DATA.edges.filter(e=>e.source_coverage!=='EXCLUDED_NO_DOCUMENT'&&!e.channel_binding&&e.a!==e.b&&ORGANIZATION_TYPES.has(nodeById[e.a]?.type)&&ORGANIZATION_TYPES.has(nodeById[e.b]?.type)).flatMap(e=>channelNorm(e.channels)))].sort((a,b)=>a.localeCompare(b,'ru'));
+const channelSelect134=document.getElementById('channelFilter134');
+for(const label of channelLabels134){const opt=document.createElement('option');opt.value=label;opt.textContent=label;channelSelect134.appendChild(opt);}
+const overviewEdgeBefore134=isOverviewEdge;
+isOverviewEdge=function(e){if(chosenChannel134()==='ALL')return overviewEdgeBefore134(e);return !e.channel_binding&&e.a!==e.b&&ORGANIZATION_TYPES.has(nodeById[e.a]?.type)&&ORGANIZATION_TYPES.has(nodeById[e.b]?.type);};
+const matchesBefore134=baseMatchesEdge;
+baseMatchesEdge=function(e){const ch=chosenChannel134();return (graphMode!=='OVERVIEW'||ch==='ALL'||channelNorm(e.channels).includes(ch))&&matchesBefore134(e);};
+const modeBefore134=setGraphMode;
+setGraphMode=function(mode){modeBefore134(mode==='CHANNELS'?'OVERVIEW':mode);document.getElementById('channelToolbar134').hidden=graphMode!=='OVERVIEW';};
+function applyChannel134(){if(graphMode!=='OVERVIEW')setGraphMode('OVERVIEW');selectedEdge=null;if(!selectedNode)detail.innerHTML='<h2>Карточка объекта</h2><div class="empty">Выберите узел или связь на карте.</div>';startSimulation();fitViewForMode();}
+channelSelect134.onchange=applyChannel134;
+document.getElementById('clearChannel134').onclick=()=>{channelSelect134.value='ALL';applyChannel134();};
+// Legacy channel-focus links now select a filter on the main map.
+focusChannel=function(id){const name=channelNodeById[id]?.name||channelState.nodeMap.get(id)?.name;setGraphMode('OVERVIEW');channelSelect134.value=channelLabels134.includes(name)?name:'ALL';applyChannel134();};
+const statsBefore134=updateStats;
+updateStats=function(){statsBefore134();if(graphMode==='OVERVIEW'&&chosenChannel134()!=='ALL'){document.getElementById('modeBadge').textContent+=' · канал: '+chosenChannel134();}document.getElementById('channelMatch134').textContent=graphMode==='OVERVIEW'?simulationEdges.length+' связей':'';};
+const resetBefore134=document.getElementById('resetBtn').onclick;
+document.getElementById('resetBtn').onclick=function(event){channelSelect134.value='ALL';resetBefore134.call(this,event);document.getElementById('channelToolbar134').hidden=false;};
+document.getElementById('channelFocusSection').hidden=true;
+startSimulation();
+
+</script>
+<script>
+const edgeDetailBefore135=edgeDetail;edgeDetail=function(e){const h=edgeDetailBefore135(e),r=e.channel_research;if(!r)return h;const grades={DOCUMENTED_TRANSPORT_SCOPED:'Канал подтверждён для указанного процесса',MULTIPLE_DOCUMENTED_TRANSPORTS:'Документированы несколько способов обмена',DOCUMENTED_SHARED_SYSTEM_CONTEXT:'Подтверждён общий цифровой контур',MULTIPLE_SHARED_SYSTEM_CONTEXTS:'Подтверждены общие цифровые контуры',MULTI_CHANNEL_DOCUMENTED:'Документированы несколько каналов',DOCUMENTED_TRANSPORT:'Способ обмена установлен документом',DOCUMENTED_ELECTRONIC_FORMAT:'Подтверждён только электронный формат',DOCUMENTED_MECHANISM_ONLY:'Порядок взаимодействия; технический канал не установлен'};const block='<div class="card channel-evidence135"><h4>Уточнение канала · '+esc(r.version)+'</h4><p><strong>'+esc(grades[r.grade])+'</strong></p><p>'+esc(r.scope)+'</p><p class="small">Дата: '+esc(r.date)+' · '+esc(r.locator)+'</p>'+(r.data_format?'<p>Формат данных: '+esc(r.data_format)+'</p>':'')+(r.mechanism?'<p>Порядок: '+esc(r.mechanism)+'</p>':'')+(r.conditional_channels.length?'<p>С условием технической реализации: '+esc(r.conditional_channels.join('; '))+'</p>':'')+(r.planned_channels.length?'<p>Запланировано, не включено в фильтр: '+esc(r.planned_channels.join('; '))+'</p>':'')+'<p>'+esc(r.note)+'</p>'+r.source_ids.map(id=>{const s=sourceById[id];return '<p><a href="'+esc(s.url)+'" target="_blank" rel="noopener">Основание '+esc(id)+'</a></p>';}).join('')+'</div>';const pos=h.indexOf('</div>',h.indexOf('class="meta"'));return h.slice(0,pos+6)+block+h.slice(pos+6);};
+</script><script>
+// Channel selection changes appearance only; ordinary map filters retain control of visibility.
+const channelOptions137=[{"name":"СМЭВ","color":"#4B7188"},{"name":"ФГИС «Экомониторинг»","color":"#18865F"},{"name":"ЕПГУ","color":"#D06A00"},{"name":"ГИСП","color":"#8556B3"},{"name":"Отраслевые ИС / ФГИС","color":"#C13E64"}];
+const selectedChannels137=new Set();
+chosenChannel134=()=> 'ALL';
+baseMatchesEdge=matchesBefore134;
+isOverviewEdge=overviewEdgeBefore134;
+const toolbar137=document.getElementById('channelToolbar134');
+toolbar137.innerHTML='<div class="channel-heading137"><strong>Каналы / цифровые контуры</strong><button type="button" class="btn" id="clearChannels137">Снять выбор</button></div><div class="channel-options137">'+channelOptions137.map((c,i)=>'<label><input type="checkbox" value="'+esc(c.name)+'" data-channel-index="'+i+'"><span class="channel-dot137" style="background:'+c.color+'"></span><span>'+esc(c.name)+'</span><span class="channel-count138" data-channel-count="'+i+'" title="Число связей на текущей карте"></span></label>').join('')+'</div><span id="channelMatch134" class="small"></span><p class="channel-help137">Топ-5 каналов главной карты. Числа — связи в текущем виде. Можно выбрать несколько. Остальные связи — серые.</p>';
+// Retain the detached legacy select for old reset/focus handlers, without displaying its options.
+channelSelect134.value='ALL';
+function channelMatches137(e){const labels=channelNorm(e.channels);return channelOptions137.filter(c=>selectedChannels137.has(c.name)&&labels.includes(c.name));}
+const svg137=edgesLayer.ownerSVGElement,ns137='http://www.w3.org/2000/svg';
+const defs137=document.createElementNS(ns137,'defs');defs137.id='channelPaintDefs137';svg137.insertBefore(defs137,svg137.firstChild);
+function paintChannels137(){
+ if(graphMode!=='OVERVIEW')return;
+ for(const badge of toolbar137.querySelectorAll('[data-channel-count]')){const c=channelOptions137[Number(badge.dataset.channelCount)];badge.textContent=simulationEdges.filter(e=>channelNorm(e.channels).includes(c.name)).length;}
+ defs137.replaceChildren();const em=new Map(simulationEdges.map(e=>[e.id,e]));let count=0,multi=0;
+ for(const line of edgesLayer.querySelectorAll('.edge')){const e=em.get(line.dataset.id);if(!e)continue;const cs=channelMatches137(e);line.dataset.selectedChannels=cs.map(c=>c.name).join(';');let stroke='#a9afb5';
+  if(cs.length===1)stroke=cs[0].color;
+  if(cs.length>1){multi++;const gradient=document.createElementNS(ns137,'linearGradient');gradient.id='channel137-'+hashString(e.id).toString(16);gradient.setAttribute('gradientUnits','userSpaceOnUse');for(const attr of ['x1','y1','x2','y2'])gradient.setAttribute(attr,line.getAttribute(attr)||'0');cs.forEach((c,i)=>{for(const fraction of [i/cs.length,(i+1)/cs.length]){const stop=document.createElementNS(ns137,'stop');stop.setAttribute('offset',fraction);stop.setAttribute('stop-color',c.color);gradient.appendChild(stop);}});defs137.appendChild(gradient);stroke='url(#'+gradient.id+')';}
+  if(cs.length)count++;line.style.setProperty('stroke',stroke,'important');line.style.setProperty('stroke-opacity',cs.length?'0.95':'0.55','important');line.style.setProperty('stroke-width',cs.length?'3.4':'1.15','important');
+ }
+ const info=document.getElementById('channelMatch134');if(info)info.textContent=selectedChannels137.size?'Подсвечено '+count+' из '+simulationEdges.length+' связей'+(multi?' · '+multi+' с несколькими каналами':''):'Все '+simulationEdges.length+' связей — серые';
+}
+function changeChannels137(){selectedChannels137.clear();for(const input of toolbar137.querySelectorAll('input:checked'))selectedChannels137.add(input.value);paintChannels137();}
+toolbar137.querySelectorAll('input').forEach(input=>input.addEventListener('change',changeChannels137));
+document.getElementById('clearChannels137').onclick=()=>{toolbar137.querySelectorAll('input').forEach(input=>input.checked=false);changeChannels137();};
+const renderBefore137=renderGraph;renderGraph=function(){renderBefore137();paintChannels137();};
+const drawBefore137=drawPositions;drawPositions=function(){drawBefore137();for(const line of edgesLayer.querySelectorAll('.edge')){const id=line.style.stroke.match(/#(channel137-[^"')]+)/);if(!id)continue;const gradient=document.getElementById(id[1]);if(gradient)for(const attr of ['x1','y1','x2','y2'])gradient.setAttribute(attr,line.getAttribute(attr)||'0');}};
+const startBefore137=startSimulation;startSimulation=function(){startBefore137();paintChannels137();};
+const statsBefore137=updateStats;updateStats=function(){statsBefore137();if(graphMode==='OVERVIEW')paintChannels137();};
+const resetBefore137=document.getElementById('resetBtn').onclick;document.getElementById('resetBtn').onclick=function(event){selectedChannels137.clear();toolbar137.querySelectorAll('input').forEach(input=>input.checked=false);resetBefore137.call(this,event);paintChannels137();};
+focusChannel=function(id){const name=channelNodeById[id]?.name||channelState.nodeMap.get(id)?.name;setGraphMode('OVERVIEW');const input=[...toolbar137.querySelectorAll('input')].find(input=>input.value===name);if(input){input.checked=true;changeChannels137();}};
+startSimulation();
+
+
+</script><script>
+// v140 UI refinement: repeat channel colours along the full length of multi-channel edges.
+(function(){
+  const stripeWidth140=10;
+  function setRepeatedGradientGeometry140(line,gradient,count){
+    const x1=Number(line.getAttribute('x1')||0),y1=Number(line.getAttribute('y1')||0);
+    const xEnd=Number(line.getAttribute('x2')||0),yEnd=Number(line.getAttribute('y2')||0);
+    const dx=xEnd-x1,dy=yEnd-y1,dist=Math.hypot(dx,dy)||1;
+    const cycle=Math.max(2,count)*stripeWidth140;
+    gradient.setAttribute('x1',x1);gradient.setAttribute('y1',y1);
+    gradient.setAttribute('x2',x1+dx/dist*cycle);gradient.setAttribute('y2',y1+dy/dist*cycle);
+  }
+  function refreshRepeatedGradients140(){
+    for(const line of edgesLayer.querySelectorAll('.edge')){
+      const match=String(line.style.stroke||'').match(/#(channel137-[^"')]+)/);
+      if(!match)continue;
+      const gradient=document.getElementById(match[1]);
+      if(!gradient||gradient.getAttribute('data-repeat140')!=='1')continue;
+      setRepeatedGradientGeometry140(line,gradient,Number(gradient.getAttribute('data-channel-count140')||2));
+    }
+  }
+  paintChannels137=function(){
+    if(graphMode!=='OVERVIEW')return;
+    for(const badge of toolbar137.querySelectorAll('[data-channel-count]')){
+      const c=channelOptions137[Number(badge.dataset.channelCount)];
+      badge.textContent=simulationEdges.filter(e=>channelNorm(e.channels).includes(c.name)).length;
+    }
+    defs137.replaceChildren();
+    const em=new Map(simulationEdges.map(e=>[e.id,e]));let count=0,multi=0;
+    for(const line of edgesLayer.querySelectorAll('.edge')){
+      const e=em.get(line.dataset.id);if(!e)continue;
+      const cs=channelMatches137(e);
+      line.dataset.selectedChannels=cs.map(c=>c.name).join(';');
+      let stroke='#a9afb5';
+      if(cs.length===1)stroke=cs[0].color;
+      if(cs.length>1){
+        multi++;
+        const gradient=document.createElementNS(ns137,'linearGradient');
+        gradient.id='channel137-'+hashString(e.id).toString(16);
+        gradient.setAttribute('gradientUnits','userSpaceOnUse');
+        gradient.setAttribute('spreadMethod','repeat');
+        gradient.setAttribute('data-repeat140','1');
+        gradient.setAttribute('data-channel-count140',String(cs.length));
+        cs.forEach((c,i)=>{
+          const from=i/cs.length,to=(i+1)/cs.length;
+          const a=document.createElementNS(ns137,'stop');a.setAttribute('offset',String(from));a.setAttribute('stop-color',c.color);gradient.appendChild(a);
+          const b=document.createElementNS(ns137,'stop');b.setAttribute('offset',String(to));b.setAttribute('stop-color',c.color);gradient.appendChild(b);
+        });
+        defs137.appendChild(gradient);
+        setRepeatedGradientGeometry140(line,gradient,cs.length);
+        stroke='url(#'+gradient.id+')';
+      }
+      if(cs.length)count++;
+      line.style.setProperty('stroke',stroke,'important');
+      line.style.setProperty('stroke-opacity',cs.length?'1':'0.45','important');
+      line.style.setProperty('opacity','1','important');
+      line.style.setProperty('stroke-width',cs.length?'3.4':'1.15','important');
+    }
+    const info=document.getElementById('channelMatch134');
+    if(info)info.textContent=selectedChannels137.size
+      ?'Подсвечено '+count+' из '+simulationEdges.length+' связей'+(multi?' · '+multi+' многоканальных с чередованием цветов':'')
+      :'Все '+simulationEdges.length+' связей — серые';
+  };
+  const drawBeforeRepeated140=drawPositions;
+  drawPositions=function(){drawBeforeRepeated140();refreshRepeatedGradients140();};
+  const help=toolbar137.querySelector('.channel-help137');
+  if(help)help.textContent='Подтверждённые каналы и цифровые контуры главной карты. Число рядом — количество рёбер, где этот элемент документально подтверждён. Одно ребро считается по одному каноническому элементу не более одного раза; тестовый СМЭВ отделён от промышленного.';
+  paintChannels137();
+  refreshRepeatedGradients140();
+})();
+</script>
+<style id="channel-filter-v179">
+/* v179: channel filter counts only documentary-confirmed channels across the full model. */
+#channelToolbar134{width:340px;max-height:78vh;overflow:hidden}
+#channelToolbar134 .channel-search179{width:100%;box-sizing:border-box;margin:0 0 7px;padding:6px 8px;border:1px solid #c9c2b7;background:#fff;color:#183248;font:inherit;font-size:11px}
+#channelToolbar134 .channel-options137{max-height:52vh;overflow:auto;padding-right:4px;align-content:start}
+#channelToolbar134 .channel-options137 label[hidden]{display:none!important}
+.channel-count138{min-width:30px}
+.channel-verified179{font-variant-numeric:tabular-nums}
+.channel-help137 strong{color:#183449}
+@media(max-width:700px){#channelToolbar134{width:min(320px,calc(100vw - 16px));max-height:calc(100vh - 76px)}#channelToolbar134 .channel-options137{max-height:46vh}}
+</style>
+<script id="channel-filter-v179-script">
+(function(){
+  const VERIFIED_CHANNEL_GRADES179=new Set([
+    'DOCUMENTED_TRANSPORT','MULTIPLE_DOCUMENTED_TRANSPORTS','DOCUMENTED_TRANSPORT_SCOPED',
+    'DOCUMENTED_SHARED_SYSTEM_CONTEXT','MULTIPLE_SHARED_SYSTEM_CONTEXTS','MULTI_CHANNEL_DOCUMENTED',
+    'DOCUMENTED_ELECTRONIC_FORMAT'
+  ]);
+  const oldChannelNorm179=channelNorm;
+  const extraChannelRules179=[
+    ['ЕРКНМ / ЕРП',/ЕРКНМ|(?:^|[^А-ЯЁ])ЕРП(?:[^А-ЯЁ]|$)/i],
+    ['РСЧС',/(?:^|[^А-ЯЁ])РСЧС(?:[^А-ЯЁ]|$)/i],
+    ['СГУК РВ и РАО',/СГУК\s+РВ\s+и\s+РАО/i],
+    ['ФГИС ЕГРН',/ФГИС\s+ЕГРН/i],
+    ['Витрина ФРДО',/ФРДО|Витрина\s+1\s+Рособрнадзор/i],
+    ['Витрина СФР / АИС СФР',/Витрина\s+1\s+СФР|АИС\s+СФР/i],
+    ['Реестр заключений ЭПБ / ЦП АИС 2.0',/Реестр\s+заключений\s+ЭПБ|ЦП\s+АИС\s*2\.0/i],
+    ['Платформа обратной связи (ПОС)',/Платформ[а-яё]*\s+обратной\s+связи|(?:^|[^А-ЯЁ])ПОС(?:[^А-ЯЁ]|$)/i],
+    ['ЕГИС ОТБ',/ЕГИС\s+ОТБ/i],
+    ['ФРГУ',/(?:^|[^А-ЯЁ])ФРГУ(?:[^А-ЯЁ]|$)/i],
+    ['ЕРУЛ',/(?:^|[^А-ЯЁ])ЕРУЛ(?:[^А-ЯЁ]|$)/i]
+  ];
+  channelNorm=function(text){
+    const result=[...oldChannelNorm179(text)],seen=new Set(result),s=String(text||'');
+    for(const [name,rex] of extraChannelRules179){if(rex.test(s)&&!seen.has(name)){seen.add(name);result.push(name)}}
+    return result;
+  };
+  const verifiedCache179=new Map(),rawCache179=new Map();
+  function rawChannelLabels179(e){
+    if(rawCache179.has(e.id))return rawCache179.get(e.id);
+    const labels=[...new Set(channelNorm(e.channels))];rawCache179.set(e.id,labels);return labels;
+  }
+  function verifiedChannelLabels179(e){
+    if(verifiedCache179.has(e.id))return verifiedCache179.get(e.id);
+    const r=e.channel_research||{},labels=[],seen=new Set();
+    if(VERIFIED_CHANNEL_GRADES179.has(r.grade)&&Array.isArray(r.channels)){
+      for(const raw of r.channels){
+        const normalized=channelNorm(raw);
+        if(normalized.length){for(const label of normalized){if(!seen.has(label)){seen.add(label);labels.push(label)}}}
+        else {
+          const fallback=String(raw||'').trim();
+          if(fallback&&!seen.has(fallback)){seen.add(fallback);labels.push(fallback)}
+        }
+      }
+    }
+    verifiedCache179.set(e.id,labels);return labels;
+  }
+  window.verifiedChannelLabels179=verifiedChannelLabels179;
+  const activeEdges179=DATA.edges.filter(e=>e.source_coverage!=='EXCLUDED_NO_DOCUMENT'&&!e.channel_binding&&e.a!==e.b);
+  const verifiedCounts179=new Map(),rawCounts179=new Map();
+  for(const e of activeEdges179){
+    for(const label of verifiedChannelLabels179(e))verifiedCounts179.set(label,(verifiedCounts179.get(label)||0)+1);
+    for(const label of rawChannelLabels179(e))rawCounts179.set(label,(rawCounts179.get(label)||0)+1);
+  }
+  const preferredColors179=new Map([
+    ['СМЭВ','#386C8E'],['ЕПГУ','#D06A00'],['ФГИС «Экомониторинг»','#168A68'],['ГИСП','#8556B3'],
+    ['Отраслевые ИС / ФГИС','#C13E64'],['ГИС ТЭК','#667B22'],['ГосЛог','#8B5B2B'],['ЕГАСМРО','#1F7A8C'],
+    ['ГИС ЭПД','#A24E72'],['ГИИС «Электронный бюджет»','#6A5ACD'],['ЕРКНМ / ЕРП','#B04A3A'],['РСЧС','#4F6D3A']
+  ]);
+  const palette179=['#2F6DAE','#B45A2A','#397A57','#7655A3','#AD3F66','#6F7D28','#2D7C87','#9B652B','#5A6FA8','#A3483E','#44744A','#765B2D','#6B5AA6','#2F7B70','#975071','#5E7187'];
+  const names179=[...verifiedCounts179.keys()].sort((a,b)=>(verifiedCounts179.get(b)-verifiedCounts179.get(a))||a.localeCompare(b,'ru'));
+  const channelOptions179=names179.map((name,i)=>({name,color:preferredColors179.get(name)||palette179[i%palette179.length]}));
+  DATA.channel_filter_v179={
+    version:'v179',checked_on:'2026-10-03',mode:'DOCUMENTARY_CONFIRMED_CHANNELS',
+    verified_grades:[...VERIFIED_CHANNEL_GRADES179],channel_count:channelOptions179.length,
+    note:'Счётчик фильтра показывает документально подтверждённые рёбра во всей модели; старые непроверенные подписи channels не увеличивают счётчик.'
+  };
+  const toolbar=toolbar137;
+  toolbar.innerHTML='<div class="channel-heading137"><strong>Каналы / цифровые контуры</strong><button type="button" class="btn" id="clearChannels137">Снять выбор</button></div>'+
+    '<input id="channelSearch179" class="channel-search179" type="search" placeholder="Поиск подтверждённого канала или системы…" aria-label="Поиск канала или цифрового контура">'+
+    '<div class="channel-options137">'+channelOptions179.map((c,i)=>'<label data-channel-row179="'+i+'"><input type="checkbox" value="'+esc(c.name)+'" data-channel-index="'+i+'"><span class="channel-dot137" style="background:'+c.color+'"></span><span>'+esc(c.name)+'</span><span class="channel-count138 channel-verified179" data-channel-count179="'+i+'" title="Подтверждённые рёбра во всей модели">'+verifiedCounts179.get(c.name)+'</span></label>').join('')+'</div>'+
+    '<span id="channelMatch134" class="small"></span><p class="channel-help137"><strong>Числа — только документально подтверждённые рёбра во всей модели.</strong> Старые непроверенные подписи каналов в счётчик не входят. При выборе показано, сколько подтверждённых рёбер видно в текущем слое.</p>';
+  selectedChannels137.clear();
+  function selectedVerified179(e){
+    const labels=verifiedChannelLabels179(e);return channelOptions179.filter(c=>selectedChannels137.has(c.name)&&labels.includes(c.name));
+  }
+  channelMatches137=selectedVerified179;
+  paintChannels137=function(){
+    if(graphMode!=='OVERVIEW')return;
+    defs137.replaceChildren();
+    const em=new Map(simulationEdges.map(e=>[e.id,e]));let visibleSelected=0,multi=0;
+    for(const line of edgesLayer.querySelectorAll('.edge')){
+      const e=em.get(line.dataset.id);if(!e)continue;
+      const cs=selectedVerified179(e);line.dataset.selectedChannels=cs.map(c=>c.name).join(';');let stroke='#a9afb5';
+      if(cs.length===1)stroke=cs[0].color;
+      if(cs.length>1){
+        multi++;const gradient=document.createElementNS(ns137,'linearGradient');gradient.id='channel137-'+hashString(e.id).toString(16);
+        gradient.setAttribute('gradientUnits','userSpaceOnUse');gradient.setAttribute('spreadMethod','repeat');gradient.setAttribute('data-repeat140','1');gradient.setAttribute('data-channel-count140',String(cs.length));
+        const x1=Number(line.getAttribute('x1')||0),y1=Number(line.getAttribute('y1')||0),x2=Number(line.getAttribute('x2')||0),y2=Number(line.getAttribute('y2')||0),dx=x2-x1,dy=y2-y1,dist=Math.hypot(dx,dy)||1,cycle=Math.max(2,cs.length)*10;
+        gradient.setAttribute('x1',x1);gradient.setAttribute('y1',y1);gradient.setAttribute('x2',x1+dx/dist*cycle);gradient.setAttribute('y2',y1+dy/dist*cycle);
+        cs.forEach((c,i)=>{const from=i/cs.length,to=(i+1)/cs.length;for(const [offset,color] of [[from,c.color],[to,c.color]]){const stop=document.createElementNS(ns137,'stop');stop.setAttribute('offset',String(offset));stop.setAttribute('stop-color',color);gradient.appendChild(stop)}});
+        defs137.appendChild(gradient);stroke='url(#'+gradient.id+')';
+      }
+      if(cs.length)visibleSelected++;
+      line.style.setProperty('stroke',stroke,'important');line.style.setProperty('stroke-opacity',cs.length?'1':'0.38','important');line.style.setProperty('opacity','1','important');line.style.setProperty('stroke-width',cs.length?'3.4':'1.05','important');
+    }
+    for(const badge of toolbar.querySelectorAll('[data-channel-count179]')){
+      const c=channelOptions179[Number(badge.dataset.channelCount179)],confirmed=verifiedCounts179.get(c.name)||0,raw=rawCounts179.get(c.name)||0,visible=simulationEdges.filter(e=>verifiedChannelLabels179(e).includes(c.name)).length;
+      badge.textContent=confirmed;badge.title='Подтверждено в модели: '+confirmed+' · видно сейчас: '+visible+' · старых текстовых упоминаний: '+raw;
+    }
+    const info=document.getElementById('channelMatch134');
+    if(info){
+      if(selectedChannels137.size){
+        const modelSelected=activeEdges179.filter(e=>verifiedChannelLabels179(e).some(x=>selectedChannels137.has(x))).length;
+        info.textContent='Подсвечено '+visibleSelected+' из '+modelSelected+' подтверждённых рёбер'+(modelSelected-visibleSelected>0?' · '+(modelSelected-visibleSelected)+' вне текущего слоя':'')+(multi?' · '+multi+' многоканальных':'');
+      } else info.textContent='Подтверждённых каналов / цифровых контуров в фильтре: '+channelOptions179.length;
+    }
+  };
+  function change179(){selectedChannels137.clear();for(const input of toolbar.querySelectorAll('.channel-options137 input:checked'))selectedChannels137.add(input.value);paintChannels137();}
+  toolbar.querySelectorAll('.channel-options137 input').forEach(input=>input.addEventListener('change',change179));
+  document.getElementById('clearChannels137').onclick=()=>{toolbar.querySelectorAll('.channel-options137 input').forEach(input=>input.checked=false);selectedChannels137.clear();paintChannels137();};
+  const search=document.getElementById('channelSearch179');
+  search.addEventListener('input',()=>{const q=search.value.trim().toLocaleLowerCase('ru');for(const row of toolbar.querySelectorAll('[data-channel-row179]')){const c=channelOptions179[Number(row.dataset.channelRow179)];row.hidden=!!q&&!c.name.toLocaleLowerCase('ru').includes(q)}});
+  focusChannel=function(id){const name=channelNodeById[id]?.name||channelState.nodeMap.get(id)?.name;setGraphMode('OVERVIEW');const input=[...toolbar.querySelectorAll('.channel-options137 input')].find(input=>input.value===name);if(input){input.checked=true;change179();}};
+  paintChannels137();
+})();
+</script>
+
+
+<style id="channel-filter-v181-main-map-only">
+/* v181: channel counts are limited to documentary-confirmed edges of the default main overview map. */
+#channelToolbar134 .channel-options137 label[data-main-map-count181="0"]{display:none!important}
+</style>
+<script id="channel-filter-v181-main-map-only-script">
+(function(){
+  if(typeof window.verifiedChannelLabels179!=='function')return;
+  const toolbar181=document.getElementById('channelToolbar134');
+  if(!toolbar181)return;
+
+  /* The default overview has already been rendered at this point.
+     Freeze exactly that main-map universe so detail/focus-only edges can never enter channel counts. */
+  const MAIN_MAP_EDGE_IDS181=new Set((simulationEdges||[]).filter(e=>e&&e.id).map(e=>e.id));
+  const MAIN_MAP_NODE_IDS181=new Set();
+  for(const e of DATA.edges){
+    if(!MAIN_MAP_EDGE_IDS181.has(e.id))continue;
+    MAIN_MAP_NODE_IDS181.add(e.a);MAIN_MAP_NODE_IDS181.add(e.b);
+  }
+
+  function channelRows181(){return [...toolbar181.querySelectorAll('.channel-options137 label[data-channel-row179]')];}
+  function channelMeta181(){
+    return channelRows181().map(row=>{
+      const input=row.querySelector('input[type="checkbox"]');
+      const dot=row.querySelector('.channel-dot137');
+      return {row,input,name:input?.value||'',color:dot?.style.background||'#386C8E'};
+    }).filter(x=>x.name);
+  }
+  function baselineCount181(name){
+    let count=0;
+    for(const e of DATA.edges){if(MAIN_MAP_EDGE_IDS181.has(e.id)&&window.verifiedChannelLabels179(e).includes(name))count++;}
+    return count;
+  }
+  function visibleMainCount181(name){
+    return (simulationEdges||[]).filter(e=>MAIN_MAP_EDGE_IDS181.has(e.id)&&window.verifiedChannelLabels179(e).includes(name)).length;
+  }
+  function refreshRows181(){
+    const metas=channelMeta181();
+    for(const m of metas){
+      const total=baselineCount181(m.name);
+      m.row.dataset.mainMapCount181=String(total);
+      const badge=m.row.querySelector('[data-channel-count179]');
+      if(badge){
+        const visible=visibleMainCount181(m.name);
+        badge.textContent=String(visible);
+        badge.title='Подтверждённых рёбер этого канала на текущем виде главной карты: '+visible+(visible!==total?' · всего на главной карте без дополнительных фильтров: '+total:'');
+      }
+      m.row.hidden=total===0;
+    }
+    const box=toolbar181.querySelector('.channel-options137');
+    if(box){
+      const ordered=metas.slice().sort((a,b)=>baselineCount181(b.name)-baselineCount181(a.name)||a.name.localeCompare(b.name,'ru'));
+      for(const m of ordered)box.appendChild(m.row);
+    }
+  }
+  function selectedMainChannels181(e,optionMap){
+    if(!MAIN_MAP_EDGE_IDS181.has(e.id))return [];
+    const labels=window.verifiedChannelLabels179(e),out=[];
+    for(const name of selectedChannels137){if(labels.includes(name)&&optionMap.has(name))out.push(optionMap.get(name));}
+    return out;
+  }
+
+  paintChannels137=function(){
+    if(graphMode!=='OVERVIEW')return;
+    refreshRows181();defs137.replaceChildren();
+    const optionMap=new Map(channelMeta181().map(x=>[x.name,{name:x.name,color:x.color}]));
+    const em=new Map((simulationEdges||[]).map(e=>[e.id,e]));let visibleSelected=0,multi=0;
+    for(const line of edgesLayer.querySelectorAll('.edge')){
+      const e=em.get(line.dataset.id);if(!e)continue;
+      const cs=selectedMainChannels181(e,optionMap);line.dataset.selectedChannels=cs.map(c=>c.name).join(';');let stroke='#a9afb5';
+      if(cs.length===1)stroke=cs[0].color;
+      if(cs.length>1){
+        multi++;const gradient=document.createElementNS(ns137,'linearGradient');gradient.id='channel181-'+hashString(e.id).toString(16);
+        gradient.setAttribute('gradientUnits','userSpaceOnUse');gradient.setAttribute('spreadMethod','repeat');gradient.setAttribute('data-repeat140','1');gradient.setAttribute('data-channel-count140',String(cs.length));
+        const x1=Number(line.getAttribute('x1')||0),y1=Number(line.getAttribute('y1')||0),x2=Number(line.getAttribute('x2')||0),y2=Number(line.getAttribute('y2')||0),dx=x2-x1,dy=y2-y1,dist=Math.hypot(dx,dy)||1,cycle=Math.max(2,cs.length)*10;
+        gradient.setAttribute('x1',x1);gradient.setAttribute('y1',y1);gradient.setAttribute('x2',x1+dx/dist*cycle);gradient.setAttribute('y2',y1+dy/dist*cycle);
+        cs.forEach((c,i)=>{const from=i/cs.length,to=(i+1)/cs.length;for(const [offset,color] of [[from,c.color],[to,c.color]]){const stop=document.createElementNS(ns137,'stop');stop.setAttribute('offset',String(offset));stop.setAttribute('stop-color',color);gradient.appendChild(stop);}});
+        defs137.appendChild(gradient);stroke='url(#'+gradient.id+')';
+      }
+      if(cs.length)visibleSelected++;
+      line.style.setProperty('stroke',stroke,'important');line.style.setProperty('stroke-opacity',cs.length?'1':'0.38','important');line.style.setProperty('opacity','1','important');line.style.setProperty('stroke-width',cs.length?'3.4':'1.05','important');
+    }
+    const info=document.getElementById('channelMatch134');
+    if(info){
+      if(selectedChannels137.size)info.textContent='Подсвечено '+visibleSelected+' подтверждённых рёбер на главной карте'+(multi?' · '+multi+' многоканальных':'');
+      else info.textContent='Главная карта: '+MAIN_MAP_NODE_IDS181.size+' узлов · '+MAIN_MAP_EDGE_IDS181.size+' связей';
+    }
+  };
+
+  const help=toolbar181.querySelector('.channel-help137');
+  if(help)help.innerHTML='<strong>Числа — только документально подтверждённые рёбра, отображаемые на главной карте.</strong> Внутренние, пользовательские и иные рёбра вне основной карты в счётчик не входят.';
+  const search181=document.getElementById('channelSearch179');
+  if(search181){
+    search181.placeholder='Поиск канала главной карты…';
+    search181.addEventListener('input',()=>{
+      const q=search181.value.trim().toLocaleLowerCase('ru');
+      for(const row of channelRows181()){
+        const input=row.querySelector('input[type="checkbox"]'),name=input?.value||'',baseline=Number(row.dataset.mainMapCount181||0);
+        row.hidden=baseline===0|| (!!q&&!name.toLocaleLowerCase('ru').includes(q));
+      }
+    });
+  }
+
+  DATA.channel_filter_v181={version:'v181',checked_on:'2026-10-03',mode:'DOCUMENTARY_CONFIRMED_MAIN_OVERVIEW_ONLY',main_map_nodes:MAIN_MAP_NODE_IDS181.size,main_map_edges:MAIN_MAP_EDGE_IDS181.size,note:'Счётчик и подсветка каналов ограничены подтверждёнными рёбрами основной широкой карты; рёбра вне главной карты исключены.'};
+  refreshRows181();paintChannels137();
+})();
+</script>
+
+<!-- v180: восстановление документально подтвержденных каналов Минздрава, Минсельхоза и Минтруда. Фильтр продолжает считать только channel_research, а не исходное поле channels. -->
+<!-- v182: полный аудит 14 рёбер Минстроя на главной карте; 7 подтверждённых каналов / 7 документированных взаимодействий без отдельного канала. -->
+<!-- v183: полный аудит Минприроды на главной карте: обработаны 27 ранее не исследованных рёбер; итог по 31 ребру Минприроды — 22 с документированным каналом/общей системой и 9 без отдельного подтверждённого транспорта. -->
+<!-- v187: полный аудит 25 рёбер Минцифры на главной карте; обработаны 10 ранее не исследованных рёбер. -->
+
+<!-- v188: полный аудит 8 оставшихся рёбер Минсельхоза на главной карте; 2 подтверждённых цифровых контура / 6 документированных взаимодействий без отдельного канала. -->
+<!-- v189: полный аудит 8 оставшихся рёбер Минтруда на главной карте; все 8 классифицированы как документированное административное взаимодействие без доказанного отдельного цифрового транспорта. -->
+
+<script id="ui-node-search-patch-20261003">
+(function(){
+  const root=document.getElementById('atlasNodeSearch');
+  const input=document.getElementById('atlasNodeSearchInput');
+  const results=document.getElementById('atlasNodeSearchResults');
+  const clear=document.getElementById('atlasNodeSearchClear');
+  if(!root||!input||!results||!clear||typeof DATA==='undefined'||typeof nodeById==='undefined')return;
+
+  const normalize=value=>String(value||'').toLocaleLowerCase('ru').replace(/ё/g,'е').replace(/\s+/g,' ').trim();
+  const searchableNodes=DATA.nodes.filter(n=>n&&n.id&&n.name&&(
+    (typeof ORGANIZATION_TYPES!=='undefined'&&ORGANIZATION_TYPES.has(n.type)) ||
+    (typeof coreIds!=='undefined'&&coreIds.has(n.id))
+  ));
+  let current=[];
+  let activeIndex=-1;
+
+  function nodeTypeLabel(n){
+    try{return typeof labelType==='function'?labelType(n.type):(n.type||'узел');}
+    catch(_){return n.type||'узел';}
+  }
+  function scoreNode(n,q){
+    const name=normalize(n.name);
+    if(name===q)return 0;
+    if(name.startsWith(q))return 1;
+    const wordStart=name.split(/[\s/()«»"'—–-]+/).some(part=>part.startsWith(q));
+    if(wordStart)return 2;
+    if(name.includes(q))return 3;
+    const aliases=[].concat(n.aliases||[],n.canonical_alias_names||[],n.minfin_aliases||[]).map(normalize);
+    if(aliases.some(a=>a===q))return 4;
+    if(aliases.some(a=>a.startsWith(q)))return 5;
+    if(aliases.some(a=>a.includes(q)))return 6;
+    return 99;
+  }
+  function findMatches(q){
+    if(!q)return [];
+    return searchableNodes.map(n=>({n,score:scoreNode(n,q)})).filter(x=>x.score<99)
+      .sort((a,b)=>a.score-b.score||a.n.name.localeCompare(b.n.name,'ru')).slice(0,12).map(x=>x.n);
+  }
+  function closeResults(){results.hidden=true;input.setAttribute('aria-expanded','false');activeIndex=-1;}
+  function setActive(index){
+    const buttons=[...results.querySelectorAll('.atlas-node-search-option')];
+    if(!buttons.length){activeIndex=-1;return;}
+    activeIndex=Math.max(0,Math.min(index,buttons.length-1));
+    buttons.forEach((b,i)=>b.classList.toggle('active',i===activeIndex));
+    buttons[activeIndex]?.scrollIntoView({block:'nearest'});
+  }
+  function escapeHtml(value){
+    return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  }
+  function render(){
+    const q=normalize(input.value);
+    if(!q){closeResults();results.innerHTML='';return;}
+    current=findMatches(q);
+    activeIndex=-1;
+    if(!current.length){
+      results.innerHTML='<div class="atlas-node-search-empty">Совпадений среди организационных узлов не найдено.</div>';
+      results.hidden=false;input.setAttribute('aria-expanded','true');return;
+    }
+    results.innerHTML=current.map((n,i)=>`<button type="button" class="atlas-node-search-option" role="option" data-node-search-index="${i}"><span class="atlas-node-search-name">${escapeHtml(n.name)}</span><span class="atlas-node-search-type">${escapeHtml(nodeTypeLabel(n))}</span></button>`).join('');
+    results.hidden=false;input.setAttribute('aria-expanded','true');
+    results.querySelectorAll('.atlas-node-search-option').forEach(button=>button.addEventListener('click',()=>choose(Number(button.dataset.nodeSearchIndex))));
+  }
+  function choose(index){
+    const n=current[index];if(!n)return;
+    input.value=n.name;closeResults();
+    const legacy=document.getElementById('search');if(legacy){legacy.value='';if(typeof applySearch==='function')applySearch();}
+    try{
+      if(typeof setGraphMode==='function')setGraphMode('OVERVIEW');
+      if(typeof focusExternalNode==='function')focusExternalNode(n.id);
+      else if(typeof setFocus==='function')setFocus(n.id);
+      else if(typeof selectNode==='function')selectNode(n.id);
+      document.body.classList.add('detail-open');
+      const toggle=document.getElementById('detailToggle');if(toggle)toggle.setAttribute('aria-expanded','true');
+      requestAnimationFrame(()=>{
+        try{if(typeof selectNode==='function')selectNode(n.id);}catch(_){}
+        const selected=document.querySelector(`#nodesLayer .node[data-id="${CSS.escape(n.id)}"]`);
+        if(selected){selected.classList.add('selected');}
+      });
+    }catch(err){console.error('Node search focus failed',err);}
+  }
+
+  input.addEventListener('input',render);
+  input.addEventListener('focus',()=>{if(normalize(input.value))render();});
+  input.addEventListener('keydown',ev=>{
+    if(ev.key==='ArrowDown'){ev.preventDefault();if(results.hidden)render();setActive(activeIndex+1);}
+    else if(ev.key==='ArrowUp'){ev.preventDefault();if(results.hidden)render();setActive(activeIndex<0?Math.max(0,current.length-1):activeIndex-1);}
+    else if(ev.key==='Enter'){if(current.length){ev.preventDefault();choose(activeIndex>=0?activeIndex:0);}}
+    else if(ev.key==='Escape'){closeResults();input.blur();}
+  });
+  clear.addEventListener('click',()=>{input.value='';closeResults();input.focus();});
+  document.addEventListener('pointerdown',ev=>{if(!root.contains(ev.target))closeResults();});
+})();
+</script>
+
+<!-- UI patch 2026-10-03: visible node search; non-core official-site link moved under external-focus action. Data/model unchanged. -->
+
+<script id="vanyaPopupScript">
+(()=>{
+  const overlay=document.getElementById('vanyaPopupOverlay');
+  const yes=document.getElementById('vanyaPopupYes');
+  if(!overlay||!yes)return;
+  document.body.classList.add('vanya-popup-open');
+  // The modal intentionally has exactly one close action: the “ДА” button.
+  overlay.addEventListener('click',event=>{
+    if(event.target===overlay){event.preventDefault();event.stopPropagation();}
+  });
+  document.addEventListener('keydown',event=>{
+    if(!overlay.hidden&&event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();}
+  },true);
+  yes.addEventListener('click',()=>{
+    overlay.hidden=true;
+    document.body.classList.remove('vanya-popup-open');
+  });
+  requestAnimationFrame(()=>yes.focus());
+})();
+</script>
+</body></html>
