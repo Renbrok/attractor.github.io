@@ -1,0 +1,663 @@
+{
+  "version": "okur-domains-1",
+  "status": "PROJECT_MEMBERSHIP",
+  "note": "Основной предметный контур определяет расположение участника на проектной карте, а не его подчинение или исключительное владение предметом. Исходные роли, направления и классификация A1–A5 сохранены. Общие межконтурные контракты предлагаются для согласования; они не подтверждены как работающие интеграции.",
+  "domains": [
+    {
+      "id": "resources",
+      "name": "Ресурсы",
+      "color": "#5d8866",
+      "description": "Природные ресурсы, экология, сельское хозяйство и связанные сведения.",
+      "nodeCount": 19,
+      "localRoutes": 26
+    },
+    {
+      "id": "industry",
+      "name": "Промышленность и инфраструктура",
+      "color": "#4e789e",
+      "description": "Промышленность, энергетика, транспорт, строительство и техническая безопасность.",
+      "nodeCount": 22,
+      "localRoutes": 26
+    },
+    {
+      "id": "social",
+      "name": "Социальные данные и услуги",
+      "color": "#a46278",
+      "description": "Здравоохранение, труд, социальная сфера, образование и цифровые услуги.",
+      "nodeCount": 16,
+      "localRoutes": 32
+    },
+    {
+      "id": "governance",
+      "name": "Управление и финансы",
+      "color": "#896c9d",
+      "description": "Государственное управление, финансы, экономические и общие регистрационные сведения. Межпредметные участники здесь имеют основное место на карте.",
+      "nodeCount": 30,
+      "localRoutes": 40
+    }
+  ],
+  "assignments": [
+    {
+      "id": "ORG-MINPRIRODY",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-MINAGRI-RU",
+      "domain": "resources"
+    },
+    {
+      "id": "ROSFISH-TU-01",
+      "domain": "resources"
+    },
+    {
+      "id": "ROSFISH-ORG-03",
+      "domain": "resources"
+    },
+    {
+      "id": "ROSFISH-TU-06",
+      "domain": "resources"
+    },
+    {
+      "id": "ROSFISH-TU-10",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-7F5F258A91",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-151988882B",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-6EE8B9F533",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-BD7E0B2ABD",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-BF5655866D",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-0A3D5DD149",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-6DB46BA089",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-89CE4CC7BD",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-MINAGRI-ROSFISH",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-MINAGRI-RSHN",
+      "domain": "resources"
+    },
+    {
+      "id": "RSHN-TU-02",
+      "domain": "resources"
+    },
+    {
+      "id": "RSHN-TU-31",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-31E24F47EE",
+      "domain": "resources"
+    },
+    {
+      "id": "ORG-MINPROMTORG",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-MINENERGO",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-MINTRANS",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-6FE300D804",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-ROSTEHNADZOR",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-V166-SO-EES",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-6181CB1CE2",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-242002E694",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-3A70BE3E27",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-MINSTROY-002",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-V195-ROSAVIATSIA",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-A6AFB2F519",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-V166-ROSZHELDOR",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-9E705B8444",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-V167-ROSMORRECHFLOT",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-3CB5A77555",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-35848D4FAB",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-ROSTRANSNADZOR",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-91405D341B",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-28F569394B",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-074F397791",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-0D846F3C61",
+      "domain": "industry"
+    },
+    {
+      "id": "ORG-MINZDRAV",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-MINTRUD",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-220DD3C42B",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-MINKULTURY",
+      "domain": "social"
+    },
+    {
+      "id": "MFIN-EXT-011",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-V126-MINPROSV",
+      "domain": "social"
+    },
+    {
+      "id": "EXT-REGION-HEALTH-RU",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-1D31CFD65B",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-V126-ROSKOMNADZOR",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-V177-ROSOBRNADZOR",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-BCBC087A4B",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-SFR",
+      "domain": "social"
+    },
+    {
+      "id": "EXT-RZN-001",
+      "domain": "social"
+    },
+    {
+      "id": "SERVICE-MT-ROSTRUD",
+      "domain": "social"
+    },
+    {
+      "id": "EXT-FFOMS-001",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-557F8E3CD3",
+      "domain": "social"
+    },
+    {
+      "id": "ORG-EF362DC98F",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-DD97210FEA",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-ANALYTICAL-CENTER-GOV",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-164361847D",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-9277203B8D",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-GENPROSECUTOR",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-4EE32938E2",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-EB61806B27",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-0CC2A4412D",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-470CAE26B2",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-11E71BE3B2",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-509EB49243",
+      "domain": "governance"
+    },
+    {
+      "id": "MFIN-EXT-012",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-MINOBORONY",
+      "domain": "governance"
+    },
+    {
+      "id": "MFIN-EXT-009",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-EFD43DE1E5",
+      "domain": "governance"
+    },
+    {
+      "id": "EXT-RF-SUBJECT-EXEC-AUTH",
+      "domain": "governance"
+    },
+    {
+      "id": "TERR-RF-REGIONAL-EOIV",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-A5F5D43200",
+      "domain": "governance"
+    },
+    {
+      "id": "EXT-GOV-RU",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-27A23B51B9",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-V167-ROSGVARDIA",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-MINSTROY-001",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-D41D59FF89",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-EA4E9CB08B",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-6E29054BD1",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-RU-ROSIM",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-4BBA943652",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-DBDA9CC34A",
+      "domain": "governance"
+    },
+    {
+      "id": "ORG-E905FE72C2",
+      "domain": "governance"
+    }
+  ],
+  "bundles": [
+    {
+      "id": "resources--industry",
+      "a": "resources",
+      "b": "industry",
+      "routeIds": [
+        "V132-SECONDARY-006",
+        "V195-NEW-001",
+        "V195-NEW-002",
+        "V195-NEW-007",
+        "V195-NEW-008",
+        "V195-NEW-009",
+        "V195-NEW-010",
+        "V195-NEW-018",
+        "V127-AG-MINTRANS",
+        "V131-SECONDARY-031",
+        "V167-MNER-ROSGIDROMET-001",
+        "V167-MNER-ROSVODRES-001",
+        "DEDGE-0024",
+        "DEDGE-0055",
+        "DEDGE-0056",
+        "DEDGE-0059",
+        "DEDGE-0060",
+        "DEDGE-0102",
+        "V131-SECONDARY-033",
+        "V131-SECONDARY-034",
+        "V165-MNER-ROSNEDRA-001",
+        "V171-MTR-ROSSSELKHOZ-001",
+        "V131-SECONDARY-032",
+        "V174-RTN-ROSGIDROMET-001",
+        "DEDGE-0068",
+        "DEDGE-0023"
+      ]
+    },
+    {
+      "id": "resources--social",
+      "a": "resources",
+      "b": "social",
+      "routeIds": [
+        "V195-NEW-004",
+        "V123-MC-ROSHYDRO",
+        "DEDGE-0110",
+        "V125-AG-ROSPOTREB",
+        "DEDGE-0064"
+      ]
+    },
+    {
+      "id": "resources--governance",
+      "a": "resources",
+      "b": "governance",
+      "routeIds": [
+        "DEDGE-0116",
+        "INT-MINAGRI-REL-MINAGRI-011",
+        "V126-AG-FNS",
+        "V131-SECONDARY-020",
+        "V132-SECONDARY-009",
+        "V132-SECONDARY-012",
+        "V132-SECONDARY-013",
+        "V195-NEW-006",
+        "V197-NEW-010",
+        "DEDGE-0066",
+        "V198-NEW-004",
+        "DEDGE-0061",
+        "EXTCTX-MINAGRI-1660172A",
+        "MFIN-LINK-029",
+        "MFIN-LINK-034",
+        "MFIN-ORG-005",
+        "V132-SECONDARY-015",
+        "V132-SECONDARY-016",
+        "V195-NEW-003",
+        "V196-NEW-008",
+        "V196-NEW-009",
+        "V196-NEW-010",
+        "V196-NEW-011",
+        "V196-NEW-014",
+        "V196-NEW-020",
+        "V196-NEW-021",
+        "V196-NEW-029",
+        "DEDGE-0034",
+        "DEDGE-0036",
+        "DEDGE-0076",
+        "DEDGE-0120",
+        "INT-MINAGRI-REL-MINAGRI-013",
+        "V123-MEC-ROSHYDRO",
+        "V127-AG-FTS",
+        "V129-EXT-IN-017",
+        "V132-SECONDARY-011",
+        "DEDGE-0047",
+        "V132-SECONDARY-010",
+        "V131-SECONDARY-005",
+        "DEDGE-0135"
+      ]
+    },
+    {
+      "id": "industry--social",
+      "a": "industry",
+      "b": "social",
+      "routeIds": [
+        "DEDGE-0051",
+        "DEDGE-0101",
+        "V131-SECONDARY-008",
+        "V131-SECONDARY-012",
+        "DEDGE-0065",
+        "MC-ORG-6581655",
+        "V167-MNER-ROSTRUD-001",
+        "V198-NEW-001",
+        "V131-SECONDARY-038",
+        "V177-RTN-ROSOBRNADZOR-001",
+        "V177-RTN-SFR-001",
+        "V197-NEW-001",
+        "V197-NEW-002",
+        "DEDGE-0052",
+        "DEDGE-0132",
+        "MC-ORG-1679517",
+        "V166-MNER-MINOBR-001",
+        "DEDGE-0111",
+        "V126-MC-ROSPATENT",
+        "V126-MT-MINPROM"
+      ]
+    },
+    {
+      "id": "industry--governance",
+      "a": "industry",
+      "b": "governance",
+      "routeIds": [
+        "DEDGE-0017",
+        "DEDGE-0117",
+        "DEDGE-0126",
+        "DEDGE-0137",
+        "DEDGE-0140",
+        "MSTR-ORG-PL-018",
+        "V126-MEC-ROSPATENT",
+        "V131-SECONDARY-002",
+        "V131-SECONDARY-011",
+        "V131-SECONDARY-013",
+        "V131-SECONDARY-014",
+        "V131-SECONDARY-015",
+        "V131-SECONDARY-023",
+        "V131-SECONDARY-035",
+        "V132-SECONDARY-001",
+        "V132-SECONDARY-002",
+        "V164-MNER-FNS-001",
+        "V164-MNER-ROSREESTR-001",
+        "V177-RTN-MVD-001",
+        "V196-NEW-030",
+        "V196-NEW-031",
+        "DEDGE-0033",
+        "DEDGE-0037",
+        "DEDGE-0043",
+        "V132-SECONDARY-019",
+        "V195-NEW-012",
+        "V195-NEW-013",
+        "V195-NEW-014",
+        "V195-NEW-015",
+        "V195-NEW-016",
+        "DEDGE-0045",
+        "DEDGE-0088",
+        "DEDGE-0141",
+        "MECON-ORG-EXT-IN-003",
+        "MSTR-ORG-PL-002",
+        "V123-MEC-MINSTROY",
+        "V131-SECONDARY-010",
+        "V167-MNER-ROSGVARDIA-001",
+        "V170-MTR-FNS-001",
+        "V177-RTN-MINJUST-001",
+        "V198-NEW-005",
+        "DEDGE-0019",
+        "DEDGE-0042",
+        "DEDGE-0062",
+        "DEDGE-0063",
+        "DEDGE-0067",
+        "DEDGE-0136",
+        "MFIN-LINK-028",
+        "MFIN-LINK-030",
+        "MFIN-ORG-006",
+        "MSTR-ORG-PL-020",
+        "V165-MNER-KAZN-001",
+        "V177-RTN-TREASURY-001",
+        "V196-NEW-003",
+        "V196-NEW-006",
+        "V196-NEW-012",
+        "V196-NEW-013",
+        "V196-NEW-022",
+        "V196-NEW-023",
+        "V196-NEW-024",
+        "DEDGE-0139",
+        "DEDGE-0038",
+        "DEDGE-0039",
+        "DEDGE-0077",
+        "DEDGE-0121",
+        "V124-MEC-MINPROMTORG",
+        "V129-EXT-OUT-003",
+        "V165-MNER-ROSIM-001",
+        "V166-MNER-MID-001",
+        "V171-MTR-ROSREESTR-001",
+        "DEDGE-0048",
+        "DEDGE-0049",
+        "DEDGE-0050",
+        "V165-MNER-FSB-001",
+        "V172-MTR-ACGOV-001",
+        "V172-MTR-MID-001",
+        "V172-MTR-MINOB-001",
+        "V198-NEW-003",
+        "DEDGE-0127",
+        "MFIN-ORG-004",
+        "MSTR-ORG-PL-030",
+        "V165-MNER-FTS-001",
+        "MSTR-ORG-PL-021",
+        "V195-NEW-011",
+        "DEDGE-0040",
+        "DEDGE-0078",
+        "MSTR-ORG-PL-029"
+      ]
+    },
+    {
+      "id": "social--governance",
+      "a": "social",
+      "b": "governance",
+      "routeIds": [
+        "V123-MC-ROSREESTR",
+        "V131-SECONDARY-021",
+        "V131-SECONDARY-022",
+        "V197-NEW-003",
+        "V197-NEW-004",
+        "INT-MINZDRAV-MZ-REL-001",
+        "V131-SECONDARY-027",
+        "V131-SECONDARY-036",
+        "INT-MINTRUD-REL-MT-003",
+        "INT-MINTRUD-REL-MT-004",
+        "INT-MINZDRAV-MZ-REL-003",
+        "MFIN-LINK-032",
+        "MFIN-LINK-035",
+        "MFIN-ORG-002",
+        "MFIN-ORG-003",
+        "MFIN-ORG-009",
+        "V123-MC-TREASURY",
+        "V131-SECONDARY-041",
+        "V196-NEW-002",
+        "V196-NEW-004",
+        "V196-NEW-005",
+        "V196-NEW-007",
+        "V196-NEW-015",
+        "V196-NEW-016",
+        "V196-NEW-018",
+        "V196-NEW-019",
+        "V196-NEW-026",
+        "V196-NEW-028",
+        "INT-MINTRUD-REL-MT-012",
+        "V123-MC-FNS",
+        "V126-MT-MVD",
+        "V129-EXT-IN-014",
+        "V131-SECONDARY-028",
+        "V198-NEW-002",
+        "V123-MEC-MINOBR",
+        "MECON-ORG-EXT-IN-001",
+        "V120-MC-MVD",
+        "V123-MC-GENPROS",
+        "V126-MZ-MCHS",
+        "V131-SECONDARY-039",
+        "V131-SECONDARY-040",
+        "V131-SECONDARY-042",
+        "MFIN-ORG-007",
+        "V123-MC-FAS",
+        "V123-MC-FSB",
+        "INT-MINTRUD-REL-MT-015",
+        "INT-MINTRUD-REL-MT-016",
+        "V131-SECONDARY-007",
+        "INT-MINTRUD-REL-MT-017",
+        "V123-MC-ROSSTAT",
+        "V124-MEC-MINKULT",
+        "V129-EXT-OUT-001"
+      ]
+    }
+  ]
+}
