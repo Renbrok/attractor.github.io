@@ -1,18 +1,17 @@
 [data-open-okur]{cursor:pointer!important;opacity:1!important;color:#315c72!important;background:transparent;border:0;border-bottom:1px solid #a5babf;padding:5px 8px;font:inherit}
+.atlas-topnav [data-open-okur]{padding:0 14px;border-bottom:2px solid transparent}
+.atlas-topnav [data-open-okur]:is(.active,:hover){color:var(--atlas-wine)!important;border-bottom-color:var(--atlas-wine)}
 body.okur-active #channelToolbar134{display:none!important}body.okur-active.channel-filter-open #channelToolbar134{display:block!important}body.okur-active #channelToolbar134> :not(#ok-controls){display:none!important}
 #ok-controls[hidden],.okur-switch[hidden]{display:none!important}#ok-controls label{display:block;margin:7px 0;font-size:11px}#ok-controls select{width:100%;box-sizing:border-box;border:1px solid var(--atlas-rule,#c9c2b7);background:#fffdf8;font:inherit;padding:7px;margin-bottom:8px;color:#30404a}#ok-controls .channel-search179{display:block!important}body.okur-active #channelToolbar134{max-height:calc(100% - 120px);overflow:auto}#ok-controls .okur-family{display:block;text-align:left;width:100%;margin:6px 0;border-left:3px solid var(--okur-color);white-space:normal}#ok-controls .okur-family strong,#ok-controls .okur-family span{display:block}#ok-controls .okur-family span{font-size:10px;color:#756d61;margin-top:3px}#ok-controls .okur-family.active{background:#e9e2d4;border-color:var(--okur-color)}
 .okur-switch{position:absolute;left:12px;top:64px;z-index:9;max-width:calc(100% - 76px);padding:8px 10px;background:rgba(253,250,243,.95);border:1px solid var(--atlas-rule,#c9c2b7);box-shadow:0 2px 7px rgba(46,38,25,.07)}.okur-switch-title{font:15px Georgia,serif;color:#36414a;margin-bottom:5px}.okur-switch-buttons{display:flex;gap:5px;flex-wrap:wrap}.okur-switch .btn{font-size:11px;padding:5px 7px}.okur-switch .small{margin-top:5px;font-size:10px;color:#756d61}
 #graph #okur-network .dim{opacity:.12}#graph #okur-network .okur-participant:focus{outline:none}#graph #okur-network .okur-participant:focus>circle{stroke:#172b3d!important;stroke-width:4px!important}
 .okur-route{display:flex;flex-direction:column;gap:5px;text-align:left;white-space:normal;width:100%;margin:7px 0;font-weight:400}.okur-route.active{background:#e9e3d5;border-color:#947e59}.okur-route strong{font-size:12px}.okur-route span{font-size:11px}.okur-chip{font-size:10px;margin:3px 4px 3px 0;white-space:normal}.okur-pages{display:flex;align-items:center;justify-content:space-between;gap:9px}.okur-evidence a{overflow-wrap:anywhere}.okur-number{font:700 30px Georgia,serif;color:#4d735d}.okur-evidence .small{overflow-wrap:anywhere}
-.okur-domain-nav{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}.okur-domain-nav .btn{font-size:10px!important}
+.okur-nav-label{font-size:10px;color:#756d61;margin-top:7px}.okur-family-nav{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}.okur-family-nav .btn{font-size:10px!important;border-bottom:2px solid var(--okur-color,#c9c2b7)}.okur-family-nav .btn.active{background:#e9e2d4}
 #graph #okur-network .okur-domain>ellipse{fill-opacity:.07;stroke:#a9a18f;stroke-width:1.5;stroke-dasharray:6 5;pointer-events:none}
 #graph #okur-network .okur-domain.selected>ellipse{fill-opacity:.11;stroke-width:2.5}
 #graph #okur-network .okur-domain-heading{cursor:pointer}
 #graph #okur-network .okur-domain-heading text{font:25px Georgia,serif;fill:#3d454a;paint-order:stroke;stroke:#fcf8ef;stroke-width:3px}
 #graph #okur-network .okur-domain-heading .okur-domain-count{font:14px Georgia,serif;fill:#756d61}
-#graph #okur-network .okur-domain-profile{cursor:pointer}
-#graph #okur-network .okur-domain-profile rect{fill:#fffdf5;stroke-width:1.5}
-#graph #okur-network .okur-domain-profile text{font:13px Georgia,serif}
 #graph #okur-network .okur-local-link,#graph #okur-network .okur-expanded-link{fill:none;pointer-events:none}
 #graph #okur-network .edge-hit{stroke:transparent;stroke-width:10px;fill:none;pointer-events:stroke;cursor:pointer}
 #graph #okur-network .okur-bundle{cursor:pointer}
@@ -23,6 +22,6 @@ body.okur-active #channelToolbar134{display:none!important}body.okur-active.chan
 #graph #okur-network .okur-bundle-label text{font:15px Georgia,serif;fill:#494e52;stroke:none}
 #graph #okur-network .okur-participant>text{display:block!important;font-size:12px!important}
 #graph #okur-network .okur-participant.okur-core>text{font-size:17px!important}
-#graph #okur-network .okur-domain-heading:focus,#graph #okur-network .okur-bundle:focus,#graph #okur-network .okur-domain-profile:focus{outline:none}
-#graph #okur-network .okur-domain-heading:focus text,#graph #okur-network .okur-bundle:focus rect,#graph #okur-network .okur-domain-profile:focus rect{stroke:#263c4b;stroke-width:3px}
+#graph #okur-network .okur-domain-heading:focus,#graph #okur-network .okur-bundle:focus{outline:none}
+#graph #okur-network .okur-domain-heading:focus text,#graph #okur-network .okur-bundle:focus rect{stroke:#263c4b;stroke-width:3px}
 @media(max-width:820px){.okur-switch{left:8px;top:60px;max-width:calc(100% - 64px);padding:6px 7px}.okur-switch-title{font-size:12px}.okur-switch .btn{font-size:10px;padding:4px 6px}.okur-switch .small{font-size:9px}}
