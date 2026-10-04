@@ -24,7 +24,11 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;backg
      if(!r.ok) throw new Error(f+" — HTTP "+r.status);
      parts.push(await r.text());
    }
-   const html=parts.join("");
+   let html=parts.join("");
+   html=html.replace('<button type="button" class="okur-wip-top" disabled aria-disabled="true">Схема связи ОКУР <span>на доработке</span></button>', '<button type="button" data-open-okur>Слой ОКУР</button>');
+   html=html.replace('<div class="okur-wip-card" aria-label="Схема связи ОКУР — на доработке"><strong>Схема связи ОКУР</strong><span>на доработке</span></div>', '<button type="button" data-open-okur>Слой ОКУР · 87 участников</button>');
+   html=html.replace('</head>', '<link rel="stylesheet" href="okur/layer.css?v=okur-1"></head>');
+   html=html.replace('</body>', '<script src="okur/layer.js?v=okur-1"><'+'/script></body>');
    document.open();
    document.write(html);
    document.close();
