@@ -1403,24 +1403,4 @@ startSimulation();
 
 <!-- UI patch 2026-10-03: visible node search; non-core official-site link moved under external-focus action. Data/model unchanged. -->
 
-<script id="vanyaPopupScript">
-(()=>{
-  const overlay=document.getElementById('vanyaPopupOverlay');
-  const yes=document.getElementById('vanyaPopupYes');
-  if(!overlay||!yes)return;
-  document.body.classList.add('vanya-popup-open');
-  // The modal intentionally has exactly one close action: the “ДА” button.
-  overlay.addEventListener('click',event=>{
-    if(event.target===overlay){event.preventDefault();event.stopPropagation();}
-  });
-  document.addEventListener('keydown',event=>{
-    if(!overlay.hidden&&event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();}
-  },true);
-  yes.addEventListener('click',()=>{
-    overlay.hidden=true;
-    document.body.classList.remove('vanya-popup-open');
-  });
-  requestAnimationFrame(()=>yes.focus());
-})();
-</script>
 </body></html>
