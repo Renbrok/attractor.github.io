@@ -504,25 +504,14 @@ body.atlas-wide.atlas-external-focus #graph .node.external-focus-selected text{f
 </style>
 
 
-<style id="vanyaPopupStyle">
-#vanyaPopupOverlay{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.78);display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box}
-#vanyaPopupOverlay[hidden]{display:none!important}
-#vanyaPopupBox{width:min(760px,94vw);background:#fffdf8;border:2px solid #182433;border-radius:22px;box-shadow:0 28px 90px rgba(0,0,0,.42);padding:42px 34px 32px;text-align:center}
-#vanyaPopupText{margin:0 0 30px;font-family:Georgia,'Times New Roman',serif;font-size:clamp(34px,6vw,72px);line-height:1.02;font-weight:900;letter-spacing:.02em;text-transform:uppercase;color:#142131}
-#vanyaPopupYes{min-width:180px;border:0;border-radius:14px;background:#142131;color:#fff;font-size:28px;font-weight:900;letter-spacing:.06em;padding:16px 34px;cursor:pointer}
-#vanyaPopupYes:hover{filter:brightness(1.1)}
-#vanyaPopupYes:focus-visible{outline:4px solid #8fb7d9;outline-offset:4px}
-body.vanya-popup-open{overflow:hidden}
+<style id="okur-wip-style">
+.okur-wip-top{display:inline-flex;align-items:center;gap:7px;opacity:.7;cursor:default!important;border-bottom-style:dashed!important}
+.okur-wip-top span{font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#8a6f4d;background:#f2eadb;border:1px solid #dfd0b6;border-radius:999px;padding:2px 5px}
+.okur-wip-card{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border:1px dashed #c8b99f;background:#f7f2e9;color:#6c6257;border-radius:4px;opacity:.82}
+.okur-wip-card strong{font-size:10px;font-weight:700}.okur-wip-card span{font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#8a6f4d}
 </style>
 </head>
 <body data-graph-version="117">
-<div id="vanyaPopupOverlay" role="dialog" aria-modal="true" aria-labelledby="vanyaPopupText">
-  <div id="vanyaPopupBox">
-    <div id="vanyaPopupText">Ваня лох без крана на батареях</div>
-    <button id="vanyaPopupYes" type="button">ДА</button>
-  </div>
-</div>
-
 <div class="app">
 <div class="topbar">
   <div class="brand-block">
@@ -535,7 +524,7 @@ body.vanya-popup-open{overflow:hidden}
 
   <nav class="atlas-topnav" aria-label="Основные разделы">
     <button type="button" data-atlas-mode="ATLAS">Документальный атлас</button>
-    <button type="button" data-atlas-mode="STRUCTURE">Структура органов</button>
+    <button type="button" class="okur-wip-top" disabled aria-disabled="true">Схема связи ОКУР <span>на доработке</span></button>
     
   </nav>
   <div class="topbar-actions">
@@ -568,7 +557,7 @@ body.vanya-popup-open{overflow:hidden}
   <button class="atlas-more" id="atlasFiltersButton" type="button" aria-label="Открыть фильтры">Фильтры</button>
 </section>
 <aside class="left" id="leftPanel"><div class="drawer-head"><strong>Фильтры и режимы</strong><button class="drawer-close" id="filtersClose" type="button" aria-label="Закрыть фильтры">×</button></div>
-<div class="section"><h3>Режим графа</h3><div class="mode-stack"><button class="btn primary" id="modeOverview">Обзор</button><button class="btn" id="modeStructure">Структура органов</button></div><div class="small" id="modeHelp" style="margin-top:8px">Обзор: связи основных ведомств со всеми министерствами, присутствующими в атласе. Выберите основное ведомство, чтобы оставить только его связи с другими министерствами; службы, агентства, Росстат, Росреестр, ФНС, системы, реестры и другие сущности раскрываются в карточке ведомства.</div></div><div class="section" id="ministryFocusSection"><h3>Фокус министерства</h3><div class="focus-grid" id="focusGrid"></div><div class="small" style="margin-top:8px">Можно выбрать несколько основных органов одновременно. Нажатие на выбранный орган снимает его из фокуса.</div></div><div class="section" id="channelFocusSection" style="display:none"><h3>Фокус канала</h3><label>Выберите канал</label><select id="channelFocusSelect"><option value="ALL">Все каналы</option></select><div class="btnrow" style="margin-top:7px"><button class="btn" id="clearChannelFocus">Снять фокус канала</button></div><div class="small" style="margin-top:8px">При выборе канала он становится центральным узлом, а вокруг него показываются организации, использующие этот канал.</div></div>
+<div class="section"><h3>Режим графа</h3><div class="mode-stack"><button class="btn primary" id="modeOverview">Обзор</button><div class="okur-wip-card" aria-label="Схема связи ОКУР — на доработке"><strong>Схема связи ОКУР</strong><span>на доработке</span></div><button id="modeStructure" type="button" hidden aria-hidden="true" style="display:none"></button></div><div class="small" id="modeHelp" style="margin-top:8px">Обзор: связи основных ведомств со всеми министерствами, присутствующими в атласе. Выберите основное ведомство, чтобы оставить только его связи с другими министерствами; службы, агентства, Росстат, Росреестр, ФНС, системы, реестры и другие сущности раскрываются в карточке ведомства.</div></div><div class="section" id="ministryFocusSection"><h3>Фокус министерства</h3><div class="focus-grid" id="focusGrid"></div><div class="small" style="margin-top:8px">Можно выбрать несколько основных органов одновременно. Нажатие на выбранный орган снимает его из фокуса.</div></div><div class="section" id="channelFocusSection" style="display:none"><h3>Фокус канала</h3><label>Выберите канал</label><select id="channelFocusSelect"><option value="ALL">Все каналы</option></select><div class="btnrow" style="margin-top:7px"><button class="btn" id="clearChannelFocus">Снять фокус канала</button></div><div class="small" style="margin-top:8px">При выборе канала он становится центральным узлом, а вокруг него показываются организации, использующие этот канал.</div></div>
 <div class="section" id="structureFocusSection" style="display:none"><h3>Фокус министерства</h3><label>Выберите министерство</label><select id="structureMinistrySelect"><option value="ALL">Все министерства</option></select><div class="btnrow" style="margin-top:7px"><button class="btn" id="clearStructureFocus">Снять фокус министерства</button></div><div class="small" style="margin-top:8px">Фокус этого слоя задаётся только на уровне основного органа. После выбора министерства отображаются все его внутренние подразделения. Функции и процессы раскрываются при клике по конкретному подразделению.</div></div><div class="section" id="filtersSection"><h3>Фильтры</h3><label>Тип взаимодействия</label><select id="relFilter"><option value="ALL">Все</option></select><div style="height:8px"></div><label>Матрица-источник</label><select id="matrixFilter"><option value="ALL">Все</option></select><div style="height:8px"></div><label>Направление</label><select id="directionFilter"><option value="ALL">Все</option><option value="EXPLICIT">Подтверждённое</option><option value="UNDIRECTED">Ненаправленное</option><option value="MIXED">Смешанное</option></select><div style="height:8px"></div><label>Поиск узла</label><input id="search" placeholder="Начните вводить название…" type="text"/><label class="check"><input id="onlySourced" type="checkbox"/> Только связи с источником</label><label class="check"><input id="onlyCore" type="checkbox"/> Только связи двенадцати основных органов</label><label class="common-only"><input id="onlyCommon" type="checkbox"/> Только общие узлы (2+ из 12)</label></div>
 <div class="section"><h3>Карта</h3><div class="btnrow"><button class="btn primary" id="resetBtn">Сбросить вид</button><button class="btn" id="centerBtn">Центрировать</button></div></div>
 <div class="section"><h3>Статистика</h3><div class="kpis"><div class="kpi"><div class="n" id="kNodes">—</div><div class="l">узлов на графе</div></div><div class="kpi"><div class="n" id="kEdges">—</div><div class="l">связей</div></div><div class="kpi"><div class="n" id="kSourced">—</div><div class="l">связей с источником</div></div><div class="kpi"><div class="n" id="kDirected">—</div><div class="l">с направлением</div></div></div></div>
