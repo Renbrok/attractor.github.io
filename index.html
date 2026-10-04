@@ -26,9 +26,9 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;backg
    }
    let html=parts.join("");
    html=html.replace('<button type="button" class="okur-wip-top" disabled aria-disabled="true">Схема связи ОКУР <span>на доработке</span></button>', '<button type="button" data-open-okur>Слой ОКУР</button>');
-   html=html.replace('<div class="okur-wip-card" aria-label="Схема связи ОКУР — на доработке"><strong>Схема связи ОКУР</strong><span>на доработке</span></div>', '<button type="button" data-open-okur>Слой ОКУР · 87 участников</button>');
-   html=html.replace('</head>', '<link rel="stylesheet" href="okur/atlas-layer.css?v=okur-7"></head>');
-   html=html.replace('</body>', '<script src="okur/domains-graph.js?v=okur-7"><'+'/script><script src="okur/atlas-layer.js?v=okur-7"><'+'/script></body>');
+   html=html.replace('<div class="okur-wip-card" aria-label="Схема связи ОКУР — на доработке"><strong>Схема связи ОКУР</strong><span>на доработке</span></div>', '<button type="button" data-open-okur>Слой ОКУР · 89 участников</button>');
+   html=html.replace('</head>', '<link rel="stylesheet" href="okur/atlas-layer.css?v=okur-8"></head>');
+   html=html.replace('</body>', '<script src="rosnedra/corrections.js?v=rosnedra-2"><'+'/script><script src="rosnedra/stage3-data.js?v=3"><'+'/script><script src="rosnedra/stage4-data.js?v=4"><'+'/script><script src="rosnedra/stage5-data.js?v=5"><'+'/script><script src="rosnedra/stage6-data.js?v=6"><'+'/script><script src="rosnedra/stage7-data.js?v=7"><'+'/script><script src="rosnedra/stage8-data.js?v=8"><'+'/script><script src="rosnedra/stage9-data.js?v=9"><'+'/script><script src="rosnedra/structure.js?v=9"><'+'/script><script src="rosnedra/federal-links.js?v=1"><'+'/script><script src="rosnedra/integration.js?v=10"><'+'/script><script src="okur/domains-graph.js?v=okur-8"><'+'/script><script src="okur/atlas-layer.js?v=okur-13"><'+'/script></body>');
    document.open();
    document.write(html);
    document.close();

@@ -8,8 +8,8 @@
       "name": "Ресурсы",
       "color": "#5d8866",
       "description": "Природные ресурсы, экология, сельское хозяйство и связанные сведения.",
-      "nodeCount": 19,
-      "localRoutes": 26
+      "nodeCount": 23,
+      "localRoutes": 33
     },
     {
       "id": "industry",
@@ -384,6 +384,22 @@
     {
       "id": "ORG-E905FE72C2",
       "domain": "governance"
+    },
+    {
+      "id": "REGION-47-NATURE-COMMITTEE",
+      "domain": "resources"
+    },
+    {
+      "id": "ROSNEDRA-TERR-SZFO",
+      "domain": "resources"
+    },
+    {
+      "id": "REGION-60-NATURE-MINISTRY",
+      "domain": "resources"
+    },
+    {
+      "id": "REGION-53-NATURE-MINISTRY",
+      "domain": "resources"
     }
   ],
   "bundles": [
@@ -429,7 +445,8 @@
         "V123-MC-ROSHYDRO",
         "DEDGE-0110",
         "V125-AG-ROSPOTREB",
-        "DEDGE-0064"
+        "DEDGE-0064",
+        "ROSNEDRA-MINZDRAV-LICENCE-001"
       ]
     },
     {
@@ -476,7 +493,8 @@
         "DEDGE-0047",
         "V132-SECONDARY-010",
         "V131-SECONDARY-005",
-        "DEDGE-0135"
+        "DEDGE-0135",
+        "ROSNEDRA-MINFIN-FORECAST-001"
       ]
     },
     {

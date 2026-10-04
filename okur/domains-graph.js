@@ -16,10 +16,10 @@
   const domains=new Map(config.domains.map(d=>[d.id,d]));
   const byRoute=new Map(data.routes.map(r=>[r.id,r]));
   const bundles=config.bundles.map(b=>({...b,routes:b.routeIds.map(id=>byRoute.get(id))}));
-  if(member.size!==87||data.nodes.some(n=>!domains.has(member.get(n.id)))||bundles.some(b=>b.routes.some(r=>!r)))throw Error('Неполная схема контуров');
+  if(member.size!==data.nodes.length||data.nodes.some(n=>!domains.has(member.get(n.id)))||bundles.some(b=>b.routes.some(r=>!r)))throw Error('Неполная схема контуров');
   const local=data.routes.filter(r=>member.get(r.a)===member.get(r.b));
   const covered=new Set([...local.map(r=>r.id),...bundles.flatMap(b=>b.routeIds)]);
-  if(covered.size!==354||local.length+bundles.reduce((sum,b)=>sum+b.routes.length,0)!==354)throw Error('Процессы контуров не согласованы с атласом');
+  if(covered.size!==data.routes.length||local.length+bundles.reduce((sum,b)=>sum+b.routes.length,0)!==data.routes.length)throw Error('Процессы контуров не согласованы с атласом');
   return {data,config,member,domains,bundles,local};
  }
  function layout(model,W,H){
