@@ -8,7 +8,7 @@ for(const e of p.edges){Object.assign(e.channel_research,{conditional_channels:e
 for(const s of p.sources||[p.source]){if(!sourceById[s.source_id])DATA.sources.push(s);sourceById[s.source_id]=s;}
 const oldOverview=isOverviewEdge;isOverviewEdge=function(e){if(e.id==='ROSNEDRA-REG47-ASLN-001')return false;if(e.integration_layer==='ROSNEDRA_REGIONAL_NORMATIVE')return true;return oldOverview(e);};
 if(!coreIds.has(id)){CORE.push([id,'Роснедра']);coreIds.add(id);}
-MINISTRY_SITES[id]='https://rosnedra.gov.ru/';
+MINISTRY_SITES[id]={name:'Роснедра',url:'https://rosnedra.gov.ru/'};
 for(const n of p.departments){const r={Dept_Global_ID:n.id,Org:'Роснедра',Registry_Name:n.name,Registry_Source:n.identity_source,Registry_Evidence:'Официальная структура центрального аппарата; распределение конкретных потоков по управлениям отдельно не установлено.'};structureDeptById.set(n.id,r);STRUCTURE_RAW.ownership_audit.push(r);}
 if(p.verified_function){const r=p.verified_function;structureFunctionsByDept.set(r.Dept_Global_ID,[...(structureFunctionsByDept.get(r.Dept_Global_ID)||[]),r]);}
 populateStructureFocusOptions();setFocusButtons();

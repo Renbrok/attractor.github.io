@@ -1,0 +1,1 @@
+(()=>{'use strict';const ids=new Set(['ROSFISH-ORG-03','ROSFISH-TU-06']);DATA.nodes=DATA.nodes.filter(n=>!ids.has(n.id));DATA.edges=DATA.edges.filter(e=>!ids.has(e.a)&&!ids.has(e.b));for(const id of ids)delete nodeById[id];startSimulation();})();

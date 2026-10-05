@@ -21,7 +21,26 @@ body.okur-active #channelToolbar134{display:none!important}body.okur-active.chan
 #graph #okur-network .okur-bundle-label rect{fill:#fffdf7;stroke:#b8b09f;stroke-width:1.2}
 #graph #okur-network .okur-bundle-label text{font:15px Georgia,serif;fill:#494e52;stroke:none}
 #graph #okur-network .okur-participant>text{display:block!important;font-size:12px!important}
-#graph #okur-network .okur-participant.okur-core>text{font-size:17px!important}
+#graph #okur-network .okur-participant.okur-core>text{font-size:17px!important;font-family:Georgia,"Times New Roman",serif;font-weight:600!important;paint-order:stroke;stroke:#fbf8f1;stroke-width:4px}
+#graph #okur-network .okur-core>circle:not(.ministry-halo){stroke:#fbf8f1!important;stroke-width:4px!important}
+#graph #okur-network .okur-core .ministry-halo{fill:#fbf8f1;fill-opacity:.92;stroke:var(--ok-node-color);stroke-opacity:.34;stroke-width:1.2px!important}
+#graph #okur-network .ministry-glyph{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+#graph #okur-network .node.shared circle{filter:none!important}
+#graph #okur-network .node:not(.core-ministry) circle.node-shell{fill:#fbf8f1;stroke-width:1.7px}
+#graph #okur-network .node:not(.core-ministry) circle.node-dot{stroke:none;pointer-events:none}
+#graph #okur-network .secondary-hub-counter{pointer-events:none}
+#graph #okur-network .secondary-hub-ring{fill:none;stroke:#667985;stroke-opacity:.52;stroke-width:1;pointer-events:none;filter:none!important}
+#graph #okur-network .hub-tier-2 .secondary-hub-ring{stroke:#506978;stroke-opacity:.72;stroke-width:1.35}
+#graph #okur-network .hub-tier-3 .secondary-hub-ring{stroke:#344f60;stroke-opacity:.88;stroke-width:1.7}
+#edgesLayer .hovered .edge,#edgesLayer .edge.hovered{stroke:var(--atlas-wine,#813e50)!important;stroke-width:4px!important;opacity:1!important}
+#detail [data-preview-edge]:hover,#detail [data-preview-edge]:focus-visible{border-color:var(--atlas-wine,#813e50);background:#f1e8e4}
+#detail ol{padding-left:23px}#detail li{margin:10px 0}
+#channel-others205{border-top:1px solid var(--atlas-rule,#c9c2b7);margin-top:8px;padding-top:7px}
+#channel-others205>summary{display:flex;align-items:center;gap:7px;cursor:pointer;padding:5px 0;list-style:none}
+#channel-others205>summary::after{content:'▸';margin-left:auto}#channel-others205[open]>summary::after{content:'▾'}
+.channel-others-toggle205{border:0;background:transparent;color:inherit;padding:2px;font-size:16px;cursor:pointer}
+.channel-others-count205{font-size:10px;color:#756d61}.channel-others-list205{padding:4px 0 0 14px}
+#graph #okur-network .secondary-hub-degree{fill:#fff!important;stroke:none!important;paint-order:normal!important;font-family:Arial,sans-serif!important;font-size:7.2px!important;font-weight:800!important;text-anchor:middle;dominant-baseline:middle;letter-spacing:-.02em}
 #graph #okur-network .okur-domain-heading:focus,#graph #okur-network .okur-bundle:focus{outline:none}
 #graph #okur-network .okur-domain-heading:focus text,#graph #okur-network .okur-bundle:focus rect{stroke:#263c4b;stroke-width:3px}
 @media(max-width:820px){.okur-switch{left:8px;top:60px;max-width:calc(100% - 64px);padding:6px 7px}.okur-switch-title{font-size:12px}.okur-switch .btn{font-size:10px;padding:4px 6px}.okur-switch .small{font-size:9px}}

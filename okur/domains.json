@@ -8,32 +8,32 @@
       "name": "Ресурсы",
       "color": "#5d8866",
       "description": "Природные ресурсы, экология, сельское хозяйство и связанные сведения.",
-      "nodeCount": 23,
-      "localRoutes": 33
+      "nodeCount": 19,
+      "localRoutes": 32
     },
     {
       "id": "industry",
       "name": "Промышленность и инфраструктура",
       "color": "#4e789e",
       "description": "Промышленность, энергетика, транспорт, строительство и техническая безопасность.",
-      "nodeCount": 22,
-      "localRoutes": 26
+      "nodeCount": 21,
+      "localRoutes": 25
     },
     {
       "id": "social",
       "name": "Социальные данные и услуги",
       "color": "#a46278",
       "description": "Здравоохранение, труд, социальная сфера, образование и цифровые услуги.",
-      "nodeCount": 16,
-      "localRoutes": 32
+      "nodeCount": 14,
+      "localRoutes": 31
     },
     {
       "id": "governance",
       "name": "Управление и финансы",
       "color": "#896c9d",
       "description": "Государственное управление, финансы, экономические и общие регистрационные сведения. Межпредметные участники здесь имеют основное место на карте.",
-      "nodeCount": 30,
-      "localRoutes": 40
+      "nodeCount": 23,
+      "localRoutes": 39
     }
   ],
   "assignments": [
@@ -50,27 +50,11 @@
       "domain": "resources"
     },
     {
-      "id": "ROSFISH-ORG-03",
-      "domain": "resources"
-    },
-    {
-      "id": "ROSFISH-TU-06",
-      "domain": "resources"
-    },
-    {
       "id": "ROSFISH-TU-10",
       "domain": "resources"
     },
     {
-      "id": "ORG-7F5F258A91",
-      "domain": "resources"
-    },
-    {
       "id": "ORG-151988882B",
-      "domain": "resources"
-    },
-    {
-      "id": "ORG-6EE8B9F533",
       "domain": "resources"
     },
     {
@@ -186,10 +170,6 @@
       "domain": "industry"
     },
     {
-      "id": "ORG-91405D341B",
-      "domain": "industry"
-    },
-    {
       "id": "ORG-28F569394B",
       "domain": "industry"
     },
@@ -226,10 +206,6 @@
       "domain": "social"
     },
     {
-      "id": "EXT-REGION-HEALTH-RU",
-      "domain": "social"
-    },
-    {
       "id": "ORG-1D31CFD65B",
       "domain": "social"
     },
@@ -247,10 +223,6 @@
     },
     {
       "id": "ORG-SFR",
-      "domain": "social"
-    },
-    {
-      "id": "EXT-RZN-001",
       "domain": "social"
     },
     {
@@ -294,14 +266,6 @@
       "domain": "governance"
     },
     {
-      "id": "ORG-EB61806B27",
-      "domain": "governance"
-    },
-    {
-      "id": "ORG-0CC2A4412D",
-      "domain": "governance"
-    },
-    {
       "id": "ORG-470CAE26B2",
       "domain": "governance"
     },
@@ -330,22 +294,6 @@
       "domain": "governance"
     },
     {
-      "id": "EXT-RF-SUBJECT-EXEC-AUTH",
-      "domain": "governance"
-    },
-    {
-      "id": "TERR-RF-REGIONAL-EOIV",
-      "domain": "governance"
-    },
-    {
-      "id": "ORG-A5F5D43200",
-      "domain": "governance"
-    },
-    {
-      "id": "EXT-GOV-RU",
-      "domain": "governance"
-    },
-    {
       "id": "ORG-27A23B51B9",
       "domain": "governance"
     },
@@ -367,10 +315,6 @@
     },
     {
       "id": "ORG-6E29054BD1",
-      "domain": "governance"
-    },
-    {
-      "id": "ORG-RU-ROSIM",
       "domain": "governance"
     },
     {
@@ -446,7 +390,8 @@
         "DEDGE-0110",
         "V125-AG-ROSPOTREB",
         "DEDGE-0064",
-        "ROSNEDRA-MINZDRAV-LICENCE-001"
+        "ROSNEDRA-MINZDRAV-LICENCE-001",
+        "RN26-EXT-MC-POWER"
       ]
     },
     {
@@ -455,13 +400,11 @@
       "b": "governance",
       "routeIds": [
         "DEDGE-0116",
-        "INT-MINAGRI-REL-MINAGRI-011",
         "V126-AG-FNS",
         "V131-SECONDARY-020",
         "V132-SECONDARY-009",
         "V132-SECONDARY-012",
         "V132-SECONDARY-013",
-        "V195-NEW-006",
         "V197-NEW-010",
         "DEDGE-0066",
         "V198-NEW-004",
@@ -481,9 +424,6 @@
         "V196-NEW-020",
         "V196-NEW-021",
         "V196-NEW-029",
-        "DEDGE-0034",
-        "DEDGE-0036",
-        "DEDGE-0076",
         "DEDGE-0120",
         "INT-MINAGRI-REL-MINAGRI-013",
         "V123-MEC-ROSHYDRO",
@@ -494,7 +434,12 @@
         "V132-SECONDARY-010",
         "V131-SECONDARY-005",
         "DEDGE-0135",
-        "ROSNEDRA-MINFIN-FORECAST-001"
+        "ROSNEDRA-MINFIN-FORECAST-001",
+        "RN26-EXT-FNS-DEBT",
+        "RN26-EXT-FNS-REPORTS",
+        "RN26-EXT-FNS-REGISTER",
+        "RN26-EXT-FNS-CHARTER",
+        "RN26-EXT-MEC-LICENCES"
       ]
     },
     {
@@ -551,7 +496,6 @@
         "V196-NEW-030",
         "V196-NEW-031",
         "DEDGE-0033",
-        "DEDGE-0037",
         "DEDGE-0043",
         "V132-SECONDARY-019",
         "V195-NEW-012",
@@ -563,7 +507,6 @@
         "DEDGE-0088",
         "DEDGE-0141",
         "MECON-ORG-EXT-IN-003",
-        "MSTR-ORG-PL-002",
         "V123-MEC-MINSTROY",
         "V131-SECONDARY-010",
         "V167-MNER-ROSGVARDIA-001",
@@ -590,9 +533,6 @@
         "V196-NEW-023",
         "V196-NEW-024",
         "DEDGE-0139",
-        "DEDGE-0038",
-        "DEDGE-0039",
-        "DEDGE-0077",
         "DEDGE-0121",
         "V124-MEC-MINPROMTORG",
         "V129-EXT-OUT-003",
@@ -613,8 +553,6 @@
         "V165-MNER-FTS-001",
         "MSTR-ORG-PL-021",
         "V195-NEW-011",
-        "DEDGE-0040",
-        "DEDGE-0078",
         "MSTR-ORG-PL-029"
       ]
     },
@@ -651,7 +589,6 @@
         "V196-NEW-019",
         "V196-NEW-026",
         "V196-NEW-028",
-        "INT-MINTRUD-REL-MT-012",
         "V123-MC-FNS",
         "V126-MT-MVD",
         "V129-EXT-IN-014",
