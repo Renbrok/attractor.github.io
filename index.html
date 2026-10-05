@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>РЭН v232 — Межведомственный обмен</title>
+<title>РЭН v237 — Межведомственный обмен</title>
 <style>
 :root{--bg:#f4f6f8;--panel:#fff;--line:#d7dde4;--text:#1d2733;--muted:#687585;--accent:#245fa8}
 *{box-sizing:border-box} html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);background:var(--bg)} body{overflow:hidden}
@@ -515,7 +515,7 @@ body.atlas-wide.atlas-external-focus #graph .node.external-focus-selected text{f
 <div class="app">
 <div class="topbar">
   <div class="brand-block">
-    <div class="brand-row"><div class="title atlas-logo">РЭН</div><span class="version-pill" title="Версия 232 · 05.10.2026">v232</span></div>
+    <div class="brand-row"><div class="title atlas-logo">РЭН</div><span class="version-pill" title="Версия 237 · 05.10.2026">v237</span></div>
     <div class="brand-identity">
       <div class="institution-name">Санкт-Петербургский горный университет императрицы Екатерины II</div>
       <div class="subtitle">Команда «Аттрактор» · Схема связи Министерств</div>
@@ -2303,7 +2303,7 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
 
         if (label) {
           const full=label.dataset.fullLabel||label.textContent||''; label.dataset.fullLabel=full;
-          label.textContent=full.length>30?full.slice(0,28).replace(/\s+\S*$/,'')+'…':full;
+          if(graphMode!=='STRUCTURE')label.textContent=full.length>30?full.slice(0,28).replace(/\s+\S*$/,'')+'…':full;
           const node=simulationNodes?.find(item=>item.id===group.dataset.id),left=node?.x<W/2;
           label.setAttribute('x',String(left?-(radius+7):(radius+7))); label.setAttribute('text-anchor',left?'end':'start'); label.setAttribute('y','3.5');
           let title=group.querySelector(':scope > title'); if (!title) { title=document.createElementNS(svgNamespace,'title'); group.insertBefore(title,group.firstChild); }
@@ -2369,7 +2369,7 @@ window.addEventListener('resize',()=>{if(!isCompactUI())closePanels()});
     ty = H / 2 - scale * ministry.y;
     applyTransform();
   }
-  function internalDepartmentLabelLines(name,dense=false){return window.renWrapLabel(String(name||'').replace(/^Департамент\s+/i,''),dense?20:24,3);}
+  function internalDepartmentLabelLines(name,dense=false){return window.renWrapLabel(window.renShortDepartmentLabel?window.renShortDepartmentLabel(name):String(name||'').replace(/^Департамент\s+/i,''),dense?22:28,3);}
   function renderInternalRelations(id, recenter = true) {
     if (!id || !ensureInternalLayers()) return;
     const ministry = simulationNodes?.find(node => node.id === id); if (!ministry) return;
@@ -3370,8 +3370,9 @@ startSimulation();
 <script src="rosnedra/node-cleanup-v206.js?v=232"></script>
 <script src="rosnedra/integration.js?v=232"></script>
 <script src="rosnedra/matrix-v02-data.js?v=232"></script>
-<script src="rosnedra/matrix-v02.js?v=232"></script>
+<script src="rosnedra/matrix-v02.js?v=237"></script>
 <script src="rosnedra/node-cleanup-v211.js?v=232"></script>
-<script src="rosnedra/ui-v232.js?v=232"></script>
+<script src="rosnedra/structure-navigation.js?v=237"></script>
+<script src="rosnedra/ui-v237.js?v=237"></script>
 <script src="okur/domains-graph.js?v=232"></script>
 <script src="okur/atlas-layer.js?v=232"></script></body></html>
