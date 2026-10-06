@@ -1,0 +1,20 @@
+{
+  "version": "v239",
+  "htmlBytes": 83474,
+  "runtimeBytes": 5254146,
+  "previousInitialBytes": 6378219,
+  "currentInitialBytes": 5337620,
+  "initialScriptRequestsBefore": 20,
+  "initialScriptRequestsAfter": 1,
+  "pooledStrings": 1515,
+  "archivedFields": [
+    "candidates",
+    "instructions",
+    "research_notes",
+    "workbook_path",
+    "source_model",
+    "new_official_sources_rechecked",
+    "legacy_sources_rechecked"
+  ],
+  "asset": "assets/app-v239-b17d9e213743.js"
+}
