@@ -1,9 +1,9 @@
 {
-  "version": "v239",
-  "htmlBytes": 83474,
-  "runtimeBytes": 5254146,
-  "previousInitialBytes": 6378219,
-  "currentInitialBytes": 5337620,
+  "version": "v240",
+  "htmlBytes": 84101,
+  "runtimeBytes": 5254704,
+  "previousInitialBytes": 6378777,
+  "currentInitialBytes": 5338805,
   "initialScriptRequestsBefore": 20,
   "initialScriptRequestsAfter": 1,
   "pooledStrings": 1515,
@@ -16,5 +16,5 @@
     "new_official_sources_rechecked",
     "legacy_sources_rechecked"
   ],
-  "asset": "assets/app-v239-b17d9e213743.js"
+  "asset": "assets/app-v240-1c09b86b5937.js"
 }
