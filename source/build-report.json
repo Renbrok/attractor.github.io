@@ -1,10 +1,10 @@
 {
-  "version": "v240",
-  "htmlBytes": 84101,
-  "runtimeBytes": 5254704,
-  "previousInitialBytes": 6378777,
-  "currentInitialBytes": 5338805,
-  "initialScriptRequestsBefore": 20,
+  "version": "v244",
+  "htmlBytes": 84287,
+  "runtimeBytes": 5370619,
+  "previousInitialBytes": 6494778,
+  "currentInitialBytes": 5454906,
+  "initialScriptRequestsBefore": 22,
   "initialScriptRequestsAfter": 1,
   "pooledStrings": 1515,
   "archivedFields": [
@@ -16,5 +16,5 @@
     "new_official_sources_rechecked",
     "legacy_sources_rechecked"
   ],
-  "asset": "assets/app-v240-1c09b86b5937.js"
+  "asset": "assets/app-v244-30a302e9c76b.js"
 }

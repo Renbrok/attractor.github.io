@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>РЭН v240 — Межведомственный обмен</title>
+<title>РЭН v244 — Межведомственный обмен</title>
 <style>
 :root{--bg:#f4f6f8;--panel:#fff;--line:#d7dde4;--text:#1d2733;--muted:#687585;--accent:#245fa8}
 *{box-sizing:border-box} html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);background:var(--bg)} body{overflow:hidden}
@@ -515,7 +515,7 @@ body.atlas-wide.atlas-external-focus #graph .node.external-focus-selected text{f
 <div class="app">
 <div class="topbar">
   <div class="brand-block">
-    <div class="brand-row"><div class="title atlas-logo">РЭН</div><span class="version-pill" title="Версия 239 · 06.10.2026">v240</span></div>
+    <div class="brand-row"><div class="title atlas-logo">РЭН</div><span class="version-pill" title="Версия 244 · 07.10.2026">v244</span></div>
     <div class="brand-identity">
       <div class="institution-name">Санкт-Петербургский горный университет императрицы Екатерины II</div>
       <div class="subtitle">Команда «Аттрактор» · Схема связи Министерств</div>
@@ -2019,12 +2019,12 @@ function openDetails(){if(!isCompactUI())return;document.body.classList.remove('
 filtersToggle?.addEventListener('click',()=>document.body.classList.contains('channel-filter-open')?closePanels():openFilters());
 detailToggle?.addEventListener('click',()=>document.body.classList.contains('detail-open')?closePanels():openDetails());
 filtersClose?.addEventListener('click',closePanels);detailClose?.addEventListener('click',closePanels);uiBackdrop?.addEventListener('click',closePanels);
-document.addEventListener('keydown',ev=>{if(ev.key==='Escape')closePanels()});
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!document.getElementById('channelProof244')?.open)closePanels()});
 document.addEventListener('pointerdown',ev=>{
   if(!document.body.classList.contains('channel-filter-open'))return;
   const panel=document.getElementById('channelToolbar134');
   const secondaryButton=document.getElementById('atlasFiltersButton');
-  if(panel?.contains(ev.target)||filtersToggle?.contains(ev.target)||secondaryButton?.contains(ev.target))return;
+  if(panel?.contains(ev.target)||filtersToggle?.contains(ev.target)||secondaryButton?.contains(ev.target)||document.getElementById('channelProof244')?.contains(ev.target))return;
   document.body.classList.remove('channel-filter-open');
   filtersToggle?.setAttribute('aria-expanded','false');
 });
@@ -3027,6 +3027,7 @@ startSimulation();
 .channel-help137 strong{color:#183449}
 @media(max-width:700px){#channelToolbar134{width:min(320px,calc(100vw - 16px));max-height:calc(100vh - 76px)}#channelToolbar134 .channel-options137{max-height:46vh}}
 </style>
+<script src="channels/audit-v244.js"></script>
 <script id="channel-filter-v179-script">
 (function(){
   const VERIFIED_CHANNEL_GRADES179=new Set([
@@ -3059,6 +3060,7 @@ startSimulation();
     const labels=[...new Set(channelNorm(e.channels))];rawCache179.set(e.id,labels);return labels;
   }
   function verifiedChannelLabels179(e){
+    if(window.REN_CHANNEL_AUDIT244)return (window.REN_CHANNEL_AUDIT244.bindings[e.id]?.keys||[]).map(key=>window.REN_CHANNEL_AUDIT244.catalog[key].name);
     if(verifiedCache179.has(e.id))return verifiedCache179.get(e.id);
     const r=e.channel_research||{},labels=[],seen=new Set();
     if(VERIFIED_CHANNEL_GRADES179.has(r.grade)&&Array.isArray(r.channels)){
@@ -3086,7 +3088,7 @@ startSimulation();
     ['ГИС ЭПД','#A24E72'],['ГИИС «Электронный бюджет»','#6A5ACD'],['ЕРКНМ / ЕРП','#B04A3A'],['РСЧС','#4F6D3A']
   ]);
   const palette179=['#2F6DAE','#B45A2A','#397A57','#7655A3','#AD3F66','#6F7D28','#2D7C87','#9B652B','#5A6FA8','#A3483E','#44744A','#765B2D','#6B5AA6','#2F7B70','#975071','#5E7187'];
-  const names179=[...verifiedCounts179.keys()].sort((a,b)=>(verifiedCounts179.get(b)-verifiedCounts179.get(a))||a.localeCompare(b,'ru'));
+  const names179=(window.REN_CHANNEL_AUDIT244?Object.values(window.REN_CHANNEL_AUDIT244.catalog).map(c=>c.name):[...verifiedCounts179.keys()]).sort((a,b)=>(verifiedCounts179.get(b)-verifiedCounts179.get(a))||a.localeCompare(b,'ru'));
   const channelOptions179=names179.map((name,i)=>({name,color:preferredColors179.get(name)||palette179[i%palette179.length]}));
   DATA.channel_filter_v179={
     version:'v179',checked_on:'2026-10-03',mode:'DOCUMENTARY_CONFIRMED_CHANNELS',
@@ -3157,7 +3159,7 @@ startSimulation();
 
   /* The default overview has already been rendered at this point.
      Freeze exactly that main-map universe so detail/focus-only edges can never enter channel counts. */
-  const MAIN_MAP_EDGE_IDS181=new Set((simulationEdges||[]).filter(e=>e&&e.id).map(e=>e.id));
+  const MAIN_MAP_EDGE_IDS181=new Set(window.REN_CHANNEL_AUDIT244?Object.keys(window.REN_CHANNEL_AUDIT244.bindings):(simulationEdges||[]).filter(e=>e&&e.id).map(e=>e.id));
   const MAIN_MAP_NODE_IDS181=new Set();
   for(const e of DATA.edges){
     if(!MAIN_MAP_EDGE_IDS181.has(e.id))continue;
@@ -3373,6 +3375,7 @@ startSimulation();
 <script src="rosnedra/matrix-v02.js?v=237"></script>
 <script src="rosnedra/node-cleanup-v211.js?v=232"></script>
 <script src="rosnedra/structure-navigation.js?v=237"></script>
-<script src="rosnedra/ui-v240.js?v=238"></script>
+<script src="rosnedra/ui-v244.js?v=244"></script>
+<script src="channels/ui-v244.js"></script>
 <script src="okur/domains-graph.js?v=232"></script>
 <script src="okur/atlas-layer.js?v=232"></script></body></html>

@@ -53,7 +53,7 @@
   let outlines='';
   for(const d of config.domains){const p=centres[d.id],matching=data.nodes.filter(n=>member.get(n.id)===d.id&&matches(n)).length;outlines+=`<g class="okur-domain${domainId===d.id?' selected':''}${matching?'':' dim'}" data-domain="${d.id}"><ellipse cx="${p.x}" cy="${p.y}" rx="475" ry="295" fill="${d.color}"/><g class="okur-domain-heading" data-domain-heading="${d.id}" aria-label="${esc('Открыть контур '+d.name)}"><text x="${p.x}" y="${p.y-263}" text-anchor="middle">${esc(d.name)}</text><text class="okur-domain-count" x="${p.x}" y="${p.y-242}" text-anchor="middle">${d.nodeCount} участников · проектный состав</text></g></g>`;}
   let internal='';
-  for(const r of model.local){const a=positions.get(r.a),b=positions.get(r.b),isPicked=routeId===r.id,highlight=isPicked||selected&&(r.a===selected||r.b===selected),dim=family&&r.family!==family||domainId&&member.get(r.a)!==domainId||bundleId;
+  for(const r of model.local){const a=positions.get(r.a),b=positions.get(r.b),isPicked=routeId===r.id,highlight=isPicked||selected&&(r.a===selected||r.b===selected),dim=family&&r.family!==family||domainId&&member.get(r.a)!==domainId;
    internal+=`<g class="okur-local-route${dim?' dim':''}" data-local-route="${esc(r.id)}"><title>${esc(r.aName+' — '+r.bName+' · '+profile(r.family).name+' · '+r.subject)}</title><line class="edge-hit" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/><line class="okur-local-link" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${highlight||family?data.groups.find(g=>g.id===r.family).color:'#74838a'}" stroke-width="${highlight?2.6:1}" stroke-opacity="${highlight?.85:.25}"/></g>`;
   }
   let bridges='';
