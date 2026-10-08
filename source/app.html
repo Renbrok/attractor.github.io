@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>РЭН v244 — Межведомственный обмен</title>
+<title>РЭН v245 — Межведомственный обмен</title>
 <style>
 :root{--bg:#f4f6f8;--panel:#fff;--line:#d7dde4;--text:#1d2733;--muted:#687585;--accent:#245fa8}
 *{box-sizing:border-box} html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);background:var(--bg)} body{overflow:hidden}
@@ -510,12 +510,19 @@ body.atlas-wide.atlas-external-focus #graph .node.external-focus-selected text{f
 .okur-wip-card{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border:1px dashed #c8b99f;background:#f7f2e9;color:#6c6257;border-radius:4px;opacity:.82}
 .okur-wip-card strong{font-size:10px;font-weight:700}.okur-wip-card span{font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#8a6f4d}
 </style>
-<link rel="stylesheet" href="okur/atlas-layer.css?v=232"></head>
+<link rel="stylesheet" href="okur/atlas-layer.css?v=232"><style id="white-background-v245">
+:root{--bg:#fff;--panel:#fff;--panel-soft:#fff;--atlas-paper:#fff;--atlas-paper-soft:#fff}
+html,body,.app,.topbar,.atlas-intro,.main,.right,.left,.drawer-head,.right .drawer-head,.left .drawer-head,.section,.card,.source-block .src,.badge,.atlas-mobile-nav,.atlas-landing-map,.atlas-source-placeholder,.atlas-node-search-box,.atlas-node-search-results,.ministry-context-summary .context-kpi,.ministry-context-group,.core-route-actions,.okur-switch,#channelToolbar134,#channel-legend210,#channelProof244,#structure-navigation233{background:#fff!important;background-image:none!important}
+#graph,#graph.channel-view,body.atlas-wide #graph,body.atlas-wide.atlas-external-focus #graph{background:#fff!important;background-image:none!important}
+#zoomIn,#zoomOut,.atlas-back-home,.channel-info244,select,input[type=text],input[type=search],.btn:not(.primary):not(.active),.focus-grid button:not(.active),.contour-action:not(:hover),.kpi{background-color:#fff!important}
+#graph .okur-bundle-label rect{fill:#fff}
+</style>
+</head>
 <body data-graph-version="117">
 <div class="app">
 <div class="topbar">
   <div class="brand-block">
-    <div class="brand-row"><div class="title atlas-logo">РЭН</div><span class="version-pill" title="Версия 244 · 07.10.2026">v244</span></div>
+    <div class="brand-row"><div class="title atlas-logo">РЭН</div><span class="version-pill" title="Версия 245 · 08.10.2026">v245</span></div>
     <div class="brand-identity">
       <div class="institution-name">Санкт-Петербургский горный университет императрицы Екатерины II</div>
       <div class="subtitle">Команда «Аттрактор» · Схема связи Министерств</div>
@@ -3375,7 +3382,7 @@ startSimulation();
 <script src="rosnedra/matrix-v02.js?v=237"></script>
 <script src="rosnedra/node-cleanup-v211.js?v=232"></script>
 <script src="rosnedra/structure-navigation.js?v=237"></script>
-<script src="rosnedra/ui-v244.js?v=244"></script>
+<script src="rosnedra/ui-v245.js?v=245"></script>
 <script src="channels/ui-v244.js"></script>
 <script src="okur/domains-graph.js?v=232"></script>
 <script src="okur/atlas-layer.js?v=232"></script></body></html>
