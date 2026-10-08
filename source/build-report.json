@@ -1,12 +1,12 @@
 {
-  "version": "v245",
+  "version": "v246",
   "htmlBytes": 85334,
-  "runtimeBytes": 5370619,
-  "previousInitialBytes": 6495828,
-  "currentInitialBytes": 5455953,
+  "runtimeBytes": 5296334,
+  "previousInitialBytes": 6404501,
+  "currentInitialBytes": 5381668,
   "initialScriptRequestsBefore": 22,
   "initialScriptRequestsAfter": 1,
-  "pooledStrings": 1515,
+  "pooledStrings": 1490,
   "archivedFields": [
     "candidates",
     "instructions",
@@ -16,5 +16,5 @@
     "new_official_sources_rechecked",
     "legacy_sources_rechecked"
   ],
-  "asset": "assets/app-v245-31a5f20b14de.js"
+  "asset": "assets/app-v246-089ecfb56462.js"
 }

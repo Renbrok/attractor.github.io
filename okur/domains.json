@@ -8,8 +8,8 @@
       "name": "Ресурсы",
       "color": "#5d8866",
       "description": "Природные ресурсы, экология, сельское хозяйство и связанные сведения.",
-      "nodeCount": 19,
-      "localRoutes": 32
+      "nodeCount": 13,
+      "localRoutes": 26
     },
     {
       "id": "industry",
@@ -46,14 +46,6 @@
       "domain": "resources"
     },
     {
-      "id": "ROSFISH-TU-01",
-      "domain": "resources"
-    },
-    {
-      "id": "ROSFISH-TU-10",
-      "domain": "resources"
-    },
-    {
       "id": "ORG-151988882B",
       "domain": "resources"
     },
@@ -83,14 +75,6 @@
     },
     {
       "id": "ORG-MINAGRI-RSHN",
-      "domain": "resources"
-    },
-    {
-      "id": "RSHN-TU-02",
-      "domain": "resources"
-    },
-    {
-      "id": "RSHN-TU-31",
       "domain": "resources"
     },
     {
@@ -335,14 +319,6 @@
     },
     {
       "id": "ROSNEDRA-TERR-SZFO",
-      "domain": "resources"
-    },
-    {
-      "id": "REGION-60-NATURE-MINISTRY",
-      "domain": "resources"
-    },
-    {
-      "id": "REGION-53-NATURE-MINISTRY",
       "domain": "resources"
     }
   ],
